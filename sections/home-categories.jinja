@@ -1,6 +1,6 @@
 <section section-id="{{ sectionId }}" class="special-cats my-5 lg:my-8 layout">
   <div   class="grid grid-cols-3 gap-3 sm:gap-5">
-    {% for key,cat in settings.categories[:3] %}
+    {% for cat in settings.categories[:3] %}
        <a 
   class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
   href="{{ cat.category.url }}">
@@ -22,7 +22,7 @@
     {% endfor %}
   </div>
   <div class="grid grid-cols-2  gap-3 sm:gap-5 mt-3 sm:mt-5">
-  {% for key,cat in settings.categories[3:5] %}
+  {% for cat in settings.categories[3:5] %}
         <a 
   class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
   href="{{ cat.category.url }}">
@@ -44,7 +44,7 @@
     {% endfor %}
   </div>
    <div class="grid grid-cols-3  gap-3 sm:gap-5 mt-3 sm:mt-5">
-    {% for key,cat in settings.categories[5:8] %}
+    {% for cat in settings.categories[5:8] %}
     <a 
   class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
   href="{{ cat.category.url }}">

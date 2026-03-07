@@ -1,7 +1,7 @@
 <section section-id="{{ sectionId }}" class="gallery layout text-base-content my-5 lg:my-8">
 <div class="grid  grid-cols-1 sm:grid-cols-4 auto-rows-auto grid-flow-dense gap-[6px]">
-        {% for key,item in settings.images %}
-          {% if key == 0 %}        
+        {% for item in settings.images %}
+          {% if loop.index0 == 0 %}
            <a class="row-auto col-auto sm:row-span-2 sm:col-span-2"   href="{{ item.url }}">
                 <div class="card bg-base-100 image-full w-full h-full shadow-xl rounded-3xl z-[1]">
                   <figure>
@@ -17,7 +17,7 @@
               </div>
             </a>
           {% endif %}
-          {% if key == 1 %}        
+          {% if loop.index0 == 1 %}        
   <a class=""  href="{{ item.url }}">
                 <div class="card bg-base-100 image-full w-full h-full shadow-xl rounded-3xl z-[1]">
                   <figure>
@@ -32,7 +32,7 @@
                   </div>
               </div>            </a>
           {% endif %}
-          {% if key == 2 %}        
+          {% if loop.index0 == 2 %}        
   <a class="col-auto sm:col-span-2"  href="{{ item.url }}">
                 <div class="card bg-base-100 image-full w-full h-full shadow-xl rounded-3xl z-[1]">
                   <figure>
@@ -47,7 +47,7 @@
                   </div>
               </div>            </a>
           {% endif %}
-          {% if key == 3 %}        
+          {% if loop.index0 == 3 %}        
   <a class="" href="{{ item.url }}">
                 <div class="card bg-base-100 image-full w-full h-full shadow-xl rounded-3xl z-[1]">
                   <figure>

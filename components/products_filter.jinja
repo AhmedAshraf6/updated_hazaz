@@ -42,13 +42,13 @@
   </div>
 </div>
 
-{% for index,attribute in products.filters.attributes %}
+{% for attribute in products.filters.attributes %}
   {% if attribute.name == "اللون" or  attribute.name == "color" %}
     <div tabindex="0" class="collapse  collapse-arrow">
         <input type="checkbox" class="peer" checked/>
         <div class="collapse-title text-xl font-medium">{{ attribute.name }}</div>
         <div class="collapse-content flex flex-wrap gap-3 attibute-values">  
-           {% for attr in attribute.data %}
+           {% for attr in attribute.results %}
               <div class="attribute color-attribute w-[30px] h-[30px] rounded-full cursor-pointer"  style="background-color:{{ attr.type_value }}" data-atributeValue="{{ attr.value }}"></div>
            {% endfor %}
         </div>
@@ -58,7 +58,7 @@
         <input type="checkbox" class="peer" />
         <div class="collapse-title text-xl font-medium">{{ attribute.name }}</div>
         <div class="collapse-content flex flex-wrap gap-3 attibute-values">  
-           {% for attr in attribute.data %}
+           {% for attr in attribute.results %}
               <div class="attribute global-attribute min-w-[60px] min-h-[60px] rounded-lg text-base sm:text-lg text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer" data-atributeValue="{{ attr.value }}" name="{{ attribute.name  }}">
                 {{ attr.value }}
               </div>

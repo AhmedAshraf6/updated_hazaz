@@ -3,7 +3,7 @@
 {% block title %} {{ store.name }} -  {{ _("Payment and Shipping Options") }} {% endblock %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -76,7 +76,7 @@
                                {% if shipping_method.cod_enabled %}
                                     {% for cod_fee in shipping_method.cod_fee %}
                                         <div class="flex flex-wrap gap-1">
-                                            {% if cod_fee.title is not empty %}<span class="s-title">{{ cod_fee.title }}: </span>{% endif %}
+                                            {% if cod_fee.title %}<span class="s-title">{{ cod_fee.title }}: </span>{% endif %}
                                             <span>{{ cod_fee.cod_fee_string }} </span>
                                         </div>
                                     {% endfor %}
@@ -142,4 +142,4 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}

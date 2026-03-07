@@ -15,13 +15,13 @@
            {% include "components/profile_section_dropdown.jinja" %}
          </div>
          <div class="col-span-3">
-           {% if wishlist.data|length > 0 %}
+           {% if wishlist.results|length > 0 %}
             <div class="flex gap-2">
                 <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
                 <h1 class="text-lg sm:text-xl font-bold">{{ _("Wishlist") }}</h1>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 mt-3 sm:mt-5">
-               {% for product in wishlist.data %}
+               {% for product in wishlist.results %}
                   {% set index = loop.index0 %}
                   {% include 'components/product-card.jinja' %}
                {% endfor %}

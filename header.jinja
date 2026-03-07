@@ -5,7 +5,7 @@
                      <input type="hidden" name="_token" value="{{ csrf_token }}" />
                      <input id="country" type="hidden" value="{{session.lang.code}}" name="country" />
                      <input id="language" type="hidden" name="language" value="ar" />
-                     <input id="redirect-to" type="hidden" name="redirect_to" value="{{ requestUri() }}" />
+                     <input id="redirect-to" type="hidden" name="redirect_to" value="{{ session.url.path }}" />
                      <input id="input-change-session-currency" type="hidden" name="currency" value="{{ session.currency.code }}">
                      <input id="input-change-session-currency-symbol" type="hidden" name="currency_symbol" value="{{ session.currency.symbol }}">
        </form>
@@ -114,12 +114,14 @@
               searchResultSection.classList.remove("hidden");
               loadingSpinner.classList.remove("hidden");
 
-              zid.products.list({ search: value }, { showErrorNotification: true }).then((data) => {
+              zid.products.list({ search: value }).then((data) => {
+                     console.log('search response:', data);
                      let productFromSearch = '';
-                     const productsCount = data.products.data.length;
+                     const productsList = data?.products?.data || data?.products?.results || data?.products || data?.results || data?.data || [];
+                     const productsCount = productsList.length;
 
                      if (productsCount > 0) {
-                     data.products.data.slice(0, 3).forEach((pr) => {
+                     productsList.slice(0, 3).forEach((pr) => {
                             productFromSearch += `
                             <a href="${pr.html_url}" class="search-card-box flex items-center gap-4">
                                    <div class="avatar">

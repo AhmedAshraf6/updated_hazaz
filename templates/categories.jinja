@@ -1,7 +1,7 @@
 {% extends "layout.jinja" %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -69,7 +69,7 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
 
 {% block footer_scripts %}
     <script>

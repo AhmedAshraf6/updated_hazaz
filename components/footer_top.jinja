@@ -49,7 +49,7 @@
           <div class="flex items-center lg:items-start flex-1  flex-wrap gap-2 ">
                     <div class="flex flex-wrap gap-3">
                     
-                      {% for payment_method in store.payment_methods %}
+                      {% for payment_method in store.settings.checkout.payment_methods %}
                           <a href="/shipping-and-payment"  class="bg-[#ffffff24] p-[5px] rounded-md flex items-center justify-center" aria-label="payment method">
                             <img src="{{ image_url(payment_method.icon, h=26, q=100) }}"  alt="" width="36"  alt='payments' class="max-w-[20px] max-h-[20px] object-cover">
                           </a>

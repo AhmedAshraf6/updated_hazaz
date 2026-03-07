@@ -2,7 +2,7 @@
 
 {% block title %} {{ store.name }} - {{ _("All Products") }} {% endblock %}
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 {% block top_links %}
 {% endblock %}
@@ -21,7 +21,7 @@
        {% include 'components/shared_banner.jinja' %}
     {% endif %}
     
-   {% if products.data|length > 0 %}
+   {% if products.results|length > 0 %}
         <div class="my-5 layout allProductsPage">
             
             <div class="grid grid-cols-3 lg:grid-cols-4 gap-4">
@@ -69,7 +69,7 @@
                     {# all products #}
                     <div class="col-span-3">
                         <div id="products-list" class="custom_products_list w-100 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-3">
-                            {% for product in products.data %}
+                            {% for product in products.results %}
                                   
                                   {% if product.is_infinite == true or product.quantity > 0 %}
                                       {% set index = key %}
@@ -111,7 +111,7 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
 
     {% block footer_scripts %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"></script>
@@ -123,7 +123,7 @@
         
         
         let currentPage = 2;
-        const lastPage = {{ products.last_page | tojson }}
+        const lastPage = {{ products.pages_count | tojson if products.pages_count is defined else (products.last_page | tojson if products.last_page is defined else 'null') }}
         
         // check for product attribute 
         function getAttributeValues(url) {
@@ -303,7 +303,7 @@
                     productsList.insertAdjacentHTML('beforeend', allProds);
                     observeLazyImages();
                     // After rendering all products, fetch variants for each
-                        products.data.forEach((product) => {
+                        products.forEach((product) => {
                             if (product.has_variants) {
                                 fetchProductVariantsInsideProducts(product.id);
                             }
@@ -548,9 +548,10 @@
 
 
 function fetchMoreProducts(query) {
-    zid.products.list({...query}, { showErrorNotification: true })
-        .then(function (response) {
-            const products = response.products.data;
+    console.log('fetchMoreProducts query:', query);
+    zid.products.list({...query}).then(function (response) {
+            console.log('fetchMoreProducts response:', response);
+            const products = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
 
             if (products.length > 0) {
                 currentPage++;
@@ -572,10 +573,10 @@ function fetchMoreProducts(query) {
         });
 }
 
-        {% if  products.data|length > 0 %}
+        {% if  products.results|length > 0 %}
             document.addEventListener("DOMContentLoaded", function(){
             
-                var productsObj = {{ products.data | tojson }}
+                var productsObj = {{ products.results | tojson }}
                     // window.sendGaProductsViewItemsListEvent('all_products', productsObj);
 
                     const content = document.getElementById("products-list");

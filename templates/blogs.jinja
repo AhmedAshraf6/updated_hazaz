@@ -4,7 +4,7 @@
 {% block title %} {{ store.name }} -  {{ _("Blog") }} {% endblock %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -171,4 +171,4 @@
 {% endblock %} 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}

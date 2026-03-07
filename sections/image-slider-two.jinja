@@ -13,7 +13,7 @@
             </a>
             <div class="swiper home_image_silder_before">
                 <div class="swiper-wrapper items-stretch">
-                      {% for key,item in settings.products %}
+                      {% for item in settings.products %}
                           <div class="swiper-slide  h-auto" style="height:auto">
                               <div class="h-full"> 
                                 {% set product = item.product %}{% set index = key %}{% set makeCustomHeight = true %}

@@ -1,7 +1,7 @@
 {% extends "layout.jinja" %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -19,14 +19,14 @@
     <section class="my-5 layout allQuestions">
       
       <div class="flex flex-col gap-3">
-            {% for key, review in product.reviews.data %}
+            {% for review in product.reviews.results %}
                     <div class="review flex flex-wrap justify-between gap-2">
                         <div class="flex flex-col gap-2 ">
                         <span class="text-base sm:text-lg font-medium">{{ review.customer.name }}</span>
                         {% set rating = review.rating %}{% set sizeSvg = 15 %}
                         {% include 'components/rating-stars.jinja' %}
                             <div class="card-date user-review-date text-sm font-light">
-                            {{ datetimeFormat(review.created_at, 'd-m-Y g:i:s A', session.lang.code) | split(' ')[0] }}
+                            {{ format_datetime(review.created_at, 'd-m-Y') }}
                             </div>
                         </div>
                         <div class=" text-lg leading-8 text-base-content">{{ review.comment | safe }}</div>
@@ -55,7 +55,7 @@
                     {% endif %}
             {% endfor %}
       </div>
-      {% set totalPages = product.reviews.last_page %}{% set currentPage = product.reviews.current_page %}
+      {% set totalPages = product.reviews.pages_count %}{% set currentPage = product.reviews.page %}
       {% include 'components/pagination.jinja' %}
     </section>
 
@@ -64,4 +64,4 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}

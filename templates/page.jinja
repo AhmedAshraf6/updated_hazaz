@@ -3,7 +3,7 @@
 {% block title %} {{ store.name }} - {{ page.global.home }} {% endblock %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 {% block main_content %}
     <section class="blog mt-5 mb-5 ">
@@ -24,4 +24,4 @@
 
 {% endblock %}
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}

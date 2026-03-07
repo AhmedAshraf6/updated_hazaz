@@ -189,7 +189,7 @@
           }
         });
 
-        const customer = {{ customer | tojson }};
+        // customer is already defined globally in header.jinja
         const getCustomerLoyalityPoints = () => {
            if (!customer) {
               document.querySelector('.profile_page .points').textContent = 0;

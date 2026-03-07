@@ -1,4 +1,5 @@
 {% extends "layout.jinja" %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 {% block title %} 
     {% if product.seo.title %}
@@ -8,7 +9,6 @@
     {% endif %}
 {% endblock %}
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
 
 
 
@@ -37,7 +37,7 @@
                     <!-- Main Swiper -->
                     <div class=" swiper mySwiperProdyct2 w-full h-[80%]">
                         <div class="swiper-wrapper swiperWrapper2">
-                            {% for key, media in product.selected_product.media %}
+                            {% for media in product.selected_product.media %}
 
                                 {% if media.provider == 'youtube' %}
                                     {# استخراج ID الفيديو من لينك YouTube #}
@@ -51,7 +51,7 @@
                                         {% set video_id = '' %}
                                     {% endif %}
 
-                                    {% if key == 0 %}
+                                    {% if loop.first %}
                                         <div class="col-span-2 row-span-2">
                                             <iframe 
                                                 src="https://www.youtube.com/embed/{{ video_id }}" 
@@ -106,7 +106,7 @@
                 <!-- Thumbnail Swiper -->
                 <div thumbsSlider="" class="swiper mySwiperProduct w-full h-[18%]">
                     <div class="swiper-wrapper swiperWrapper">
-                        {% for key, media in product.selected_product.media %}
+                        {% for media in product.selected_product.media %}
                             <div class="swiper-slide rounded-[12px] relative">
                                 <div class="skeleton w-full h-full absolute rounded-[0px]"></div>
 
@@ -353,7 +353,7 @@
                                                 <span class="text-sm sm:text-base font-bold">{{ option.name }}:</span>
                                                 {% for choice in option.choices %}
                                                 <div onclick="globalVariantClicked(event)"
-                                                data-value="{{ choice }}" data-name="{{ option.name }}" class="attribute color-attribute  color-variant w-[30px] h-[30px] rounded-full cursor-pointer {% if product.selected_product.attributes[index].value == choice %} active {% endif %}" style="background-color:{{ (choice | split('-'))[1] }}"></div>
+                                                data-value="{{ choice }}" data-name="{{ option.name }}" class="attribute color-attribute  color-variant w-[30px] h-[30px] rounded-full cursor-pointer {% if product.selected_product.attributes[index].value == choice %} active {% endif %}" {% set color_parts = choice | split('-') %}style="background-color:{{ color_parts[1] if color_parts | length > 1 else choice }}"></div>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
@@ -379,7 +379,7 @@
                 </form>
                 <div class="payment_methods flex flex-wrap justify-center items-center gap-3 border border-[#e1e1e1] rounded-md p-3 w-full">
                    
-                    {% for payment_method in store.payment_methods %}
+                    {% for payment_method in store.settings.checkout.payment_methods %}
                         <div  aria-label="payment method">
                             <img src="{{ image_url(payment_method.icon, h=26, q=100) }}"  alt="" width="36"  alt='payments' class="max-w-[40px] max-h-[40px] object-cover">
                         </div>
@@ -398,7 +398,7 @@
       {# reviews and questions #}
       <section class="tab-content bg-base-100 border-base-300 rounded-box p-6  flex flex-col gap-5 sm:gap-8 mt-5 sm:mt-8" >
           
-                {% if product.short_description is not empty %}
+                {% if product.short_description %}
                     <div class="mt-3 sm:mt-5 font-light text-base text-center sm:text-lg">
                         <h3 class=" text-base sm:text-lg font-bold  mb-3">{{ _("Product Overview") }}</h3>
                         {{ product.short_description | safe }}
@@ -480,14 +480,14 @@
             {# </div> #}
             {% endif %}
             {# all reviews #}
-            {% if store.is_product_reviews_enabled %}            
-                {% set reviews = product.reviews.data %}
+            {% if store.settings.products.reviews_enabled %}            
+                {% set reviews = product.reviews.results %}
                 {% include "components/product_reviews.jinja" %}
                 {% include "components/product_add_review.jinja" %}
             {% endif %}
             
             {# questions #}
-            {% if store.is_product_question_and_answer_enabled %}            
+            {% if store.settings.products.questions_enabled %}            
                 {% set questions = product.questions %}
                 {% include "components/product_questions.jinja" %}
                 {% include "components/product_add_question.jinja" %}
@@ -508,11 +508,11 @@
     
             <div class="swiper related_products_section">
                 <div class="swiper-wrapper items-stretch">
-                    {% for key,rProduct in product.related_products %}
+                    {% for rProduct in product.related_products %}
                         {% if rProduct.is_infinite == true or rProduct.quantity > 0 %}
                             <div class="swiper-slide  h-auto" style="height:auto">
-                                 <div class="h-full"> 
-                                   {% set product = rProduct %}{% set index = key %}
+                                 <div class="h-full">
+                                   {% set product = rProduct %}{% set index = loop.index0 %}
                                    {% include 'components/product-card.jinja' %}
                                 </div>
                             </div>
@@ -600,12 +600,12 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
 
 {% block footer_scripts %}
     <script type="text/javascript" src="{{ 'glightbox.min.js' | asset_url }}"></script>
 
-   {{ product_view_scripts| safe }}
+   {% if product_view_scripts is defined %}{{ product_view_scripts | safe }}{% endif %}
 
     <script>
     
@@ -845,7 +845,7 @@ function updateProductSinglePage(quantity) {
 
             if (selected_product){
                 document.getElementById('product-id').value = selected_product.id;
-                if (!selected_product.unavailable) {
+                if (selected_product.in_stock) {
                     // price
                     if(selected_product.formatted_sale_price){
                         productPage.querySelector(".product-formatted-price").textContent = selected_product.formatted_price;

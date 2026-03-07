@@ -3,7 +3,7 @@
 {% block title %} {{ store.name }} -  {{ category.name }} {% endblock %}
 
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -58,7 +58,7 @@
 {% endif %}
 
 
-       {% if products.data|length > 0 %}
+       {% if products.results|length > 0 %}
             <div class="grid grid-cols-3 lg:grid-cols-4 gap-4 my-5">
 
                 <div class="col-span-3 block lg:hidden">
@@ -104,7 +104,7 @@
                 {# all products #}
                 <div class="col-span-3">
                     <div id="products-list" class="custom_products_list w-100 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-3">
-                        {% for product in products.data %}
+                        {% for product in products.results %}
                                 {% set index = key %}
                                 {% include 'components/product-card.jinja' %}
                         {% endfor %}    
@@ -143,7 +143,7 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
   {% block footer_scripts %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"></script>
         <script>
@@ -156,7 +156,7 @@
         console.log({{ category | tojson}});
         
         let currentPage = 2;
-        const lastPage = {{ products.last_page | tojson }}
+        const lastPage = {{ products.pages_count | tojson if products.pages_count is defined else (products.last_page | tojson if products.last_page is defined else 'null') }}
         
         // check for product attribute 
         function getAttributeValues(url) {
@@ -191,9 +191,9 @@
         function addProducts(products) {
             const productsList = document.getElementById('products-list');
             let allProds = '';
+            const items = products.data || products.results || products || [];
 
-
-            products.data.forEach((product) => {
+            items.forEach((product) => {
                 const in_wishlist = customerProductCat?.wishlist?.includes(product.id);
 
                 allProds += `
@@ -341,7 +341,7 @@
              productsList.insertAdjacentHTML('beforeend', allProds);
             observeLazyImages();
              // After rendering all products, fetch variants for each
-                products.data.forEach((product) => {
+                items.forEach((product) => {
                  console.log(product);
                     if (product.has_options) {
                         console.log("yes next step01");
@@ -595,28 +595,29 @@
         // end handle variatons
 
         function fetchMoreProducts (query){
-            //    console.log(query);
-                zid.products.list({categories: {{ category.id | tojson }}, ...query}, { showErrorNotification: true })
-                    .then(function (response) {
-                        if(response.products.data.length > 0){
+                console.log('fetchMoreProducts query:', query);
+                zid.products.list({categories: {{ category.id | tojson }}, ...query}).then(function (response) {
+                        console.log('fetchMoreProducts response:', response);
+                        const productsList = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
+                        if(productsList.length > 0){
                             currentPage++;
-
                             addProducts(response.products);
                         }else{
-                           document.querySelector(".loading_more_products").classList.add('hiiden');
+                           document.querySelector(".loading_more_products").classList.add('hidden');
                         }
 
                     }).catch(function (error){
+                           console.log('fetchMoreProducts error:', error);
                            document.querySelector(".loading_more_products").classList.add('hidden');
 
                     })
         }
 
 
-        {% if  products.data|length > 0 %}
+        {% if  products.results|length > 0 %}
             document.addEventListener("DOMContentLoaded", function(){
             
-                var productsObj = {{ products.data | tojson }}
+                var productsObj = {{ products.results | tojson }}
                     // window.sendGaProductsViewItemsListEvent('all_products', productsObj);
 
                     const content = document.getElementById("products-list");

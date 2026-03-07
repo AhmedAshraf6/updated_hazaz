@@ -2,7 +2,7 @@
 
 {% block title %} {{ store.name }} -  {{ _("Cart") }} {% endblock %}
 
-{% block header %} {{ include('header.jinja') }} {% endblock %}
+{% block header %} {% include 'header.jinja' %} {% endblock %}
 
 
 {% block main_content %}
@@ -187,13 +187,12 @@
 
 
 
-{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
 {% block footer_scripts %}
-    {{ cart_view_scripts| safe }}
+    {% if cart_view_scripts is defined %}{{ cart_view_scripts | safe }}{% endif %}
     <script>
         console.log("cart page");
-        console.log({{ cart | tojson}});
-        const cart = {{ cart | tojson}};
+        const cart = {{ cart | tojson if cart is defined else 'null' }};
         let activeCartPage = document.querySelector('.cartPage');
         
      
@@ -683,7 +682,7 @@
                alertMessage(localsLayout.error, 'error');
             });
        }
-       const customer = {{ customer | tojson }};
+       // customer is already defined globally in header.jinja
        const getCustomerLoyalityPoints = ()=>{
            if(!customer){
               document.querySelector('.cartPage .loyality-section .points').textContent = 0;
