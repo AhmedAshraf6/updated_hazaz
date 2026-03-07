@@ -1,0 +1,210 @@
+{% extends "layout.jinja" %}
+
+{% block title %} {{ store.name }} - {{ _("Profile") }} {% endblock %}
+
+{% block header %} {% include 'header.jinja' %} {% endblock %}
+
+{% block main_content %}
+    {% set breadcrumbs = [
+        { label: _("Home"), url: '/' },
+        { label: _("Profile") }
+    ] %}
+    {% include 'components/breadcrumbs.jinja' %}
+
+    <div class="my-5 layout profile_page">
+       <div class="grid grid-cols-1 lg:grid-cols-4 mt-5 sm:mt-8 gap-3 sm:gap-5">
+         <div class="col-span-1">
+           {% include "components/profile_section_dropdown.jinja" %}
+         </div>
+         <div class="col-span-3">
+           <div class="flex gap-2">
+              <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
+              <h1 class="text-lg sm:text-xl font-bold">{{ _("Profile") }}</h1>
+           </div>
+           <form id="profile_form_edit" class="flex flex-col gap-3 sm:gap-5 mt-3 sm:mt-5 max-w-xl">
+                <input type="hidden" name="_token" value="{{ csrf_token }}">
+                <div class="flex flex-col gap-2">
+                    <span class="font-semibold">{{ _("Full Name") }}</span>
+                    <label class="input input-bordered flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                        </svg>
+                        <input type="text" class="grow" value="{{ customer.name }}" name="name"/>
+                    </label>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="font-semibold">{{ _("Email") }}</span>
+                    <label class="input input-bordered flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                            <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+                            <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                        </svg>
+                        <input type="email" class="grow" value="{{ customer.email }}" name="email"/>
+                    </label>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="font-semibold">{{ _("Mobile Number") }}</span>
+                    <label class="input input-bordered flex items-center gap-2">
+                        <input type="text" class="grow" value="{{ customer.mobile }}" disabled />
+                    </label>
+                </div>
+                <div class="form-control">
+                    <label class="label cursor-pointer justify-start gap-2">
+                        <input type="checkbox" class="checkbox" name="is_newsletter_subscriber" {% if customer.is_newsletter_subscriber %} checked {% endif %}/>
+                        <span class="font-semibold">{{ _("Subscribe to the newsletter") }}</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary !px-[20px] self-start relative">
+                  {{ _("Save") }}
+                  <span class="loading loading-infinity loading-sm hidden absolute left-[2px] top-1/2 -translate-y-1/2"></span>
+                </button>
+           </form>
+           <div class="flex gap-2 mt-5 sm:mt-8">
+              <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
+              <h1 class="text-lg sm:text-xl font-bold">{{ _("Loyalty Points") }}</h1>
+           </div>
+           <p class="mt-3">{{ _("You have") }} <span class="points font-semibold"></span> {{ _("Reward Points") }}</p>
+           <div class="flex gap-2 mt-5 sm:mt-8">
+              <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
+              <h1 class="text-lg sm:text-xl font-bold">{{ _("Delete Account") }}</h1>
+           </div>
+           <button class="btn btn-error mt-3" onclick="deleteAccount.showModal()">{{ _("Delete My Account") }}</button>
+           <dialog id="deleteAccount" class="modal">
+            <div class="modal-box">
+                <p>{{ _("Are you sure you want to delete your account?") }}</p>
+                <div class="modal-action gap-2">
+                    <form method="dialog">
+                        <button class="btn">{{ _("Close") }}</button>
+                    </form>
+                    <form id="delete_profile_account">
+                       <input type="hidden" name="_token" value="{{ csrf_token }}">
+                       <button type="submit" class="btn btn-error relative">
+                        {{ _("Confirm") }}
+                        <span class="loading loading-infinity loading-sm hidden absolute left-[5px] top-1/2 -translate-y-1/2"></span>
+                       </button>
+                    </form>
+                </div>
+            </div>
+           </dialog>
+         </div>
+       </div>
+    </div>
+{% endblock %}
+
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
+
+{% block footer_scripts %}
+    <script>
+        document
+        .getElementById('delete_profile_account')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          const button = this.querySelector('button[type="submit"]');
+          const loadingIndicator = button.querySelector('.loading');
+
+          if (!loadingIndicator.classList.contains('hidden')) return;
+
+          const form = event.target;
+          const formData = new FormData(form);
+          const data = {};
+          formData.forEach((value, key) => { data[key] = value.trim(); });
+
+          sendProfileData(data);
+          async function sendProfileData(data) {
+              loadingIndicator.classList.remove('hidden');
+              try {
+                const response = await fetch(`/delete-account`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                    redirect: 'follow'
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    alertMessage(errorText, 'error');
+                }
+                if (response.redirected) {
+                    window.location.href = '/auth/login';
+                }
+              } catch (error) {
+                  console.log(error);
+              } finally {
+                  loadingIndicator.classList.add('hidden');
+              }
+          }
+        });
+
+        document
+        .getElementById('profile_form_edit')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          const button = this.querySelector('button[type="submit"]');
+          const loadingIndicator = button.querySelector('.loading');
+
+          if (!loadingIndicator.classList.contains('hidden')) return;
+
+          const form = event.target;
+          const formData = new FormData(form);
+          const data = {};
+          formData.forEach((value, key) => {
+              if (key === "is_newsletter_subscriber") {
+                  data[key] = form.querySelector(`[name="${key}"]`).checked;
+              } else {
+                  data[key] = value.trim();
+              }
+          });
+
+          const { name, email } = data;
+          if (!name || !email) {
+            alertMessage('{{ _("Please fill in the required fields") }}', 'error');
+            return;
+          }
+
+          sendProfileData(data);
+          async function sendProfileData(data) {
+              loadingIndicator.classList.remove('hidden');
+              try {
+                const response = await fetch(`/account-profile`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                    redirect: 'follow'
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    alertMessage(errorText, 'error');
+                }
+                if (response.redirected) {
+                    alertMessage('{{ _("Your data has been successfully updated") }}', 'success');
+                }
+                const responseData = await response.json();
+                console.log(responseData);
+              } catch (error) {
+                  console.log(error);
+              } finally {
+                  loadingIndicator.classList.add('hidden');
+              }
+          }
+        });
+
+        const customer = {{ customer | tojson }};
+        const getCustomerLoyalityPoints = () => {
+           if (!customer) {
+              document.querySelector('.profile_page .points').textContent = 0;
+              return;
+           }
+           zid.cart.getCustomerLoyaltyPoints({ showErrorNotification: true }).then((response) => {
+               if (response) {
+                  document.querySelector('.profile_page .points').textContent = response.points.available_poitns;
+               }
+           }).catch((error) => {
+              alertMessage(localsLayout.error, 'error');
+           });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            getCustomerLoyalityPoints();
+        });
+    </script>
+{% endblock %}

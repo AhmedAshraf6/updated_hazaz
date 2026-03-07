@@ -1,0 +1,68 @@
+{
+  "name": {
+    "ar": "اراء العملاء",
+    "en": "Testimonials"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "list",
+      "label": {
+        "ar": "اراء العملاء",
+        "en": "Testimonials"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "image",
+          "label": {
+            "ar": "صورة العميل",
+            "en": "Client image"
+          },
+          "id": "image"
+        },
+        {
+          "type": "textarea",
+          "label": {
+            "ar": "النص",
+            "en": "Description"
+          },
+          "id": "desc"
+        },
+        {
+          "type": "number",
+          "label": {
+            "ar": "تقييم العميل",
+            "en": "Client rate"
+          },
+          "info": {
+            "ar": "ادخل رقم من 1 إلي خمسة اذا كان الرقم أكبر من خمسة سنأخذ أعلي قيمة وهي خمسة",
+            "en": "Enter a number from 1 to five. If the number is greater than five, we will take the highest value, which is five."
+          },
+          "id": "rate"
+        }
+      ],
+      "id": "testimonials"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان الأول",
+        "en": "First title"
+      },
+      "id": "title_one"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان الثاني",
+        "en": "second title"
+      },
+      "id": "title_two"
+    }
+  ],
+  "section_id": "6cf4d2b0-a5d0-43d9-8e78-60b0e32efdf5",
+  "template": "sections/testimonials.jinja"
+}

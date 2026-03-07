@@ -1,0 +1,184 @@
+{
+  "name": {
+    "ar": "اعلى الصفحة",
+    "en": "Header"
+  },
+  "icon": "fa fa-square",
+  "groups": [
+    {
+      "id": "announcement_bar",
+      "icon": "font_awesome",
+      "name": {
+        "ar": "شريط التنبيهات",
+        "en": "Announcement bar"
+      },
+      "settings": [
+        {
+          "id": "display",
+          "type": "checkbox",
+          "label": {
+            "ar": " ",
+            "en": " "
+          },
+          "option": {
+            "ar": "إظهار",
+            "en": "Display menu"
+          },
+          "noLabel": true
+        },
+        {
+          "id": "text",
+          "type": "text",
+          "label": {
+            "ar": "النص",
+            "en": "Text"
+          }
+        },
+        {
+          "id": "url",
+          "type": "url",
+          "label": {
+            "ar": "الرابط",
+            "en": "Link"
+          }
+        },
+        {
+          "id": "page_display",
+          "type": "select",
+          "label": {
+            "ar": "عرض شريط التنبيهات في",
+            "en": "Display announcement bar in"
+          },
+          "options": [
+            {
+              "value": "all",
+              "label": {
+                "ar": "جميع الصفحات",
+                "en": "all pages"
+              }
+            },
+            {
+              "value": "home",
+              "label": {
+                "ar": "الصفحة الرئيسية ففط",
+                "en": "home page only"
+              }
+            }
+          ],
+          "default": "all"
+        },
+        {
+          "id": "background_color",
+          "type": "color",
+          "label": {
+            "ar": "لون الخلفية",
+            "en": "Background color"
+          }
+        },
+        {
+          "id": "text_color",
+          "type": "color",
+          "label": {
+            "ar": "لون النص",
+            "en": "Text color"
+          }
+        }
+      ]
+    },
+    {
+      "id": "header",
+      "icon": "font_awesome",
+      "name": {
+        "ar": "رأس الصفحة",
+        "en": "Header"
+      },
+      "settings": [
+        {
+          "id": "main_navigation_menu",
+          "type": "menu",
+          "label": {
+            "ar": "القائمة الرئيسية",
+            "en": "Main Navigation Menu"
+          }
+        },
+        {
+          "id": "logo",
+          "type": "image",
+          "label": {
+            "ar": "الشعار",
+            "en": "Logo"
+          },
+          "info": {
+            "ar": "ارفع صورة بحجم 750 * 750 ",
+            "en": "This is an info text sample here"
+          }
+        },
+        {
+          "id": "logo_mobile",
+          "type": "image",
+          "label": {
+            "ar": "الشعار للجوال (اختياري)",
+            "en": "Logo mobile (optional)"
+          },
+          "info": {
+            "ar": "ارفع صورة بحجم 322 * 750 ",
+            "en": "This is an info text sample here"
+          }
+        },
+        {
+          "id": "options",
+          "type": "checkboxes",
+          "label": {
+            "ar": "الخيارات",
+            "en": "Options"
+          },
+          "options": [
+            {
+              "value": "hide_search_bar",
+              "label": {
+                "ar": "إخفاء شريط البحث",
+                "en": "Hide search bar"
+              }
+            },
+            {
+              "value": "hide_language",
+              "label": {
+                "ar": "إخفاء اللغة",
+                "en": "Hide language"
+              }
+            },
+            {
+              "value": "hide_country",
+              "label": {
+                "ar": "إخفاء الدولة",
+                "en": "Hide country"
+              }
+            },
+            {
+              "value": "hide_favourite",
+              "label": {
+                "ar": "إخفاء المفضلة",
+                "en": "Hide favourite"
+              }
+            },
+            {
+              "value": "hide_darkMode",
+              "label": {
+                "ar": "إخفاء الوضع المظلم",
+                "en": "Hide Dark Mode"
+              }
+            }
+          ]
+        },
+        {
+          "id": "search_placeholder",
+          "type": "text",
+          "label": {
+            "ar": "تلميح شريط البحث",
+            "en": "Search placeholder"
+          }
+        }
+      ]
+    }
+  ]
+}

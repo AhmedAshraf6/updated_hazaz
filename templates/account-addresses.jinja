@@ -1,0 +1,90 @@
+{% extends "layout.jinja" %}
+
+{% block title %}  {{ store.name }} -  {{ _("Addresses") }} {% endblock %}
+
+{% block header %} {% include 'header.jinja' %} {% endblock %}
+
+{% block main_content %}
+    {% set breadcrumbs = [
+        { label: _("Home"), url: '/' },
+        { label: _("Addresses") }
+    ] %}
+    {% include 'components/breadcrumbs.jinja' %}
+
+    <div class="my-5 layout addresess_page">
+       <div class="grid grid-cols-1 lg:grid-cols-4 mt-5 sm:mt-8 gap-3 sm:gap-5">
+         <div class="col-span-1">
+           {% include "components/profile_section_dropdown.jinja" %}
+         </div>
+         <div class="col-span-3">
+          {# addresses #}
+          {% if addresses|length > 0  %}
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex gap-2">
+                        <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
+                        <h1 class="text-lg sm:text-xl font-bold">{{ _("Addresses") }}</h1>
+                    </div>
+                    <a class="btn btn-primary !px-[20px]" href="/account-addresses/add">{{ _("Add Address") }}</a>
+            </div>
+            <div class="addresses flex flex-wrap gap-5 sm:gap-8 justify-center sm:justify-start mt-3 sm:mt-5">
+               {% for address in addresses %}
+               <div class="card bg-base-100 w-96 shadow-xl" id="address-div-{{ address.id }}" >
+                    <div class="card-body">
+                        <h2 class="card-title font-bold">{{ address.name }}</h2>
+                        <p class="address-text font-semibold">{{ address.address_street }}</p>
+                        <p class="address-text">{{ address.country.name }}, {{ address.city.name }}, {{ address.address_district }}</p>
+                        <div class="card-actions items-center justify-end">
+                           <a class="btn btn-outline !px-[10px]" href="/account-addresses/{{ address.id }}/edit">{{ _("Edit") }}</a>
+                           <button class="text-error" onclick="deleteAddress({{ address.id }})" type="button">
+                             <span class="text">{{ _("Delete") }}</span>
+                             <span class="loading loading-infinity loading-sm hidden"></span>
+                          </button>
+                        </div>
+                    </div>
+                </div>
+               {% endfor %}
+            </div>
+          {% else %}
+            {# no addresses found #}
+            <div class="flex flex-col gap-5 items-center justify-center">
+              <div class="w-full max-w-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" viewBox="0 0 808.41844 712.52788" xmlns:xlink="http://www.w3.org/1999/xlink" role="img"><path d="M714.96678,737.11091l-1.98354-27.58851a89.24423,89.24423,0,0,0-41.89885-9.39586c20.43166,15.79292,18.7951,47.3576,32.9451,68.95961a53.68053,53.68053,0,0,0,40.02768,23.72162l17.00408,9.78252A89.95167,89.95167,0,0,0,740.117,730.24435,86.88782,86.88782,0,0,0,723.74913,715.849C720.03237,726.52007,714.96678,737.11091,714.96678,737.11091Z" transform="translate(-195.79078 -93.73606)" fill="#f2f2f2"/></svg>
+              </div>
+              <p>{{ _("No addresses added yet") }}</p>
+              <a href="/account-addresses/add" class="btn btn-outline !px-[10px]">{{ _("Add Address") }}</a>
+            </div>
+          {% endif %}
+         </div>
+       </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}
+
+{% block footer_scripts %}
+    <script>
+        function deleteAddress(addressId) {
+            const element = document.querySelector(`#address-div-${addressId}`);
+            if (!element) return;
+
+            const deleteProgress = element.querySelector('.loading');
+            const deleteButtonSpan = element.querySelector('.text');
+
+            if (!deleteProgress.classList.contains('hidden')) return;
+
+            deleteButtonSpan.classList.add('hidden');
+            deleteProgress.classList.remove('hidden');
+
+            zid.customer.deleteAddress(addressId).then((response) => {
+                if (response.status === 'success') {
+                    deleteProgress.classList.add('hidden');
+                    alertMessage('{{ _("Address deleted successfully") }}', 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            });
+        }
+    </script>
+{% endblock %}

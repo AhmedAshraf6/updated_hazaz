@@ -1,0 +1,87 @@
+{
+  "name": {
+    "ar": "اسلايدر الصور والفيديو",
+    "en": "Image and video slider"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "list",
+      "label": {
+        "ar": "صور وفيديوهات",
+        "en": "Images and videos"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "image",
+          "label": {
+            "ar": "الصورة",
+            "en": "Image"
+          },
+          "info": {
+            "ar": "افضل مقاسات الصورة ارتفاع 800 بيكسل وعرض 1600 بيكسل"
+          },
+          "id": "image"
+        },
+        {
+          "type": "image",
+          "label": {
+            "ar": "الصورة في الموبايل",
+            "en": "image in mobile"
+          },
+          "info": {
+            "ar": "ارفع صورة بحجم 1080*1080",
+            "en": "Upload a 1080*1080 image"
+          },
+          "id": "img_slider_mobile"
+        },
+        {
+          "type": "video",
+          "label": {
+            "ar": "الفيديو",
+            "en": "Video"
+          },
+          "id": "video"
+        },
+        {
+          "type": "text",
+          "label": {
+            "ar": "العنوان",
+            "en": "Address"
+          },
+          "id": "address"
+        },
+        {
+          "type": "textarea",
+          "label": {
+            "ar": "الوصف",
+            "en": "description"
+          },
+          "id": "description"
+        },
+        {
+          "type": "text",
+          "label": {
+            "ar": "اسم الزر",
+            "en": "name button"
+          },
+          "id": "text_button"
+        },
+        {
+          "type": "url",
+          "label": {
+            "ar": "رابط الزر",
+            "en": "Button url"
+          },
+          "id": "url_button"
+        }
+      ],
+      "id": "slider"
+    }
+  ],
+  "section_id": "13e5aef9-b2af-46c6-9c0a-39ce8cf9ba50",
+  "template": "sections/main-slider.jinja"
+}

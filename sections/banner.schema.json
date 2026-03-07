@@ -1,0 +1,73 @@
+{
+  "name": {
+    "ar": "بانر اعلانى (صورة فقط)",
+    "en": "Ads Banner ( Just Image )"
+  },
+  "icon": "fal fa-sparkles",
+  "display": true,
+  "settings": [
+    {
+      "type": "select",
+      "label": {
+        "ar": "حجم القسم",
+        "en": "text"
+      },
+      "options": [
+        {
+          "value": "container",
+          "label": {
+            "ar": "في حاوية",
+            "en": "Container"
+          }
+        },
+        {
+          "value": "no-container",
+          "label": {
+            "ar": "كامل الشاشة بدون حاوية",
+            "en": "None Container"
+          }
+        }
+      ],
+      "default": "container",
+      "info": {
+        "ar": "اختيار القسم موجود في حاولة او على عرض الشاشة ؟",
+        "en": "Choose section is in container or Full Width?"
+      },
+      "id": "container_type"
+    },
+    {
+      "type": "image",
+      "label": {
+        "ar": " الصورة",
+        "en": "Image"
+      },
+      "info": {
+        "ar": "1390x370px ارفع صورة بحجم",
+        "en": "Upload an image with a size of 1390x370px"
+      },
+      "id": "image"
+    },
+    {
+      "type": "image",
+      "label": {
+        "ar": "صورة في الموبايل",
+        "en": "Image On Mobile"
+      },
+      "info": {
+        "ar": "ارفع صورة بحجم 540 * 1080",
+        "en": "Upload an image with a size of 1080 * 540 px"
+      },
+      "id": "image_mobile"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": " الرابط",
+        "en": "URL"
+      },
+      "id": "url"
+    }
+  ],
+  "section_id": "73e3133c-5d5e-4af5-be4e-113f2b60f526",
+  "template": "sections/banner.jinja"
+}

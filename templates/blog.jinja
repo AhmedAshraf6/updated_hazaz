@@ -1,0 +1,46 @@
+{% extends "layout.jinja" %}
+
+{% block title %} {{ store.name }} -  {{ _("Blog") }} {% endblock %}
+
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+       {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: blog.title }
+                ] %}
+       {% include 'components/breadcrumbs.jinja' %}
+
+    <div class="my-5 layout">
+       <div class="flex flex-col gap-3 sm:gap-5">
+            {% for bol in blog.metafields %}
+                {% if bol.slug == "ImageForBlog" %}          
+                 <div class="main-image w-full rounded-lg overflow-hidden">
+                        <img 
+                            src="{{ bol.value.full_size }}" 
+                            class="w-full h-[344px] sm:h-[580px] object-contain rounded-lg" 
+                            alt="{{ blog.title }}" 
+                        >
+                  </div>
+                {% endif %}
+            {% endfor %}
+            <h1 class="text-lg sm:text-xl text-center">{{ blog.title }}</h1>
+            {# <div class="flex gap-2 items-center text-sm justify-center">
+                    <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.87937 4.96262V6.03553H2.5398V4.96262H7.87937ZM8.92733 1.24489C9.22674 1.24489 9.48041 1.34885 9.68834 1.55678C9.89627 1.7647 10.0002 2.01838 10.0002 2.31779V9.75327C10.0002 10.0527 9.89627 10.3064 9.68834 10.5143C9.48041 10.7222 9.22674 10.8262 8.92733 10.8262H1.49185C1.19243 10.8262 0.938763 10.7222 0.730836 10.5143C0.522909 10.3064 0.418945 10.0527 0.418945 9.75327V2.31779C0.418945 2.01838 0.522909 1.7647 0.730836 1.55678C0.938763 1.34885 1.19243 1.24489 1.49185 1.24489H2.01583V0.171981H3.08873V1.24489H7.33045V0.171981H8.40335V1.24489H8.92733ZM8.92733 9.75327V3.91467H1.49185V9.75327H8.92733ZM6.28249 7.10843V8.15639H2.5398V7.10843H6.28249Z" fill="#C8C8C8"/>
+                    </svg>
+                    {{ blog.updated_at | split(' ')[0] }}
+            </div> #}
+            <div class="desc text-center  justify-center flex flex-col items-center">{{ blog.content| safe }}</div>
+       </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

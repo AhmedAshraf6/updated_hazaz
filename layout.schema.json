@@ -1,0 +1,174 @@
+{
+  "name": {
+    "ar": "تخطيط الصفحة",
+    "en": "Layout"
+  },
+  "icon": "fa fa-columns",
+  "groups": [
+    {
+      "id": "banners",
+      "icon": "fa fa-paint-brush",
+      "name": {
+        "ar": "اضافة بانرات للصفحات",
+        "en": "Add Banners to Pages"
+      },
+      "settings": [
+        {
+          "id": "banner_profile_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر الملف الشخصي",
+            "en": "Profile page banner"
+          }
+        },
+        {
+          "id": "banner_ordered_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة الطلبات",
+            "en": "Orders page banner"
+          }
+        },
+        {
+          "id": "banner_address_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة العناوين",
+            "en": "Addresses page banner"
+          }
+        },
+        {
+          "id": "banner_products_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة جميع المنتجات",
+            "en": "Products page banner"
+          }
+        },
+        {
+          "id": "banner_product_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة المنتج",
+            "en": "Product page banner"
+          }
+        },
+        {
+          "id": "banner_categories_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة جميع التصنيفات",
+            "en": "Categories page banner"
+          }
+        },
+        {
+          "id": "banner_category_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة التصنيف",
+            "en": "Category page banner"
+          }
+        },
+        {
+          "id": "banner_question_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة جميع الأسئلة",
+            "en": "Questions page banner"
+          }
+        },
+        {
+          "id": "banner_review_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة جميع التقييمات",
+            "en": "Reviews page banner"
+          }
+        },
+        {
+          "id": "banner_blogs_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة المدونة",
+            "en": "Blogs page banner"
+          }
+        },
+        {
+          "id": "banner_cart_page_image",
+          "type": "image",
+          "label": {
+            "ar": "بانر صفحة السلة",
+            "en": "Cart page banner"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fonts",
+      "icon": "fa fa-font",
+      "name": {
+        "ar": "الخطوط",
+        "en": "Fonts"
+      },
+      "settings": [
+        {
+          "id": "name",
+          "type": "select",
+          "label": {
+            "ar": "اسم الخط",
+            "en": "Font name"
+          },
+          "options": [
+            { "value": "Changa", "label": { "ar": "Changa", "en": "Changa" } },
+            { "value": "Cairo", "label": { "ar": "Cairo", "en": "Cairo" } },
+            { "value": "Amiri", "label": { "ar": "Amiri", "en": "Amiri" } },
+            { "value": "Mada", "label": { "ar": "Mada", "en": "Mada" } },
+            { "value": "Tajawal", "label": { "ar": "Tajawal", "en": "Tajawal" } },
+            { "value": "Almarai", "label": { "ar": "Almarai", "en": "Almarai" } },
+            { "value": "El+Messiri", "label": { "ar": "El Messiri", "en": "El Messiri" } },
+            { "value": "Lalezar", "label": { "ar": "Lalezar", "en": "Lalezar" } },
+            { "value": "Scheherazade", "label": { "ar": "Scheherazade", "en": "Scheherazade" } },
+            { "value": "Lemonada", "label": { "ar": "Lemonada", "en": "Lemonada" } },
+            { "value": "Markazi+Text", "label": { "ar": "Markazi", "en": "Markazi" } },
+            { "value": "Lateef", "label": { "ar": "Lateef", "en": "Lateef" } },
+            { "value": "Reem+Kufi", "label": { "ar": "Reem Kufi", "en": "Reem Kufi" } },
+            { "value": "IBM+Plex+Sans+Arabic", "label": { "ar": "IBM Arabic", "en": "IBM Arabic" } },
+            { "value": "Harmattan", "label": { "ar": "Harmattan", "en": "Harmattan" } },
+            { "value": "Mirza", "label": { "ar": "Mirza", "en": "Mirza" } },
+            { "value": "Rakkas", "label": { "ar": "Rakkas", "en": "Rakkas" } },
+            { "value": "Katibeh", "label": { "ar": "Katibeh", "en": "Katibeh" } },
+            { "value": "Scheherazade+New", "label": { "ar": "Scheherazade New", "en": "Scheherazade New" } },
+            { "value": "Aref+Ruqaa", "label": { "ar": "Aref Ruqaa", "en": "Aref Ruqaa" } },
+            { "value": "Qahiri", "label": { "ar": "Qahiri", "en": "Qahiri" } },
+            { "value": "Jomhuria", "label": { "ar": "Jomhuria", "en": "Jomhuria" } },
+            { "value": "Kufam", "label": { "ar": "Kufam", "en": "Kufam" } },
+            { "value": "Vibes", "label": { "ar": "Vibes", "en": "Vibes" } },
+            { "value": "Noto+Kufi+Arabic", "label": { "ar": "Noto Kufi", "en": "Noto Kufi" } },
+            { "value": "Noto+Naskh+Arabic", "label": { "ar": "Noto Naskh", "en": "Noto Naskh" } },
+            { "value": "Noto+Sans+Arabic", "label": { "ar": "Noto Sans", "en": "Noto Sans" } },
+            { "value": "Noto+Nastaliq+Urdu", "label": { "ar": "Noto Nastaliq Urdu", "en": "Noto Nastaliq Urdu" } }
+          ],
+          "default": "Changa"
+        }
+      ]
+    },
+    {
+      "id": "whatsapp_number",
+      "icon": "fa fa-whatsapp",
+      "name": {
+        "ar": "رقم الواتساب",
+        "en": "Whatsapp number"
+      },
+      "settings": [
+        {
+          "id": "number",
+          "type": "text",
+          "label": {
+            "ar": "رقم الواتساب",
+            "en": "Whatsapp number"
+          }
+        }
+      ]
+    }
+  ]
+}

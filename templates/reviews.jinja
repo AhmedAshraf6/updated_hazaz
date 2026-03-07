@@ -1,0 +1,67 @@
+{% extends "layout.jinja" %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+     {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("All Reviews") }
+                ] %}
+     {% include 'components/breadcrumbs.jinja' %}
+      {% if settings.banners_banner_question_page %}
+        {% set image = settings.banners_banner_review_page %}
+        {% include 'components/shared_banner.jinja' %}
+      {% endif %}
+      
+
+    <section class="my-5 layout allQuestions">
+      
+      <div class="flex flex-col gap-3">
+            {% for key, review in product.reviews.data %}
+                    <div class="review flex flex-wrap justify-between gap-2">
+                        <div class="flex flex-col gap-2 ">
+                        <span class="text-base sm:text-lg font-medium">{{ review.customer.name }}</span>
+                        {% set rating = review.rating %}{% set sizeSvg = 15 %}
+                        {% include 'components/rating-stars.jinja' %}
+                            <div class="card-date user-review-date text-sm font-light">
+                            {{ datetimeFormat(review.created_at, 'd-m-Y g:i:s A', session.lang.code) | split(' ')[0] }}
+                            </div>
+                        </div>
+                        <div class=" text-lg leading-8 text-base-content">{{ review.comment | safe }}</div>
+                        {% if  review.images|length > 0 %}
+                        
+                        <div class="flex flex-wrap images ">
+                                {% for img in review.images %}
+                                    <img src="{{ img.path }}" alt="image" class="w-[60px] h-[60px] rounded-lg">
+                                {% endfor %}
+                        </div>
+                        
+                        {% endif %}
+                    
+                    </div>
+            
+                    {% if review.reply %}
+                            <div class="review flex flex-wrap justify-between gap-2 ps-5">
+                            <span class="text-base sm:text-lg font-medium">{{ _("Store Owner") }}</span>
+                            <div class="text-lg leading-8 text-base-content">{{ review.reply.text | safe }}</div>
+                            <div class="flex flex-wrap images">
+                                {% for img in review.reply.images %}
+                                        <img src="{{ img.path }}" alt="image" class="w-[60px] h-[60px] rounded-lg">
+                                    {% endfor %}
+                            </div>
+                            </div>
+                    {% endif %}
+            {% endfor %}
+      </div>
+      {% set totalPages = product.reviews.last_page %}{% set currentPage = product.reviews.current_page %}
+      {% include 'components/pagination.jinja' %}
+    </section>
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

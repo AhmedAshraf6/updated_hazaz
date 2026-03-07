@@ -1,0 +1,145 @@
+{% extends "layout.jinja" %}
+
+{% block title %} {{ store.name }} -  {{ _("Payment and Shipping Options") }} {% endblock %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+      {% set breadcrumbs = [
+                { label: _("Home"), url: '/' },
+                { label:  _("Payment and Shipping Options")}
+            ] %}
+      {% include 'components/breadcrumbs.jinja' %}
+    <div class="my-5 layout">
+      {# shipping #}
+          <div class="divider divider-start">{{ _("Shipping Options") }}</div>
+           <div class="overflow-x-auto mt-3 sm:mt-5" >
+                <table class="table">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>{{ _("Shipping Options") }}</th>
+                            <th>{{ _("Covered Cities") }}</th>
+                            <th>{{ _("Shipping Cost") }}</th>
+                            <th>{{ _("Cash on Delivery") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for shipping_method in store_shipping_methods %}
+                        <tr>
+                            <th>
+                             <div class="flex gap-2"> 
+                               <img class="w-[46px] h-auto" src="{{ shipping_method.image }}" alt="{{ shipping_method.name }}">
+                               <span class="self-end">
+                                 {{ shipping_method.name }}
+                               </span>
+                             </div>
+                            </th>
+                            <td>
+                              {% for city in shipping_method.delivery_option_cities | slice(0, 3) %}
+                                 {{city.name}} {% if loop.last == false %}<span >,</span>{% endif %}
+                              {% endfor %}
+                                 {% if shipping_method.delivery_option_cities | length > 3 %}
+                                        <div class="drawer">
+                                            <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+                                            <div class="drawer-content">
+                                                <label for="my-drawer" class="btn btn-primary drawer-button">{{ (shipping_method.delivery_option_cities | length) - 3 }} {{ _("Cities") }}</label>
+                                            </div>
+                                            <div class="drawer-side">
+                                                <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+                                                <div class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                                                  <h2>{{ _("Covered Cities") }}</h2>
+                                                  <ul class="flex flex-col gap-3">
+                                                    {% for city in shipping_method.delivery_option_cities %}
+                                                        <li class="border">
+                                                            {{city.name}}
+                                                        </li>                            
+                                                   {% endfor %}
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                 {% endif %}
+                            </td>
+                            <td>
+                               {% for cost in shipping_method.cost %}
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="s-title">{{ cost.title }}: </span>
+                                        <span>{{ cost.cost_string }} </span>
+                                   </div>
+                                {% endfor %}
+                            </td>
+                            <td>
+                               {% if shipping_method.cod_enabled %}
+                                    {% for cod_fee in shipping_method.cod_fee %}
+                                        <div class="flex flex-wrap gap-1">
+                                            {% if cod_fee.title is not empty %}<span class="s-title">{{ cod_fee.title }}: </span>{% endif %}
+                                            <span>{{ cod_fee.cod_fee_string }} </span>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                    </tbody>
+                </table>
+            </div>
+      
+      {# payments #}
+          <div class="divider divider-start mt-5 sm:mt-8">{{ _("Payment Options") }}</div>
+          <div class="flex flex-wrap gap-3 mt-3 sm:mt-5">
+              {% for payment_method in store_payment_methods %}
+                        {% if payment_method.icon %}
+                            <div class="flex justify-center items-center payment-method-card">
+                                <img src="{{ payment_method.icon }}">
+                            </div>
+                        {% endif %}
+                {% endfor %}
+          </div>
+      {# accounts #}
+      
+      <div class="divider divider-start mt-5 sm:mt-8">{{ _("Bank Accounts") }}</div>
+      <div class="flex flex-wrap gap-3">
+          {% for store_bank in store_banks %}
+          <div class="card bg-base-100 w-96 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">{{ store_bank.bank.name }}</h2>
+                <div class="w-[90px]">
+                   <img src="{{ store_bank.bank.logo }}" alt="{{ store_bank.bank.name }}" class="w-full h-auto">
+                </div>
+                <div class="flex flex-col gap-3">
+                    <div class="flex gap-1">
+                        <span>{{ _("Account Holder Name") }}</span>
+                        <span>{{ store_bank.beneficiary_name }}</span>
+                    </div>
+
+                    <div class="flex gap-1">
+                        <span>{{ _("IBAN Number") }}</span>
+                        <span> {{ store_bank.iban }}</span>
+                    </div>
+
+                    <div class="flex gap-1">
+                        <span>{{ _("Account Number") }}</span>
+                        <span>{{ store_bank.account_number }}</span>
+                    </div>
+
+                </div>
+             
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

@@ -1,0 +1,136 @@
+{
+  "name": {
+    "ar": "صور مع منتاجتها",
+    "en": "images with slider"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "section_one_title"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "section_one_description"
+    },
+    {
+      "type": "image",
+      "label": {
+        "ar": "الصورة",
+        "en": "image"
+      },
+      "info": {
+        "ar": "الحجم المفضل 800 بيكسل للعرض و600 بيكسل للطول",
+        "en": "The preferred size is 800 pixels wide and 600 pixels tall"
+      },
+      "id": "section_one_image"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "اسم الزر",
+        "en": "button text"
+      },
+      "id": "section_one_btn_text"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": "عنوان الزر",
+        "en": "Button url"
+      },
+      "id": "section_one_btn_url"
+    },
+    {
+      "type": "list",
+      "label": {
+        "ar": "المنتجات",
+        "en": "Products"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "product",
+          "label": {
+            "ar": "المنتج",
+            "en": "Product"
+          },
+          "id": "product"
+        }
+      ],
+      "id": "section_one_products"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "section_two_title"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "section_two_description"
+    },
+    {
+      "type": "image",
+      "label": {
+        "ar": "الصورة",
+        "en": "image"
+      },
+      "id": "section_two_image"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "اسم الزر",
+        "en": "button text"
+      },
+      "id": "section_two_btn_text"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": "عنوان الزر",
+        "en": "Button url"
+      },
+      "id": "section_two_btn_url"
+    },
+    {
+      "type": "list",
+      "label": {
+        "ar": "المنتجات",
+        "en": "Products"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "product",
+          "label": {
+            "ar": "المنتج",
+            "en": "Product"
+          },
+          "id": "product"
+        }
+      ],
+      "id": "section_two_products"
+    }
+  ],
+  "section_id": "e4738c9b-8321-4e6c-a00b-7112a123e435",
+  "template": "sections/image-slider.jinja"
+}

@@ -1,0 +1,87 @@
+<div section-id="{{ sectionId }}" class="hidden lg:block my-5 group gap-3 ">
+   <div class="layout flex justify-center ">
+   
+    {# links #}
+      <nav class="flex gap-2 items-center flex-wrap justify-center">
+         {% for menu in store.settings.menus.main_menu.items %}
+            {% if menu.url %}
+                  {% if menu.items | length > 0 %}
+                     <div class="dropdown dropdown-center dropdown-hover">
+                        <div tabindex="0" role="button" class="flex items-center gap-1 group-[.slidedown]:text-base-content">
+                              <a class="nav_link text-[16px] font-medium" href="{{ menu.url }}">
+                                 {{ menu.label }}
+                              </a>
+                              <svg class="stroke-current" width="10" height="8" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M16.6002 7.95831L11.1668 13.3917C10.5252 14.0334 9.47516 14.0334 8.8335 13.3917L3.40015 7.95831" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                        </div>
+                        <div tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] p-2 shadow-xl w-max h-max py-[30px] px-[20px] relative gap-[12px]">
+                              {% for sub_menu in menu.items %}
+                                 {% if sub_menu.items | length > 0 %}
+                                 <li>
+                                    <details>
+                                          <summary class="px-0 !hover:bg-transparent">
+                                                <a class="dropdown_link  text-[16px]   font-normal hover:text-primary ease-in duration-200" href="{{ sub_menu.url }}">
+                                                            {{ sub_menu.label }}
+                                                </a>
+                                          </summary>
+                                          <ul tabindex="0" class="flex flex-col gap-2">
+                                             {% for sub_menu_sub in sub_menu.items %}
+                                                <a class=" text-[15px] hover:text-primary ease-in duration-200" href="{{ sub_menu_sub.url }}">{{ sub_menu_sub.label }}</a>
+                                             {% endfor %}
+                                          </ul>
+                                    </details>
+                                 </li>
+
+                                 {% else %}
+                                    <a class="dropdown_link  text-[16px]  mb-[12px] font-normal hover:text-primary ease-in duration-200 " style="margin:0px;" href="{{ sub_menu.url }}">{{ sub_menu.label }}</a>
+                                 {% endif %}
+                              {% endfor %}
+                        </div>
+                     </div>
+                  {% else %}
+                     <a class="nav_link hover:text-primary group-[.slidedown]:text-base-content text-[16px] font-medium" href="{{ menu.url }}">
+                        {{ menu.label }}
+                     </a>
+                  {% endif %}
+            {% endif %}
+         {% endfor %}
+      </nav>
+      <script>
+      const as = {{ store.settings.menus.main_menu | tojson }};
+      console.log("header");
+      console.log(as);
+  // Hide dropdown when clicking on a link
+  const navLinks = document.querySelectorAll('.nav_link, .dropdown_link');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const dropdowns = document.querySelectorAll('.dropdown-content');
+      dropdowns.forEach(dropdown => {
+        dropdown.style.display = 'none';
+      });
+    });
+  });
+
+  // Hide dropdown when mouse leaves the dropdown menu area
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  dropdowns.forEach(dropdown => {
+    dropdown.addEventListener('mouseleave', () => {
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
+      dropdownContent.style.display = 'none';
+    });
+
+    dropdown.addEventListener('mouseenter', () => {
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
+      dropdownContent.style.display = 'flex';
+    });
+  });
+</script>
+
+
+ 
+   </div>
+   
+</div>
+

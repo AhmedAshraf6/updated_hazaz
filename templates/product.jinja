@@ -1,0 +1,1314 @@
+{% extends "layout.jinja" %}
+
+{% block title %} 
+    {% if product.seo.title %}
+        {{ product.seo.title| safe }}
+    {% else %}
+        {{ store.name }} - {{ product.name| safe }}
+    {% endif %}
+{% endblock %}
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+
+
+{% block main_content %}
+
+    {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("Products"),url: '/products' },
+                    { label: product.name },
+                ] %}
+    {% include 'components/breadcrumbs.jinja' %}
+
+    {% if settings.banners_banner_cart_page_image %}
+       {% set image = settings.banners_banner_product_page_image %}
+       {% include 'components/shared_banner.jinja' %}
+    {% endif %}
+   
+    <div class="my-5 layout product_page inshalla24">
+      <div class="grid grid-cols-1 sm:grid-cols-6 gap-5 sm:gap-10">
+            <div class="flex flex-col gap-6 sm:gap-8 sm:col-span-3">
+
+                {# first option #}
+              <div class=" product-images-box {% if product.selected_product.media | length <= 0 %}hidden{% endif %}">
+
+                    <!-- Main Swiper -->
+                    <div class=" swiper mySwiperProdyct2 w-full h-[80%]">
+                        <div class="swiper-wrapper swiperWrapper2">
+                            {% for key, media in product.selected_product.media %}
+
+                                {% if media.provider == 'youtube' %}
+                                    {# استخراج ID الفيديو من لينك YouTube #}
+                                    {% if 'watch?v=' in media.link %}
+                                        {% set video_id = media.link | split('watch?v=') | last %}
+                                    {% elif 'youtu.be/' in media.link %}
+                                        {% set video_id = media.link | split('youtu.be/') | last %}
+                                    {% elif 'shorts/' in media.link %}
+                                        {% set video_id = media.link | split('shorts/') | last %}
+                                    {% else %}
+                                        {% set video_id = '' %}
+                                    {% endif %}
+
+                                    {% if key == 0 %}
+                                        <div class="col-span-2 row-span-2">
+                                            <iframe 
+                                                src="https://www.youtube.com/embed/{{ video_id }}" 
+                                                title="YouTube video player"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen
+                                                class="w-full h-[500px]"
+                                            ></iframe>
+                                        </div>
+                                    {% else %}
+                                        <div class="swiper-slide">
+                                            <iframe 
+                                                src="https://www.youtube.com/embed/{{ video_id }}" 
+                                                title="YouTube video player"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen
+                                                class="w-full h-full"
+                                            ></iframe>
+                                        </div>
+                                    {% endif %}
+
+                                {% else %}
+                                    <div class="swiper-slide">
+                                        <div class="relative aspect-square skeleton-parent">
+                                            <div class="skeleton w-full h-full absolute"></div>
+                                            <img 
+                                                src="{{ media.image.full_size }}" 
+                                                alt="{{ media.image.alt }}" 
+                                                data-gallery="gallery1" 
+                                                class="block w-full h-full object-[unset] sm:object-contain glightbox"
+                                                onload="this.closest('.relative').querySelector('.skeleton')?.remove();
+                                                        this.closest('.skeleton-parent').classList.remove('aspect-square','relative');
+                                                        this.closest('.skeleton-parent').classList.add('w-full','h-full');"
+                                            >
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+
+                    <!-- Spacer -->
+                    <div class="h-[2%] line-space"></div>
+
+                <!-- Thumbnail Swiper -->
+                <div thumbsSlider="" class="swiper mySwiperProduct w-full h-[18%]">
+                    <div class="swiper-wrapper swiperWrapper">
+                        {% for key, media in product.selected_product.media %}
+                            <div class="swiper-slide rounded-[12px] relative">
+                                <div class="skeleton w-full h-full absolute rounded-[0px]"></div>
+
+                                {% if media.provider == 'youtube' %}
+                                    {# extract video ID #}
+                                    {% if 'watch?v=' in media.link %}
+                                        {% set video_id = media.link | split('watch?v=') | last %}
+                                    {% elif 'youtu.be/' in media.link %}
+                                        {% set video_id = media.link | split('youtu.be/') | last %}
+                                    {% elif 'shorts/' in media.link %}
+                                        {% set video_id = media.link | split('shorts/') | last %}
+                                    {% else %}
+                                        {% set video_id = '' %}
+                                    {% endif %}
+
+                                    {# YouTube thumbnail #}
+                                    <img 
+                                        src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg" 
+                                        alt="YouTube video thumbnail" 
+                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]" 
+                                        onload="this.previousElementSibling.remove()"
+                                    >
+
+                                    {# Optional play icon overlay #}
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <svg class="w-10 h-10 text-white bg-black/60 rounded-full p-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M6 4l12 6-12 6V4z" />
+                                        </svg>
+                                    </div>
+                                {% else %}
+                                    <img 
+                                        src="{{ media.image.full_size }}" 
+                                        alt="{{ media.image.alt }}" 
+                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]" 
+                                        onload="this.previousElementSibling.remove()"
+                                    >
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                </div>
+
+  
+                <!-- No image -->
+                <div class="no-image {% if product.selected_product.images | length > 0 %}hidden{% endif %}">
+                    <img src="{{ 'product-img.svg' | asset_url }}" width="100%" height="auto" />
+                </div>
+                {# product is out of stock #}
+                    <div class=" flex w-full self-center justify-center {% if product.selected_product.out_of_stock %}block{% else %}hidden{% endif %} notify-text">
+                    <div class="bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg text-center">
+                            <span class="notify-text text-sm font-semibold">المنتج غير متوفر</span>
+                        </div>
+                    </div>
+                {# product share #}
+                <div class="flex gap-3">
+                
+                  {% include "components/product_share.jinja" %}
+                 {% set in_wishlist = customer.wishlist is defined and product.id in customer.wishlist %}
+                        {% if customer %}
+                            <button onclick="addToWishlist(this, '{{ product.id }}',event)" type="button" class="{% if in_wishlist %}filled{% endif %}">
+                                <svg width="25" class="stroke-red-700 {% if in_wishlist %}fill-red-700{% endif %}" height="25" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M31.55 52.025C30.7 52.325 29.3 52.325 28.45 52.025C21.2 49.55 5 39.225 5 21.7249C5 13.9999 11.225 7.74994 18.9 7.74994C23.45 7.74994 27.475 9.94994 30 13.3499C32.525 9.94994 36.575 7.74994 41.1 7.74994C48.775 7.74994 55 13.9999 55 21.7249C55 39.225 38.8 49.55 31.55 52.025Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="loading loading-spinner loading-xs loader hidden"></span>
+                            </button>
+                        {% else %}
+                            <button onclick="alertMessage('{{ _("You need to log in first") }}', 'info')" type="button">
+                            <svg width="25" class="stroke-red-700" height="25" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M31.55 52.025C30.7 52.325 29.3 52.325 28.45 52.025C21.2 49.55 5 39.225 5 21.7249C5 13.9999 11.225 7.74994 18.9 7.74994C23.45 7.74994 27.475 9.94994 30 13.3499C32.525 9.94994 36.575 7.74994 41.1 7.74994C48.775 7.74994 55 13.9999 55 21.7249C55 39.225 38.8 49.55 31.55 52.025Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="loading loading-spinner loading-xs loader hidden"></span>
+                            </button>
+                        {% endif %} 
+                </div>
+                
+            </div>       
+
+            {# info #}
+            <div class="flex flex-col sm:col-span-3">
+                <div class="flex justify-between items-center">
+                  <h1 class="font-bold text-xl sm:text-2xl leading-7">{{ product.name }}</h1>
+                  <div class="flex gap-2">
+                       
+                        {% if product.badge.body.ar %}
+                        <div class="badge badge-outline text-xs sm:text-sm whitespace-nowrap">{{ product.badge.body.ar }}</div>
+                        {% endif %}
+
+                   </div>
+                </div>
+                <div class="sku flex gap-1 text-[#64748b] mt-3 sm:mt-5 items-center {% if not product.selected_product.sku %}hidden{% endif %}">
+                    <span class="text-[16px]">{{ _("product code") }}:</span>
+                    <span class="sku_text text-[14px] self-end">{{ product.selected_product.sku }}</span>
+                </div>
+                <div class="flex items-center gap-3 mt-3 sm:mt-5 section-formated-sale {% if product.selected_product.formatted_sale_price %}block{% else %}hidden{% endif %}">
+                    <span class="line-through text-lg text-neutral-content product-formatted-price">{{ product.selected_product.formatted_price }}</span>
+                    <span class="text-red-700 font-bold text-2xl product-formatted-sale-price">{{ product.selected_product.formatted_sale_price }}</span>
+                    <span class="badge badge-error product-discount"> &nbsp;  &nbsp;{{ _("Discount") }}&nbsp;{{ product.selected_product.discount_percentage }}%</span>
+                </div>
+                
+                <div class="text-base-content font-bold text-2xl mt-3 sm:mt-5 section-price {% if  product.selected_product.formatted_sale_price %}hidden{% else %}block{% endif %}">
+                    <span class="product-formatted-price-old">{{  product.selected_product.formatted_price }}</span>
+                </div>
+                {# fake views #}
+                <div class="containerCountFake mt-3 sm:mt-5">
+                    <div class="views-counter">
+                        <div class="particles-container" id="particles-container"></div>
+
+                        <div class="icon-container">
+                        <div class="icon-bg"></div>
+                        <svg class="views-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                            d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 11a4 4 0 110-8 4 4 0 010 8z"
+                            />
+                        </svg>
+                        </div>
+
+                        <div class="counter-content">
+                        <div class="counter-display">
+                            <span id="views-count">0</span>
+                            <span class="counter-label">شاهدوا المنتج</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                            <span>0</span>
+                            <span id="progress-percentage">0%</span>
+                            <span>100</span>
+                            </div>
+                            <div class="progress-bar-container">
+                            <div id="views-bar"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                  <div class="section-notify-me  gap-3 {% if product.selected_product.out_of_stock %}block{% else %}hidden{% endif %}">
+                    <div class="divider">{{ _("Notify me when the product is available") }}</div>
+                    <form class="flex flex-col gap-3" id="notify-me-form">
+                       <label class="input input-bordered flex items-center gap-2">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="h-4 w-4 opacity-70">
+                                <path
+                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                            </svg>
+                            <input type="text" class="grow" placeholder="{{ _("Name") }}" name="customerName"/>
+                        </label>
+                        <label class="input input-bordered flex items-center gap-2">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 16 16"
+                                fill="currentColor"
+                                class="h-4 w-4 opacity-70">
+                                <path
+                                d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+                                <path
+                                d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                            </svg>
+                            <input type="email" class="grow" placeholder="{{ _("Email") }}" name="email" required  />
+                        </label>
+                       
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2">
+                                <input type="number" class="grow" placeholder="{{ _("Mobile Number") }}" name="customerPhoneNumber" />
+                                <span class="badge badge-info">{{ _("Optional") }}</span>
+                            </label>
+                            <p class="text-base-content  text-sm mt-2">{{ _("Example: 966500112245") }}</p>
+                        </div>
+                        <button  class="btn btn-primary relative" type="submit">
+                            {{ _("Send") }}
+                            <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
+                        </button>
+                    </form>
+                </div>
+                  <div class="mt-3 sm:mt-5">
+                                        {% include 'vitrin:products/loyalty_points_widget.jinja' %}
+                </div>
+                <div class="mt-3 sm:mt-5">
+                    {% include 'vitrin:products/payment_widgets.jinja' %}
+                </div>
+          
+          
+
+                
+                {# <p class="weight mt-3 sm:mt-5 text-sm font-bold {% if product.selected_product.weight.value  %} block{% else %} hidden{% endif %}">{{ product.selected_product.weight.value }} {{ product.selected_product.weight.unit }} </p> #}
+              
+
+                {% if product.sold_products_count %}
+                <div class="text-sm lg:text-lg">
+                  {{ _("Sold Over") }}
+                  <span class="text-primary">{{  product.sold_products_count }}</span>
+                  {{ _("once") }}
+                </div>
+                {% endif %}
+                {% if product.selected_product.formatted_sale_price %}
+                    {% if product.purchase_restrictions.sale_price_period_end %}
+                        <div id="countdownProductPage" class="flex flex-wrap justify-center lg:justify-start gap-5 mt-3 sm:mt-5">
+                            <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2">
+                                <span class="countdown font-mono text-2xl">
+                                <span class="countdown-days" style="--value:0;"></span>
+                                </span>
+                                {{ _("Day") }}
+                            </div>
+                            <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2 ">
+                                <span class="countdown font-mono text-2xl">
+                                <span class="countdown-hours" style="--value:0;"></span>
+                                </span>
+                                {{ _("Hour") }}
+                            </div>
+                            <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2">
+                                <span class="countdown font-mono text-2xl">
+                                <span class="countdown-minutes" style="--value:0;"></span>
+                                </span>
+                                {{ _("Minute") }}
+                            </div>
+                            <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2">
+                                <span class="countdown font-mono text-2xl">
+                                <span class="countdown-seconds" style="--value:0;"></span>
+                                </span>
+                                {{ _("Second") }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                {% endif %}
+                <form id="product-form" id="userForm">
+                        <input id="product-id" type="hidden" value="{{ product.selected_product.id }}">
+
+                        <div class="size-box mb-4">
+                            
+                                <div class="hidden">
+                                  {% include 'vitrin:products/variants_list.jinja' %}
+                                </div>
+
+                                {% if product.has_options %}
+                                   <div class="custom_variants flex flex-col ">
+                                   </div>
+                                   {# {% for index, option in product.options %} 
+                                        {% if (option.name | trim | lower) in 'color'or (option.name | trim | lower) in 'Color' or (option.name | trim) in 'اللون' %}             
+                                            <div class="variants-options flex items-center gap-3 mt-3 sm:mt-5">
+                                                <span class="text-sm sm:text-base font-bold">{{ option.name }}:</span>
+                                                {% for choice in option.choices %}
+                                                <div onclick="globalVariantClicked(event)"
+                                                data-value="{{ choice }}" data-name="{{ option.name }}" class="attribute color-attribute  color-variant w-[30px] h-[30px] rounded-full cursor-pointer {% if product.selected_product.attributes[index].value == choice %} active {% endif %}" style="background-color:{{ (choice | split('-'))[1] }}"></div>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                             <div class="variants-options flex items-center gap-3 mt-3 sm:mt-5">         
+                                                <span class="text-sm sm:text-base font-bold">{{ option.name }}:</span>   
+                                               {% for choice in option.choices %}                                  
+                                                <div  onclick="globalVariantClicked(event)" class="attribute global-attribute global-variant min-w-[60px] min-h-[40px] rounded-lg text-base sm:text-lg text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer  {% if product.selected_product.attributes[index].value == choice %} active {% endif %}" data-value="{{ choice }}" data-name="{{ option.name }}">
+                                                    {{ choice }}
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %} 
+                                    {% endfor %} #}
+                                {% endif %}
+                                {% if product.has_custom_input_fields  %}
+                                    <div class="zid_custom_input_fields mt-3 sm:mt-5 flex flex-col gap-2">
+                                      {% include 'vitrin:products/custom_input_fields.jinja' %}
+                                    </div>
+                                {% endif %}
+                 
+                        </div>
+
+                </form>
+                <div class="payment_methods flex flex-wrap justify-center items-center gap-3 border border-[#e1e1e1] rounded-md p-3 w-full">
+                   
+                    {% for payment_method in store.payment_methods %}
+                        <div  aria-label="payment method">
+                            <img src="{{ image_url(payment_method.icon, h=26, q=100) }}"  alt="" width="36"  alt='payments' class="max-w-[40px] max-h-[40px] object-cover">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-3 sm:mt-5">
+                    {% include 'vitrin:checkout/apple-pay-quick-checkout.jinja' %}
+                </div>
+              
+            
+            </div>
+            {# info #}
+
+      </div>
+
+      {# reviews and questions #}
+      <section class="tab-content bg-base-100 border-base-300 rounded-box p-6  flex flex-col gap-5 sm:gap-8 mt-5 sm:mt-8" >
+          
+                {% if product.short_description is not empty %}
+                    <div class="mt-3 sm:mt-5 font-light text-base text-center sm:text-lg">
+                        <h3 class=" text-base sm:text-lg font-bold  mb-3">{{ _("Product Overview") }}</h3>
+                        {{ product.short_description | safe }}
+                    </div>
+                {% endif %}
+            {% if product.description and product.description|striptags|trim|length > 0 %}
+    <div class="flex flex-col gap-3">
+        <h3 class="tab whitespace-nowrap text-base sm:text-lg font-bold text-center">
+            {{ _("Product Details") }}
+        </h3>
+
+        <div 
+            id="productDescription" 
+            class="font-light text-lg leading-8 text-base-content text-center max-w-full sm:max-w-[700px] m-auto line-clamp-3 overflow-hidden"
+        >
+            {{ product.description | safe }}
+        </div>
+
+        <button 
+            id="toggleDescription" 
+            class="text-primary text-sm font-medium underline mx-auto mt-2 hidden"
+        >
+            إظهار المزيد
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const desc = document.getElementById("productDescription");
+            const btn = document.getElementById("toggleDescription");
+
+            // check if content exceeds 3 lines
+            if (desc.scrollHeight > desc.clientHeight) {
+                btn.classList.remove("hidden");
+            }
+
+            btn.addEventListener("click", function () {
+                if (desc.classList.contains("line-clamp-3")) {
+                    desc.classList.remove("line-clamp-3", "overflow-hidden");
+                    btn.textContent = "إظهار أقل";
+                } else {
+                    desc.classList.add("line-clamp-3", "overflow-hidden");
+                    btn.textContent = "إظهار المزيد";
+                }
+            });
+        });
+    </script>
+{% endif %}
+            {# reviews #}
+            {% if product.rating %} 
+                <div class="flex flex-col items-center gap-3">
+                    <h3 class="tab whitespace-nowrap text-base sm:text-lg font-bold text-center">{{ _("Reviews") }}</h3>                
+                    <span class="font-mono text-6xl">{{ product.rating.average }}</span>
+                    {% set rating = product.rating.average %}{% set sizeSvg = 30 %}
+                    {% include 'components/rating-stars.jinja' %}
+                </div>
+
+            {% else %}    
+            {# <div class="flex flex-col items-center gap-3"> #}
+                {# <h2>0.0</h2>
+                <div class="flex gap-2">
+                        <svg width="30" height="30" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                        </svg>
+                        <svg width="30" height="30" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                        </svg>
+                        <svg width="30" height="30" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                        </svg>
+                        <svg width="30" height="30" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                        </svg>
+                        <svg width="30" height="30" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                        </svg>
+                        
+                    </div> #}
+            {# </div> #}
+            {% endif %}
+            {# all reviews #}
+            {% if store.is_product_reviews_enabled %}            
+                {% set reviews = product.reviews.data %}
+                {% include "components/product_reviews.jinja" %}
+                {% include "components/product_add_review.jinja" %}
+            {% endif %}
+            
+            {# questions #}
+            {% if store.is_product_question_and_answer_enabled %}            
+                {% set questions = product.questions %}
+                {% include "components/product_questions.jinja" %}
+                {% include "components/product_add_question.jinja" %}
+            {% endif %}
+            
+
+      </section>
+      
+        {% if (product.related_products | length) >  0 %}
+         <div class="related_products mt-5 sm:mt-10">
+            <div class="flex justify-between items-center gap-3 mb-5">
+                <h2 class="title text-[25px] sm:text-[32px] font-bold">{{ _("Similar Products") }}</h2>
+                <div class="flex gap-3 z-[1]">
+                    <div class="swiper-button-prev swiper-button-prev-related-products   mt-0 {% if session.lang.code == "ar" %}rotateIcon{% endif %}" style="position:static"></div>
+                    <div class="swiper-button-next swiper-button-next-related-products  mt-0 {% if session.lang.code == "ar" %}rotateIcon{% endif %}" style="position:static"></div>
+                </div>
+            </div>
+    
+            <div class="swiper related_products_section">
+                <div class="swiper-wrapper items-stretch">
+                    {% for key,rProduct in product.related_products %}
+                        {% if rProduct.is_infinite == true or rProduct.quantity > 0 %}
+                            <div class="swiper-slide  h-auto" style="height:auto">
+                                 <div class="h-full"> 
+                                   {% set product = rProduct %}{% set index = key %}
+                                   {% include 'components/product-card.jinja' %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                </div>
+        
+            </div>
+         </div>
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function(){
+                showRelatedProducts();
+            });
+        </script>
+    {% endif %}
+    </div>
+    {# quantity and add to cart #}
+    <div class="fixed border-t-[1px] border-base-300 bg-[#fff] z-[1] bottom-0   w-full product-buttons {% if product.selected_product.is_infinite or product.selected_product.quantity > 0 %}block{% else %}hidden{% endif %}">
+      <div>
+        <div class="grid grid-cols-3 items-center">
+          <div class="col-span-1  py-3">
+            
+             <div class="items-center  overflow-hidden fixed_quantity flex  w-full h-full !rounded-[0px] justify-center" style="opacity:1">
+                    <button 
+                        type="button" 
+                        class="w-12 h-12 flex items-center justify-center  focus:outline-none"
+                        onclick="changeQuantity(-1)">
+                    
+                        <svg width="24" height="24" viewBox="0 0 24 24" class="stroke-current"  fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <input 
+                        type="number" 
+                        min="1"
+                        {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
+                        max="100"
+                        {% else %}
+                        max={{ product.selected_product.quantity }}
+                        {% endif %}
+                        step="1" 
+                        value="1" 
+                        class="w-16 h-12 text-center appearance-none border-none focus:outline-none focus:ring-0 p-0 "
+                        style="text-align: center; vertical-align: middle;"
+                        id="qunatityInputProduct_single_page"
+                    />
+                    <button 
+                        type="button" 
+                        class="w-12 h-12 flex items-center justify-center  focus:outline-none"
+                        onclick="changeQuantity(1)">
+                    
+                        <svg width="24" height="24" viewBox="0 0 51 50" class="stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 25H38"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M25.5 37.5V12.5"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+             </div>
+          </div>
+          <div class=" col-span-2 h-full grid grid-cols-3 items-center bg-primary">
+             <button  class="btn btn-primary relative add_to_card_single_product w-full fixed_addtocart text-base sm:text-xl h-full col-span-2 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;">
+                    {{ _("Add to Cart") }}
+                    <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
+             </button>  
+              
+             <span class="text-[#fff] font-bold text-sm lg:text-lg text-center main_price col-span-1 ">             
+                {% if product.selected_product.formatted_sale_price %}
+                {{ product.selected_product.formatted_sale_price }}
+                {% else %}
+                {{ product.selected_product.formatted_price }}
+                {% endif %}
+             </span>
+              
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+
+{% block footer_scripts %}
+    <script type="text/javascript" src="{{ 'glightbox.min.js' | asset_url }}"></script>
+
+   {{ product_view_scripts| safe }}
+
+    <script>
+    
+        // global variables
+        const product = {{ product | tojson}};
+        console.log("single product");
+        console.log(product);
+
+        // handle variations
+        const handleVariations = ()=>{
+            const globalVarinatsOptions = document.querySelector(".custom_variants");
+            if(product.variants.length > 0){
+             
+              product.options.forEach((option,index)=>{
+                  if(option.name.trim().toLowerCase() === "color" || option.name.trim() === "الون"){
+                    let tempChoices = "";
+                     const uniqueColors = [
+                        ...new Map(
+                            product.variants.flatMap(product =>
+                            product.attributes
+                                .filter(attribute => attribute.name === "الون")
+                                .map(attribute => [attribute.value, { colorValue: attribute.value, name: attribute.name, image: product?.images[0]?.image?.thumbnail }])
+                            )
+                        ).values()
+                    ];
+               for (let choice of uniqueColors) {
+                tempChoices += `
+                    <div 
+                    onclick="globalVariantClicked(event)"
+                    data-value="${choice.colorValue}" 
+                    data-name="${choice.name}" 
+                    class="attribute color-attribute color-variant ${choice.image ?'w-[50px] h-[50px] ':'min-w-[50px] min-h-[50px]'} rounded-md cursor-pointer border flex justify-center items-center
+                        ${product.selected_product.attributes[index].value === choice.colorValue ? 'active' : ''}" 
+                    
+                    > 
+                    ${choice.image ? `   <div  onclick="globalVariantClicked(event)" class="w-[40px] h-[40px]" style="background-image: url('${choice.image || ''}');
+                    background-size: cover; 
+                    background-position: center; 
+                    background-repeat: no-repeat;" >
+                
+                    </div>`:`   <div class="min-w-[40px] min-h-[40px] rounded-lg text-base text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer ">
+                                                    ${choice.colorValue}
+                                                        </div>`}
+                
+                    </div>`;
+                }
+
+                    console.log("tempchociescolors");
+                    console.log(tempChoices);
+                    globalVarinatsOptions.insertAdjacentHTML("beforeend", `<div class="variants-options flex items-center gap-3 mt-3 sm:mt-5">
+                                                    <h2 class="variant_title">${option.name}:</h2>
+                                                    <div class="flex gap-3 mt-4 flex-wrap">${tempChoices}</div>
+                                               </div>`);
+                    
+                  }else{
+                         let tempOptionsGLobal = "";
+                    for(let choice of option.choices){
+                        tempOptionsGLobal += `<div class="attribute global-attribute global-variant min-w-[60px] min-h-[40px] rounded-lg text-base sm:text-lg text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer ${product.selected_product.attributes[index].value == choice ? 'active':''}" data-value="${choice}" data-name="${ option.name }" onclick="globalVariantClicked(event)">
+                                       ${choice}
+                                         </div>`;
+                    }
+                    globalVarinatsOptions.insertAdjacentHTML("beforeend",`<div class="variants-options flex items-center gap-3 mt-3 sm:mt-5">
+                                               <h2 class="variant_title">${option.name}:</h2>
+                                               <div class="flex gap-3 mt-4 flex-wrap">${tempOptionsGLobal}</div>
+                    </div> `)
+                  
+                  }
+                  
+                  
+                })
+            }
+        }
+        // Extract objects with unique colorValue
+    
+
+
+        const productPage  = document.querySelector('.product_page');
+
+        // update product
+        const deleteProductsQuantity = ()=>{
+                document.querySelector(".fixed_quantity").classList.add('hidden')
+                document.querySelector(".fixed_addtocart").classList.remove('hidden')
+        }
+        async function changeQuantity(delta) {
+    const input = document.getElementById('qunatityInputProduct_single_page');
+    const currentValue = parseInt(input.value, 10) || 0;
+    const minValue = parseInt(input.getAttribute('min'), 10) || 1;
+    const maxValue = parseInt(input.getAttribute('max'), 10) || Infinity;
+
+    // Calculate new value
+    let newValue = currentValue + delta;
+    
+    // Enforce min and max limits
+    if (newValue > maxValue) {
+        newValue = maxValue;
+    }
+    if (newValue < minValue) {
+        newValue = minValue;
+        return;
+    }
+    
+    input.value = newValue;
+
+    // Prepare update based on delta
+    if (delta === 1) {
+        // Increment - just add 1
+        await updateProductSinglePage(1);
+    } else if (delta === -1) {
+        // Decrement - need to check current cart
+        try {
+            const cartResponse = await zid.cart.get({ showErrorNotification: true });
+            const realPrID = product.id.replace(/-/g, '');
+            if (!cartResponse) return;
+            const productInCart = cartResponse.products.find(p => p.product_id == realPrID);
+
+        
+            deleteProductInsidePage(productInCart.id);
+            updateProductSinglePage(newValue);
+           
+        } catch (error) {
+            console.error('Cart update error:', error);
+        }
+    }
+}
+
+// Keep your existing updateProductSinglePage function
+async function updateProductSinglePage(qtyDelta) {
+    const product_id = document.getElementById('product-id').value;
+    try {
+        const response = await zid.cart.addProduct({
+            product_id: product_id,
+            quantity: qtyDelta
+        }, { showErrorNotification: true });
+
+        if (response) {
+            fetchCart();
+            alertMessage("{{ _("The cart was updated successfully") }}", 'success');
+        }
+    } catch (error) {
+        console.error(error);
+        alertMessage(localsLayout.error, 'error');
+    }
+}
+
+function updateProductSinglePage(quantity) {
+    const product_id = document.getElementById('product-id').value;
+    zid.cart
+        .addProduct({ product_id: product_id, quantity: quantity }, { showErrorNotification: true })
+        .then(function (response) {
+            if (response) {
+                fetchCart();
+                alertMessage("{{ _("The cart was updated successfully") }}", 'success');
+            }
+        })
+        .catch(function (error) {
+            console.error(error);
+            alertMessage(localsLayout.error, 'error');
+        });
+}
+          
+
+        
+        // sale prie counddown
+        function startCountdown(dateString) {
+            if (!dateString) {
+                console.error("Invalid date format. Expected a string in ISO 8601 format (e.g., '2025-01-22T20:59:59.000000Z').");
+                return;
+            }
+
+            // Parse the date string into a Date object
+            const countDownDate = new Date(dateString).getTime();
+
+            if (isNaN(countDownDate)) {
+                console.error("Invalid date string. Unable to parse the date.");
+                return;
+            }
+
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Calculate days, hours, minutes, and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update DaisyUI countdown elements
+                document.querySelector(".product_page .countdown-days").style.setProperty("--value", days);
+                document.querySelector(".product_page .countdown-hours").style.setProperty("--value", hours);
+                document.querySelector(".product_page .countdown-minutes").style.setProperty("--value", minutes);
+                document.querySelector(".product_page .countdown-seconds").style.setProperty("--value", seconds);
+
+                // If the countdown is finished
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById("countdownProductPage").innerHTML = "{{ _("Monthly Deal Expired") }}";
+                }
+            }, 1000);
+        }
+
+        // related product 
+        function showRelatedProducts(){
+                let swiper = new Swiper('.related_products_section', {
+                slidesPerView:2,
+                navigation: {
+                    nextEl: ".swiper-button-next-related-products",
+                    prevEl: ".swiper-button-prev-related-products",
+                },
+            //   autoplay: {
+            //     delay: 3000,
+            //     disableOnInteraction: false,
+            //     pauseOnMouseEnter: true,
+            //  },
+                spaceBetween: 10,
+                loop: true,
+                breakpoints: {
+                    640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                    },
+
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 10
+                    },
+                    1024: {
+                        slidesPerView: 6,
+                        spaceBetween: 10
+                    },
+                }
+                }); 
+        }
+
+        // handle product auttribute change
+        function productOptionsChanged(selected_product) {
+
+            if (selected_product){
+                document.getElementById('product-id').value = selected_product.id;
+                if (!selected_product.unavailable) {
+                    // price
+                    if(selected_product.formatted_sale_price){
+                        productPage.querySelector(".product-formatted-price").textContent = selected_product.formatted_price;
+                        productPage.querySelector(".product-formatted-sale-price").textContent = selected_product.formatted_sale_price;
+                        productPage.querySelector(".product-discount").textContent = `{{ _("Discount") }} ${ selected_product.discount_percentage}%`;
+                        productPage.querySelector(".section-price").classList.add('hidden');
+                        productPage.querySelector(".section-formated-sale").classList.remove('hidden');
+                        document.querySelector(".product-buttons .main_price").textContent = selected_product.formatted_sale_price ;
+                    }else{
+                        productPage.querySelector(".product-formatted-price-old").textContent = selected_product.formatted_price;
+                        productPage.querySelector(".section-price").classList.remove('hidden');
+                        productPage.querySelector(".section-formated-sale").classList.add('hidden');
+                        document.querySelector(".product-buttons .main_price").textContent = selected_product.formatted_price ;
+
+                    }
+                    // for wight
+                    // if(selected_product.weight.value){ 
+                    //     productPage.querySelector('.weight').classList.remove('hidden');
+                    //     productPage.querySelector('.weight').textContent = `${selected_product.weight.value} ${selected_product.weight.unit}`;
+
+                    // }else{
+                    //     productPage.querySelector('.weight').classList.add('hidden');
+
+                    // }
+                    
+                     if (selected_product.sku) {
+                        document.querySelector('.product_page .sku').classList.remove('hidden');
+                        document.querySelector('.product_page .sku_text').innerHTML = selected_product.sku;
+                    } else {
+                        document.querySelector('.product_page .sku').classList.add('hidden');
+                    }
+
+                    // qunatity
+                    if (selected_product.quantity > 0 || selected_product.is_infinite) {
+                        document.querySelector('.product-buttons').classList.remove('hidden');
+                        productPage.querySelector('.section-notify-me').classList.add('hidden');
+                        productPage.querySelector('.notify-text').classList.add('hidden');
+                        document.getElementById("qunatityInputProduct_single_page").max = selected_product.is_infinite ? 100 : selected_product.quantity;
+                    } else {
+                       document.querySelector('.product-buttons').classList.add('hidden');
+                        productPage.querySelector('.section-notify-me').classList.remove('hidden');
+                        productPage.querySelector('.notify-text').classList.remove('hidden');
+                    }
+                    handleProductImagesSingleProduct(selected_product)
+         
+
+                } else {
+                     document.querySelector(".product-buttons").classList.add('hidden');
+                     productPage.querySelector(".section-notify-me").classList.remove('hidden');
+                     productPage.querySelector(".notify-text").classList.remove('hidden');
+                     handleProductImagesSingleProduct(selected_product)
+
+                }
+            }else{
+               // variant doesn't exist.
+               document.querySelector(".product-buttons").classList.add('hidden');
+               productPage.querySelector(".section-notify-me").classList.remove('hidden');
+               productPage.querySelector(".notify-text").classList.remove('hidden');
+               handleProductImagesSingleProduct(selected_product)
+
+            }
+        }
+      function handleProductImagesSingleProduct(selectedProduct) {
+            const swiper1 = productPage.querySelector('.swiperWrapper');   // thumbnails
+            const swiper2 = productPage.querySelector('.swiperWrapper2');  // main swiper
+
+            // clear old
+            swiper1.innerHTML = '';
+            swiper2.innerHTML = '';
+
+            if (selectedProduct.media && selectedProduct.media.length > 0) {
+                selectedProduct.media.forEach((media, index) => {
+                    // ✅ main slider
+                    const slide2 = document.createElement('div');
+                    slide2.classList.add('swiper-slide');
+
+                    if (media.provider === 'youtube' && media.link) {
+                        // extract video id
+                        let video_id = '';
+                        if (media.link.includes('watch?v=')) {
+                            video_id = media.link.split('watch?v=')[1];
+                        } else if (media.link.includes('youtu.be/')) {
+                            video_id = media.link.split('youtu.be/')[1];
+                        } else if (media.link.includes('shorts/')) {
+                            video_id = media.link.split('shorts/')[1];
+                        }
+
+                        slide2.innerHTML = `
+                            <iframe 
+                                src="https://www.youtube.com/embed/${video_id}" 
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                class="w-full h-full"
+                            ></iframe>`;
+                    } else if (media.image) {
+                        slide2.innerHTML = `
+                            <div class="relative aspect-square skeleton-parent">
+                                <div class="skeleton w-full h-full absolute"></div>
+                                <img 
+                                    src="${media.image.full_size}" 
+                                    alt="${media.image.alt || ''}" 
+                                    data-gallery="gallery1" 
+                                    class="block w-full h-full object-contain glightbox"
+                                    onload="this.closest('.relative').querySelector('.skeleton')?.remove();
+                                            this.closest('.skeleton-parent').classList.remove('aspect-square','relative');
+                                            this.closest('.skeleton-parent').classList.add('w-full','h-full');"
+                                >
+                            </div>`;
+                    }
+                    swiper2.appendChild(slide2);
+
+                    // ✅ thumbnails (only images)
+                    if (media.image) {
+                        const slide1 = document.createElement('div');
+                        slide1.classList.add('swiper-slide', 'rounded-[12px]', 'relative');
+                        slide1.innerHTML = `
+                            <div class="skeleton w-full h-full absolute rounded-[0px]"></div>
+                            <img 
+                                src="${media.image.full_size}" 
+                                alt="${media.image.alt || ''}" 
+                                class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
+                                onload="this.previousElementSibling.remove()"
+                            >
+                        `;
+                        swiper1.appendChild(slide1);
+                    }
+                });
+
+                // ✅ re-init swiper & lightbox
+                setTimeout(() => {
+                    initializeSliderProduct();
+                }, 100);
+
+                productPage.querySelector(".product-images-box").classList.remove('hidden');
+                productPage.querySelector(".no-image").classList.add('hidden');
+
+                const lightbox = GLightbox({
+                    selector: '.glightbox'
+                });
+
+            } else {
+                // no media
+                productPage.querySelector(".product-images-box").classList.add('hidden');
+                productPage.querySelector(".no-image").classList.remove('hidden');
+            }
+        }
+
+        // intlize swiper
+     let swiperInstance1, swiperInstance2;
+
+const initializeSliderProduct = () => {
+    // Destroy existing Swiper instances, if any
+    if (swiperInstance1) swiperInstance1.destroy(true, true);
+    if (swiperInstance2) swiperInstance2.destroy(true, true);
+
+    // Initialize Swipers
+    swiperInstance1 = new Swiper(".mySwiperProduct", {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+
+    swiperInstance2 = new Swiper(".mySwiperProdyct2", {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiperInstance1,
+        },
+    });
+};
+
+
+       // handle variant clicked
+       function globalVariantClicked(event) {
+                event.preventDefault();
+                const nameVariant = event.target.closest(".variants-options");
+
+                if (nameVariant) {
+                    nameVariant.querySelectorAll(".attribute").forEach(variant => {
+                        variant.classList.remove('active');
+                    });
+                    const realTar =  event.target.closest(".attribute");
+                    realTar.classList.add('active');
+
+                    const item = document.querySelector(`#product-variants-options ul li[value="${realTar.dataset.value}"]`);
+                    if (item) {
+                        item.click();
+                    }
+                }
+        }
+
+        // handle add to cart 
+        const allBtnAddToCart = document.querySelectorAll(".add_to_card_single_product");
+        allBtnAddToCart.forEach((btn) => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const productId = document.getElementById('product-id').value;
+                const quantity = parseInt(document.getElementById('qunatityInputProduct_single_page').value);
+                addToCart(event.target, productId, quantity);
+            
+            });
+        });
+
+        // handle notify me when product outofstock
+        document
+        .getElementById('notify-me-form')
+        .addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+        const button = this.querySelector('button[type="submit"]');
+        const loadingIndicator = button.querySelector('.loading');
+        const productIdN = document.getElementById('product-id').value;
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+             formData.forEach((value, key) => {
+                if (key === 'customerPhoneNumber' && value.trim() !== '') {
+                    data[key] = value.startsWith('+') ? value.trim() : `+${value.trim()}`;
+                } else {
+                    data[key] = value.trim();
+                }
+             });
+        });
+        sendProductNotifyMe(data);
+        async function sendProductNotifyMe(data) {
+            // Show the loading overlay
+            loadingIndicator.classList.remove('hidden');
+
+            try {
+            const response = await fetch(`/api/v1/products/${productIdN}/notifications`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            // Check if the response is not OK (i.e., 2xx status code)
+            if (!response.ok) {
+                const errorText = await response.text();
+                alertMessage(errorText, 'error');
+                
+            }
+
+            const responseData = await response.json();
+            if (responseData.status === 'success') {
+                alertMessage('{{ _("Successfully sent") }}', 'success');
+            } else {
+                alertMessage(responseData.data.message, 'error');
+            }
+            } catch (error) {
+                alertMessage(localsLayout.error, 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        });
+
+
+    
+
+        
+        // for image preview
+        const callhHndleImageClick = (index,images = product.selected_product.images )=>{
+            handleImageClick(index,images)
+        }
+         
+      const handleZidCustomInputFields = () => {
+            // style labels
+            const allLabels = document.querySelectorAll('.zid_custom_input_fields label');
+            allLabels.forEach(label => {
+                label.classList.add('font-semibold','block');
+            });
+
+            // style images
+            const allImages = document.querySelectorAll('.zid_custom_input_fields img');
+            allImages.forEach(img => {
+                img.classList.add('h-[100px]','object-contain');
+                img.style.width = '100px';
+            });
+
+         
+            // Add classes to text inputs
+            const textInputs = document.querySelectorAll('.zid_custom_input_fields input[type="text"]');
+            textInputs.forEach(input => {
+                input.classList.add('input', 'input-bordered', 'w-full', 'max-w-xs','mt-3');
+            });
+
+            // Add classes to time inputs
+            const timeInputs = document.querySelectorAll('.zid_custom_input_fields input[type="time"]');
+            timeInputs.forEach(input => {
+                input.classList.add('input', 'input-bordered', 'w-full', 'max-w-xs','mt-3');
+            });
+
+            // Add classes to select elements
+            const selectInputs = document.querySelectorAll('.zid_custom_input_fields select');
+            selectInputs.forEach(select => {
+                select.classList.add('select', 'select-bordered', 'w-full', 'max-w-xs','mt-3');
+            });
+        };
+        function addOverlayClose(lightbox) {
+            const overlay = document.querySelector('.ginner-container')
+            
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    lightbox.close();
+                });
+            }
+        }
+        // FAAKE VIEWS
+            const countEl = document.getElementById('views-count');
+            const bar = document.getElementById('views-bar');
+            const progressPercentage = document.getElementById('progress-percentage');
+            const particlesContainer = document.getElementById('particles-container');
+
+            let currentCount = 0;
+            let updateInterval;
+            let countdownInterval;
+            let countdown = 5;
+
+            // إنشاء جسيمات متحركة
+            function createParticles() {
+                particlesContainer.innerHTML = '';
+
+                for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // وضع عشوائي للجسيمات
+                const left = Math.random() * 100;
+                const delay = Math.random() * 3;
+
+                particle.style.left = `${left}%`;
+                particle.style.bottom = '0';
+                particle.style.animationDelay = `${delay}s`;
+
+                // ألوان متنوعة للجسيمات
+                const colors = ['#fff176', '#ffeb3b', '#ffc700', '#ff8f00'];
+                particle.style.backgroundColor =
+                    colors[Math.floor(Math.random() * colors.length)];
+
+                particlesContainer.appendChild(particle);
+                }
+            }
+
+            // دالة العد مع تأثير ارتداد
+            function countUp(target, el) {
+                const duration = 1500;
+                const start = performance.now();
+                const startCount = currentCount;
+
+                // إضافة تأثير الارتداد
+                el.classList.add('bounce');
+                setTimeout(() => el.classList.remove('bounce'), 600);
+
+                // إضافة تأثير التمييز
+                el.parentElement.parentElement.parentElement.classList.add('highlight');
+                setTimeout(
+                () =>
+                    el.parentElement.parentElement.parentElement.classList.remove(
+                    'highlight'
+                    ),
+                800
+                );
+
+                requestAnimationFrame(function step(ts) {
+                const t = Math.min(1, (ts - start) / duration);
+                // استخدام easeOutBack للارتداد
+                const easedT = 1 - Math.pow(1 - t, 3);
+                currentCount = Math.floor(
+                    startCount + easedT * (target - startCount)
+                );
+                el.textContent = currentCount;
+
+                // تحديث شريط التقدم
+                const progress = (currentCount / 100) * 100;
+                bar.style.width = `${progress}%`;
+                progressPercentage.textContent = `${Math.round(progress)}%`;
+
+                if (t < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    currentCount = target;
+                    el.textContent = target;
+                    createParticles(); // إنشاء الجسيمات عند اكتمال العد
+                }
+                });
+            }
+
+            // تحديث العدد
+            function updateCount() {
+                const randomCount = Math.floor(Math.random() * 81) + 20; // رقم بين 20 و100
+                countUp(randomCount, countEl);
+
+                // إعادة تعيين العد التنازلي
+                countdown = 5;
+            }
+
+            // بدء التحديث التلقائي
+            function startAutoUpdate() {
+                // تحديث فوري أول
+                updateCount();
+
+                // بدء الموقت للتحديثات التالية
+                updateInterval = setInterval(updateCount, 5000);
+
+                // بدء العد التنازلي
+                countdownInterval = setInterval(() => {
+                countdown--;
+
+                if (countdown <= 0) {
+                    countdown = 5;
+                }
+                }, 1000);
+            }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeSliderProduct();
+            handleVariations();
+            handleZidCustomInputFields();
+            setTimeout(() => {
+            startAutoUpdate();
+            }, 1000);
+
+            // إنشاء الجسيمات الأولية
+            createParticles();
+
+            if(product.purchase_restrictions.sale_price_period_end){
+                startCountdown(product.purchase_restrictions.sale_price_period_end);
+            }
+            const lightbox = GLightbox({
+              selector: '.glightbox',
+              zoomable: true,
+              openEffect:'fade',	
+              closeEffect:'fade',
+                 
+
+	
+            });
+            const lightbox2 = GLightbox({
+              selector: '.glightbox10',
+                touchNavigation: true,
+                touchFollowAxis: false,
+                closeOnOutsideClick: true,
+            
+            });
+           document.addEventListener('click', function (e) {
+                    // Check if clicked element is the overlay (works even if recreated)
+                    if (e.target.classList.contains('ginner-container')) {
+                                        lightbox.close();
+                                        lightbox2.close();
+
+                    }
+            });
+            
+     });
+        
+    </script>
+{% endblock %}
+

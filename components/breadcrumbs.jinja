@@ -1,0 +1,17 @@
+<div class="breadcrumbs text-sm my-5 layout">
+  <ul>
+    {% for breadcrumb in breadcrumbs %}
+      {% if breadcrumb.label|length > 0 %}
+      
+          <li>
+            {% if breadcrumb.url %}
+              <a href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
+            {% else %}
+              {{ breadcrumb.label }}
+            {% endif %}
+          </li>
+      {% endif %}
+    
+    {% endfor %}
+  </ul>
+</div>

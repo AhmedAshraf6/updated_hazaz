@@ -1,0 +1,16 @@
+{% if rating %}
+    {% set ratingRounded = ((rating * 2 )|round(0, 'ceil')) / 2 %}
+    <div class="flex gap-2" data-rating="{{ rating }}">
+        {% for n in range(1, 6) %}
+            {% if (n <= ratingRounded) %}
+               <svg width="{{ sizeSvg }}" height="{{ sizeSvg }}" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#f1c727"/>
+                </svg>
+            {% else %}
+               <svg width="{{ sizeSvg }}" height="{{ sizeSvg }}" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M34 0L41.858 24.1844L67.287 24.1844L46.7145 39.1312L54.5725 63.3156L34 48.3688L13.4275 63.3156L21.2855 39.1312L0.71302 24.1844L26.142 24.1844L34 0Z" fill="#e3e3e3"/>
+                </svg>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

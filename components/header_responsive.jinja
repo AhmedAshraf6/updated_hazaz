@@ -1,0 +1,104 @@
+<div class="flex  flex-col lg:hidden items-center justify-between py-3  header_responsive">
+   <div class="flex items-center justify-between  group w-full layout">
+   <div class="drawer w-max ">
+      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content">
+        <!-- Page content here -->
+        <label for="my-drawer" class="drawer-button cursor-pointer  group-[.slidedown]:text-base-content">
+          <svg class="stroke-current" width="25" height="25" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 11.6665H35"  stroke-width="2" stroke-linecap="round"/>
+          <path d="M5 20H35"  stroke-width="2" stroke-linecap="round"/>
+          <path d="M5 28.3335H35"  stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        </label>
+      </div>
+      {# include header sidebar #}
+      {% include 'components/header_sidebar.jinja' %}
+
+    </div>
+ 
+  {# logo #}
+    <a href="/" class="logo ">
+        {% if ab_settings.header_logo %}
+            {% set logoUrl = ab_settings.header_logo %}
+        {% else %}
+            {% set logoUrl = store.settings.branding.logo %}
+        {% endif %}
+
+        {% if ab_settings.header_logo_mobile %}
+            {% set logoUrlMobile = ab_settings.header_logo_mobile %}
+        {% else %}
+            {% set logoUrlMobile = store.settings.branding.logo %}
+        {% endif %}
+
+        <img class="hidden md:block w-[150px] max-h-[55px] object-contain" src="{{ image_url(logoUrl, h=175, q=85) }}" alt="{{ store.name }}">
+    
+        <img class="block md:hidden w-[150px] max-h-[55px] object-contain" src="{{ image_url(logoUrlMobile, h=175, q=85) }}" alt="{{ store.name }}">
+    </a>
+ 
+   <div class="flex items-center gap-2">
+      <button type="button" class="search_responsive    group-[.slidedown]:text-base-content ">
+           <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+        
+          class="h-[25px] w-[25px] opacity-70 fill-current">
+          <path
+            fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd" />
+      </button>
+       
+
+      <div class="drawer drawer-end w-max z-[1]" id="drawerMobile">
+        {# <input id="my-drawerCartMobile" type="checkbox" class="drawer-toggle" /> #}
+              <a href="/cart/view" class="drawer-content">
+
+          <label for="my-drawerCartMobile" class="drawer-button  cart_icon relative cursor-pointer   group-[.slidedown]:text-base-content  ">
+                    <svg class="stroke-current" width="25" height="25" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5 13.5417H32.5001C39.5834 13.5417 40.2917 16.8542 40.7709 20.8958L42.6459 36.5208C43.2501 41.6458 41.6667 45.8333 34.3751 45.8333H15.6459C8.33338 45.8333 6.75005 41.6458 7.37505 36.5208L9.25007 20.8958C9.7084 16.8542 10.4167 13.5417 17.5 13.5417Z"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.667 16.6667V9.37499C16.667 6.24999 18.7503 4.16666 21.8753 4.16666H28.1253C31.2503 4.16666 33.3337 6.24999 33.3337 9.37499V16.6667"  stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="w-[20px] h-[20px] rounded-full bg-primary text-secondary  flex justify-center items-center hidden absolute -top-1 -right-2 badge_cart_icon font-mono"></span>
+              </label>
+        </a>
+        {# include header sidebar #}
+        <div class="drawer-side">
+            <label for="my-drawerCartMobile" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu bg-base-200 text-base-content min-h-full w-80 md:w-90  h-full p-4">
+                {% include "components/mini_cart.jinja" %}
+            </ul>
+        </div>
+      </div>
+
+    </div>
+   </div>
+   {% if not ('hide_search_bar' in ab_settings.header_options) %}
+    <div class=" flex-col gap-2 fixed w-full search_box_responsive hidden search-container lg:hidden    group-[.slidedown]:text-base-content" style="top:76px;">
+        <label class="input shadow-md flex items-center gap-2">
+          <input type="text" class="grow w-full h-[70px]  search_input" id="searchInput" placeholder="{% if ab_settings.header_search_placeholder %} {{  ab_settings.header_search_placeholder }} {% else %}{{  _("Search for products...") }}{% endif %}" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="{{ store.settings.branding.colors.on_primary }}"
+            class="h-[25px] w-[25px] opacity-70 ">
+            <path
+              fill-rule="evenodd"
+              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+              clip-rule="evenodd" />
+          </svg>
+        </label>
+        <div class="result_search_box w-full  absolute top-[49px] bg-base-200 h-max p-4 z-[1] hidden">
+          <span class="loading loading-dots loading-lg  search_loading block mx-auto "></span>
+          <div class="result_search flex flex-wrap gap-3">
+          </div>
+          <div class="search_more_btn hidden mt-3">
+            <div class="flex justify-center">
+                <a href="/products?search=" class="btn btn-primary !px-[20px]">للمزيد</a>
+            </div>
+          </div>
+        </div>
+      </div>
+   {% endif %}
+
+</div>

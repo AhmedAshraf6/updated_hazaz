@@ -1,0 +1,68 @@
+{
+  "name": {
+    "ar": "صورة مع منتجات",
+    "en": "image with products"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "image",
+      "label": {
+        "ar": "الصورة",
+        "en": "image"
+      },
+      "info": {
+        "ar": "الحجم المفضل 800 بيكسل للعرض و600 بيكسل للطول",
+        "en": "The preferred size is 800 pixels wide and 600 pixels tall"
+      },
+      "id": "image"
+    },
+    {
+      "type": "color",
+      "label": {
+        "ar": "لون خلفية الصورة",
+        "en": "background color image"
+      },
+      "id": "color"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "اسم الزر",
+        "en": "button text"
+      },
+      "id": "btn_text"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": "عنوان الزر",
+        "en": "Button url"
+      },
+      "id": "btn_url"
+    },
+    {
+      "type": "list",
+      "label": {
+        "ar": "المنتجات",
+        "en": "Products"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "product",
+          "label": {
+            "ar": "المنتج",
+            "en": "Product"
+          },
+          "id": "product"
+        }
+      ],
+      "id": "products"
+    }
+  ],
+  "section_id": "ab340b53-1024-42a0-9cc2-8e18cbf6c67b",
+  "template": "sections/image-slider-two.jinja"
+}

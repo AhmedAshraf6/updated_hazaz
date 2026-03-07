@@ -1,0 +1,45 @@
+<dialog id="imagePreviewModal" class="modal image_modal">
+  <div class="modal-box bg-transparent max-w-[97vw] w-[97vw]  md:max-w-[97vw] md:w-[97vw] h-[97vh] max-h-[97vh] md:h-[97vh] md:max-h-[97vh] overflow-hidden">
+
+    <div class="swiper imageSwiper w-full h-full">
+        <div class="modal-action">
+      <form method="dialog">
+        <button type="button" class="btn btn-primary !px-[10px]" id="closeImagePreviewModalButton">
+          <svg
+            class="stroke-current"
+            width="25"
+            height="25"
+            viewBox="0 0 50 50"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24.9994 45.8333C36.4577 45.8333 45.8327 36.4583 45.8327 25C45.8327 13.5417 36.4577 4.16667 24.9994 4.16667C13.541 4.16667 4.16602 13.5417 4.16602 25C4.16602 36.4583 13.541 45.8333 24.9994 45.8333Z"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M19.1035 30.8958L30.8952 19.1042"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M30.8952 30.8958L19.1035 19.1042"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </form>
+    </div>
+      <div class="swiper-wrapper">
+        <!-- Dynamically generated images -->
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </div>
+</dialog>

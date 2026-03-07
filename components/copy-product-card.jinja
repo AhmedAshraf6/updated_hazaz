@@ -1,0 +1,231 @@
+<div
+  class="card product_card bg-base-100 shadow-xl flex flex-col justify-between h-full {% if product.is_infinite == false and product.quantity <= 0 %}grayscale{% endif %}"
+  data-parent-id="{{ product.id }}"
+  data-product-id="{{ product.id }}"
+>
+  {% set in_wishlist = customer.wishlist is defined and product.id in
+  customer.wishlist %} {% if customer %}
+  <button
+    onclick="addToWishlist(this, '{{ product.id }}',event)"
+    type="button"
+    class="absolute top-4 right-4 z-[1] {% if in_wishlist %}filled{% endif %}"
+  >
+    <svg
+      class="h-5 w-5 stroke-red-700 {% if in_wishlist %}fill-red-700{% endif %}"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"
+      ></path>
+    </svg>
+    <span class="loading loading-spinner loading-xs loader hidden"></span>
+  </button>
+  {% else %}
+  <button
+    onclick="alertMessage('{{ _("You need to log in first") }}', 'info')"
+    type="button"
+    class="absolute top-4 right-4 z-[1]"
+  >
+    <svg
+      class="h-5 w-5 stroke-red-700"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"
+      ></path>
+    </svg>
+    <span class="loading loading-spinner loading-xs loader hidden"></span>
+  </button>
+  {% endif %}
+
+  <a href="/products/{{ product.slug }}" class="block">
+    <figure
+      class="{% if makeCustomHeight %} h-40 {% else %} h-40 md:h-48 lg:h-64 {% endif %} overflow-hidden relative group"
+    >
+      <!-- Skeleton Loader (ONLY for the first image) -->
+      <div class="skeleton w-full h-full absolute top-0 z-[1]"></div>
+
+      <!-- Main Image (lazy-loaded) -->
+      <img
+        class="main_img lazy w-full h-full object-cover absolute top-0 {% if product.images|length > 1 %}transition-opacity duration-500 ease-in-out group-hover:opacity-0 {% endif %}"
+        {%
+        if
+        product.images
+        %}
+        data-src="{{ product.images[0].image.full_size }}"
+        data-srcset="{{ product.images[0].image.medium }} 768w, {{
+          product.images[0].image.full_size
+        }} 1200w"
+        {%
+        elif
+        product.videos
+        %}
+        data-src="{{ product.videos[0].image.full_size }}"
+        data-srcset="{{ product.videos[0].image.medium }} 768w, {{
+          product.videos[0].image.full_size
+        }} 1200w"
+        {%
+        else
+        %}
+        data-src="{{ 'product-img.svg' | asset_url }}"
+        data-srcset="{{ 'product-img.svg' | asset_url }} 768w, {{ 'product-img.svg' | asset_url }} 1200w"
+        {%
+        endif
+        %}
+        sizes="(max-width: 768px) 100vw, 50vw"
+        alt="{{ product.name }}"
+        onload="this.previousElementSibling.remove()"
+      />
+
+      <!-- Hover Image (no skeleton here) -->
+      {% if product.images|length > 1 %}
+      <img
+        class="lazy w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 absolute top-0"
+        data-src="{{ product.images[1].image.full_size }}"
+        data-srcset="{{ product.images[1].image.medium }} 768w, {{
+          product.images[1].image.full_size
+        }} 1200w"
+        sizes="(max-width: 768px) 100vw, 50vw"
+        alt="{{ product.name }}"
+      />
+      {% endif %}
+    </figure>
+  </a>
+
+  <div
+    class="card-body justify-between flex-col flex-grow items-center min-h-[200px] gap-2 px-0 py-0"
+  >
+    <div></div>
+    <h2
+      class="product_name font-normal text-center sm:font-semibold text-base sm:text-lg leading-7 line-clamp-2 h-[56px] px-2"
+    >
+      {{ product.name }}
+    </h2>
+
+    <div
+      class="items-center gap-3 px-2 formated_sale_price {% if product.formatted_sale_price %}flex{% else %}hidden{% endif %}"
+    >
+      <span
+        class="line-through text-xs lg:text-sm text-neutral-content formated_sale_price_old"
+        >{{ product.formatted_price }}</span
+      >
+      <span
+        class="text-red-700 font-bold text-sm lg:text-lg formated_sale_price_new"
+        >{{ product.formatted_sale_price }}</span
+      >
+    </div>
+
+    <div
+      class="text-base-content font-bold text-sm formated_price_box lg:text-lg mx-2 {% if product.formatted_sale_price %}hidden{% else %}block{% endif %}"
+    >
+      <span class="formated_price">{{ product.formatted_price }}</span>
+    </div>
+
+    {# variants #}
+    <div
+      class="product_custom_variants flex-col gap-2 items-center {% if product.has_options %}flex{% else %}hidden{% endif %}"
+    ></div>
+    {# variants #} {% if product.badge.body.ar %}
+    <div class="badge badge-outline text-xs sm:text-sm px-2">
+      {{ product.badge.body.ar }}
+    </div>
+    {% endif %} {% if product.is_infinite == false and product.quantity <= 0 %}
+    <div
+      class="flex justify-center bg-primary gap-2 text-[#fff] self-stretch"
+      style="border-radius: 0px 0px 9px 9px"
+    >
+      <button
+        type="button"
+        onclick="handleShowProductPopup('{{ product.id }}')"
+        class="btn btn-primary !px-[0px] !py-[0px]"
+      >
+        <svg
+          width="30"
+          height="30"
+          class="stroke-[#fff] rounded-md p-1"
+          style="background-color: #d6b349"
+          viewBox="0 0 60 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7.5 30C7.5 30 15.2411 14.5177 28.788 14.5177C42.335 14.5177 50.076 30 50.076 30C50.076 30 42.335 45.4822 28.788 45.4822C15.2411 45.4822 7.5 30 7.5 30Z"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M28.7882 35.8057C31.9947 35.8057 34.5942 33.2064 34.5942 29.9999C34.5942 26.7934 31.9947 24.1941 28.7882 24.1941C25.5817 24.1941 22.9824 26.7934 22.9824 29.9999C22.9824 33.2064 25.5817 35.8057 28.7882 35.8057Z"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button class="btn btn-primary !px-[0px] text-[#fff]" disabled>
+        {{ _("Out of Stock") }}
+      </button>
+    </div>
+    {% else %}
+    <div
+      class="flex justify-center gap-2 bg-primary text-[#fff] self-stretch"
+      style="border-radius: 0px 0px 9px 9px"
+    >
+      <button
+        type="button"
+        onclick="handleShowProductPopup('{{ product.id }}')"
+        class="btn btn-primary !px-[0px] !py-[0px]"
+      >
+        <svg
+          width="30"
+          height="30"
+          class="stroke-[#fff] rounded-md p-1"
+          style="background-color: #d6b349"
+          viewBox="0 0 60 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7.5 30C7.5 30 15.2411 14.5177 28.788 14.5177C42.335 14.5177 50.076 30 50.076 30C50.076 30 42.335 45.4822 28.788 45.4822C15.2411 45.4822 7.5 30 7.5 30Z"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M28.7882 35.8057C31.9947 35.8057 34.5942 33.2064 34.5942 29.9999C34.5942 26.7934 31.9947 24.1941 28.7882 24.1941C25.5817 24.1941 22.9824 26.7934 22.9824 29.9999C22.9824 33.2064 25.5817 35.8057 28.7882 35.8057Z"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        class="relative self-center btn btn-primary !px-[0px] text-[#fff] add_to_cart"
+        type="button"
+        onclick="addToCartAfterCheck(this,'{{ product.id }}','{{
+          product.purchase_restrictions.min_quantity_per_cart
+        }}','{{ product.has_options }}','{{ product.slug }}','{{
+          isProductOptionsActivated
+        }}')"
+      >
+        {{ _("Add to Cart") }}
+        <span
+          class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"
+        ></span>
+      </button>
+    </div>
+    {% endif %}
+  </div>
+</div>

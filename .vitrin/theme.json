@@ -1,0 +1,95 @@
+{
+  "id": "fa0c09ba-0b8f-4a21-8814-4e99f04c3ce0",
+  "updatedAt": "2026-03-07T02:52:33.058Z",
+  "installations": [
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-06T20:49:20.868Z",
+      "version": "1.0.18",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-06T20:50:27.185Z",
+      "version": "1.0.19",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:04:48.447Z",
+      "version": "1.0.20",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:07:40.835Z",
+      "version": "1.0.21",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:10:07.311Z",
+      "version": "1.0.22",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:14:42.598Z",
+      "version": "1.0.23",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:19:57.631Z",
+      "version": "1.0.24",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:22:25.631Z",
+      "version": "1.0.25",
+      "activated": true,
+      "activated_at": "2026-03-07T00:37:37.172Z"
+    },
+    {
+      "id": "b84060a5-d1fa-4f39-af40-64f0fb58d55d",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:38:56.359Z",
+      "version": "1.0.26"
+    },
+    {
+      "id": "80f0edcd-6443-431b-9640-1467b26d6735",
+      "store_id": "3084646",
+      "store_name": "test",
+      "installed_at": "2026-03-07T00:48:02.708Z",
+      "version": "1.0.0",
+      "activated": true,
+      "activated_at": "2026-03-07T02:52:33.056Z"
+    }
+  ],
+  "slug": "migrated-theme-1772843396336-fa0c09ba"
+}

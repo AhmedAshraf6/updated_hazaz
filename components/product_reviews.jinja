@@ -1,0 +1,61 @@
+<div class="flex flex-col gap-3">
+   {% if reviews %}
+      <div class="flex justify-between items-center flex-wrap gap-3">
+        <h3 class="text-lg sm:text-xl font-bold">{{ _("Reviews") }}</h3>
+        <button class="text-primary text-xl sm:text-2xl" onclick="add_review.showModal()">{{ _("Add Review") }}</button>
+        
+      </div>
+      <div class="flex flex-col gap-5">
+      
+        {% for key, review in reviews | slice(0, 4) %}
+                <div class="review flex flex-wrap justify-between gap-2">
+                  <div class="flex flex-col gap-2 ">
+                    <span class="text-base sm:text-lg font-medium">{{ review.customer.name }}</span>
+                    {% set rating = review.rating %}{% set sizeSvg = 15 %}
+                    {% include 'components/rating-stars.jinja' %}
+                  
+                  </div>
+                  <div class=" text-lg leading-8 text-base-content">{{ review.comment | safe }}</div>
+                    <div class="card-date user-review-date text-sm font-light">
+                        {{ datetimeFormat(review.created_at, 'd-m-Y g:i:s A', session.lang.code) | split(' ')[0] }}
+                      </div>
+                  {% if  review.images|length > 0 %}
+                  
+                  <div class="flex flex-wrap images ">
+                          {% for img in review.images %}
+                              <img src="{{ img.path }}" class="w-[80px] h-[80px] rounded-lg glightbox10" data-gallery="gallery1">
+                          {% endfor %}
+                  </div>
+                  
+                  {% endif %}
+                
+                </div>
+      
+                {% if review.reply %}
+                      <div class="review flex flex-wrap justify-between gap-2 ps-5">
+                        <span class="text-base sm:text-lg font-medium">{{ _("Store Owner") }}</span>
+                        <div class="text-lg leading-8 text-base-content">{{ review.reply.text | safe }}</div>
+                        <div class="flex flex-wrap images">
+                            {% for img in review.reply.images %}
+                                  <img src="{{ img.path }}" alt="image" class="w-[80px] h-[80px] rounded-lg">
+                              {% endfor %}
+                        </div>
+                      </div>
+                {% endif %}
+        {% endfor %}
+      </div>
+      {% if reviews|length >= 5 %}
+        <div>
+           <a href="/products/{{ product.id }}/reviews" class="btn btn-primary self-start">{{ _("All Reviews") }}</a>
+        </div>
+      {% endif %}
+  {% else %}
+    <div class="flex flex-col items-center gap-3">
+       <h3 class="tab whitespace-nowrap text-base sm:text-lg font-bold text-center">{{ _("Reviews") }}</h3>                
+      <button class="text-primary text-lg sm:text-xl" onclick="add_review.showModal()">{{ _("Add Review") }}</button>
+      <h3 class="font-bold text-lg">{{ _("No reviews yet") }}</h3>
+      <span class="font-light">{{ _("Be the first to review this product and share your experience") }}</span>    
+    </div>
+  {% endif %}
+
+</div>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="scroll-smooth ">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% vitrin_head %}
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/jpg" href={{ store.icon }}>
+    <link rel="stylesheet" type="text/css" href="{{ 'output.css?v=100' | asset_url }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ 'glightbox.min.css' | asset_url }}" />
+
+    <style>
+      :root {
+        --primary-color: {{ store.settings.branding.colors.primary }};
+        --secondary-color: {{ store.settings.branding.colors.on_primary }};
+      }
+      #bcio-whatsapp-widget{
+        display: none !important;
+      } 
+
+    </style>
+    {% if user_custom_css %}
+      <link rel="stylesheet" href="{{ user_custom_css }}">
+    {% endif %}
+
+ 
+</head>
+
+<body data-theme="light ss"  style="direction:rtl">
+    
+    <style>
+
+      body,html {
+        font-family: 'AvenirRegular';
+      }
+      /* body,html {
+        font-family: {% if settings.fonts_name %}{{ strReplace('+', ' ', settings.fonts_name) }}{% else %}'Changa'{% endif %}, sans-serif;
+      } */
+    </style>
+
+    {% block top_scripts %}{% endblock %}
+    <div class="app h-full flex flex-col min-h-screen  {{ 'rtl' if session.lang.code == 'ar' else 'ltr' }}">
+         {% set isProductOptionsActivated = settings.product_card_productCardOptions_show_productCard_options %}
+         {% if isProductOptionsActivated %}
+             {% set colorOptionNameAr =  settings.product_card_productCardOptions_ar_color_name %} 
+             {% set colorOptionNameEn =  settings.product_card_productCardOptions_en_color_name %} 
+         {% endif %}
+        {% block header %}{% endblock %}
+        <div class="flex-grow">
+          {% block main_content %}{% endblock %} 
+        </div>
+        {% block footer %}{% endblock %}
+
+        {% include "components/popup_show_product.jinja" %}
+        {% include "components/popup_after_addto_cart.jinja" %}
+        {% include "components/image_preview.jinja" %}
+        {% if settings.whatsapp_number_number %}
+
+              <a href="https://wa.me/{{ settings.whatsapp_number_number }}" aria-label="Whatsapp" class="fixed flex justify-center items-center bottom-[25vh] bg-[#0ec12f] w-[58px] h-[55px]  sm:w-[76px] sm:h-[68px] right-0 z-[99] whatts-icon-container"  target="_blank">
+                <svg viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px]"><g clip-path="url(#clip0_5903_173254)"><path fill-rule="evenodd" clip-rule="evenodd" d="M28.4021 23.6731C27.9579 23.4508 25.7741 22.3764 25.3669 22.228C24.9598 22.0797 24.6637 22.0057 24.3676 22.4503C24.0715 22.8949 23.2202 23.8955 22.9611 24.1919C22.702 24.4883 22.4429 24.5255 21.9987 24.3031C21.5546 24.0808 20.1233 23.6118 18.4268 22.0984C17.1063 20.9206 16.2148 19.4661 15.9558 19.0214C15.6967 18.5767 15.9281 18.3363 16.1505 18.1149C16.3504 17.9159 16.5947 17.596 16.8168 17.3367C17.0389 17.0774 17.1129 16.892 17.261 16.5957C17.409 16.2991 17.335 16.0399 17.2239 15.8176C17.1129 15.5953 16.2245 13.4088 15.8544 12.5194C15.4939 11.6533 15.1277 11.7706 14.855 11.7569C14.5962 11.744 14.2998 11.7413 14.0038 11.7413C13.7076 11.7413 13.2264 11.8525 12.8192 12.2971C12.4121 12.7417 11.2646 13.8164 11.2646 16.0026C11.2646 18.189 12.8562 20.3011 13.0783 20.5975C13.3005 20.8941 16.2104 25.3805 20.6663 27.3045C21.726 27.7622 22.5534 28.0355 23.1985 28.2401C24.2625 28.5783 25.2308 28.5305 25.9961 28.4161C26.8495 28.2887 28.6241 27.3417 28.9943 26.3042C29.3644 25.2664 29.3644 24.3771 29.2533 24.1919C29.1423 24.0066 28.8462 23.8955 28.4021 23.6731ZM20.2975 34.7391H20.2915C17.6402 34.7381 15.0397 34.0257 12.7712 32.6796L12.2317 32.3593L6.63954 33.8263L8.13214 28.374L7.78088 27.8149C6.30183 25.4625 5.52062 22.7436 5.52182 19.9517C5.52505 11.8052 12.1533 5.17747 20.3033 5.17747C24.2499 5.17884 27.9596 6.71772 30.7493 9.51063C33.5389 12.3034 35.0743 16.0156 35.0728 19.9636C35.0695 28.1107 28.4413 34.7391 20.2975 34.7391ZM32.8724 7.38846C29.5162 4.0283 25.0528 2.17701 20.2973 2.17505C10.4989 2.17505 2.52426 10.1492 2.52034 19.9506C2.51906 23.0837 3.3376 26.1418 4.89327 28.8378L2.37134 38.0496L11.7951 35.5776C14.3916 36.9938 17.315 37.7403 20.2902 37.7413H20.2975H20.2976C30.0949 37.7413 38.0703 29.7663 38.0743 19.9648C38.076 15.2148 36.2287 10.7485 32.8724 7.38846Z" fill="white"></path></g><defs><clipPath id="clip0_5903_173254"><rect width="36" height="36.2812" fill="white" transform="translate(2.21405 2)"></rect></clipPath></defs></svg>
+              </a>
+  
+       {% endif %}
+    </div>
+
+    {% vitrin_body %}
+    {% block footer_scripts %}{% endblock %}
+    <script defer src="{{ 'app2.js?v=3.00' | asset_url }}"></script>  
+    <script defer  src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+
+    <script>
+     window.appDirection = '{% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}';
+  // hide default olyality points
+    function makeFunctionHead() {
+        const targetElement = document.querySelector('.loyalty_button_footer');
+        if (targetElement) {
+            targetElement.style.display = 'none';
+            observer.disconnect();
+        }
+   
+   }
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'childList') {
+                makeFunctionHead();
+            }
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,   
+        subtree: true, 
+    });
+
+    makeFunctionHead();
+    
+
+     const localsLayout = {
+        success_add_cart: "{{ _("Product successfully added to the cart") }}",
+        error:"{{ _("An error occurred, please try again") }}",
+        product_out_of_stock:"{{ _("Out of Stock") }}",
+        add_to_cart_2:"{{ _("Add to Cart") }}",
+        delete_promo_success:"{{  _("Coupon deleted successfully") }}",
+        free_shipping: "{{  _("Congratulations! Enjoy free shipping") }}",
+        remaining: "{{  _("Remaining") }}",
+        free_ship: "{{  _("for free shipping") }}",
+        empty_fields: "{{  _("Please fill in all fields") }}",
+
+        
+     }
+      const  store = {{ store | tojson }};
+
+
+ 
+      
+
+  
+    </script>
+  
+</body>
+</html>

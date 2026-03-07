@@ -1,0 +1,37 @@
+
+{% if store.settings.general.tax_settings.vat_number %}
+    <a {% if store.settings.general.tax_settings.tax_registration_certificate %}href="{{ store.settings.general.tax_settings.tax_registration_certificate }}"  target="_blank"{% endif %}  class="vat-number flex items-center  gap-2">
+        <div class="imageBoxRegister">
+        </div>
+        <div class="flex flex-col gap-2 text-[#fff]">
+            <span  class="text-[11px]">{{ _("VAT Number:") }}</span>
+            <span  class="text-[11px]">{{ store.settings.general.tax_settings.vat_number }}</span>   
+        </div>         
+    </a>
+{% endif %}    
+
+{% if store.settings.contact.business_center %}
+        <div class="flex items-center  gap-2"    >
+            <div class="imageBoxRegister">
+                <img src="{{ 'business_center.png' | asset_url }}" alt="bussiness center" class="w-[35px] object-contain">
+            </div>
+
+            <div class="flex flex-col gap-2 text-[#fff]">
+                <span  class="text-[11px]">{{ _("Business Platform") }}</span>
+                <span class="text-[11px]">{{ store.settings.contact.business_center }} </span>   
+            </div>
+        </div>
+{% endif %}
+
+
+{% if store.commercial_registration_number %}
+   <div class=" flex items-center  gap-2">
+        <div class="imageBoxRegister">
+            <img src="{{ 'comRegister.svg' | asset_url }}" alt="bussiness center" class="w-[35px] object-contain">
+        </div>
+        <div class="flex flex-col gap-2 text-[#fff]">
+           <span class="text-[11px]">{{ _("Commercial Registration") }}</span>
+           <span  class="text-[11px]">{{ store.commercial_registration_number }}</span>
+        </div>
+   </div>
+{% endif %}

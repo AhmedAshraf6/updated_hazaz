@@ -1,0 +1,73 @@
+<section section-id="{{ sectionId }}" class="special-cats my-5 lg:my-8 layout">
+  <div   class="grid grid-cols-3 gap-3 sm:gap-5">
+    {% for key,cat in settings.categories[:3] %}
+       <a 
+  class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
+  href="{{ cat.category.url }}">
+
+  <div class="sm:flex-1">
+    <div class="flex flex-col gap-2 sm:gap-3 border-primary border-r-4 pr-3">
+      <h5 class="text-xs sm:text-xl font-bold">{{ cat.category.name }}</h5>
+      <p class="text-sm sm:text-base leading-8">{{ cat.category_desc }}</p>
+    </div>
+  </div>
+  <div class="sm:flex-1 self-end h-full">
+    <img 
+      src="{{ cat.category.image_full_size }}" 
+      alt="{{ cat.category.name }}" 
+      class="w-full h-full object-contain"
+    >
+  </div>
+</a>
+    {% endfor %}
+  </div>
+  <div class="grid grid-cols-2  gap-3 sm:gap-5 mt-3 sm:mt-5">
+  {% for key,cat in settings.categories[3:5] %}
+        <a 
+  class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
+  href="{{ cat.category.url }}">
+
+  <div class="sm:flex-1">
+    <div class="flex flex-col gap-2 sm:gap-3 border-primary border-r-4 pr-3">
+      <h5 class="text-xs sm:text-xl font-bold">{{ cat.category.name }}</h5>
+      <p class="text-sm sm:text-base leading-8">{{ cat.category_desc }}</p>
+    </div>
+  </div>
+  <div class="sm:flex-1 self-end h-full">
+    <img 
+      src="{{ cat.category.image_full_size }}" 
+      alt="{{ cat.category.name }}" 
+      class="w-full h-full object-contain"
+    >
+  </div>
+</a>
+    {% endfor %}
+  </div>
+   <div class="grid grid-cols-3  gap-3 sm:gap-5 mt-3 sm:mt-5">
+    {% for key,cat in settings.categories[5:8] %}
+    <a 
+  class="flex flex-col sm:flex-row h-48 sm:h-64 gap-2 py-3 sm:py-5 px-3 sm:px-5 bg-base-200 rounded-2xl group overflow-hidden transform scale-100 transition-transform duration-1000 hover:scale-95"
+  href="{{ cat.category.url }}">
+
+  <div class="sm:flex-1">
+    <div class="flex flex-col gap-2 sm:gap-3 border-primary border-r-4 pr-3">
+      <h5 class="text-xs sm:text-xl font-bold">{{ cat.category.name }}</h5>
+      <p class="text-sm sm:text-base leading-8">{{ cat.category_desc }}</p>
+    </div>
+  </div>
+  <div class="sm:flex-1 self-end h-full">
+    <img 
+      src="{{ cat.category.image_full_size }}" 
+      alt="{{ cat.category.name }}" 
+      class="w-full h-full object-contain"
+    >
+  </div>
+</a>
+
+
+    {% endfor %}
+  </div>
+</section>
+<script>
+console.log({{ settings.categories| tojson }});
+</script>

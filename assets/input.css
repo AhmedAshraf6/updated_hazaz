@@ -1,0 +1,643 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Override DaisyUI's btn-primary to use the CSS variable */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #fff !important;
+  padding: 0 50px 0 50px;
+}
+.btn-outline {
+  border-color: var(--primary-color) !important;
+  padding: 0 50px 0 50px;
+}
+.btn-outline {
+  @apply text-base-content;
+}
+@font-face {
+  font-family: 'AvenirRegular';
+  src: url('AvenirArabic-Medium.ttf');
+}
+html {
+  overflow-x: hidden !important;
+}
+body {
+  font-family: 'AvenirRegular';
+  font-weight: normal;
+  overflow: hidden !important;
+}
+html {
+  overflow-x: hidden !important;
+}
+body {
+  font-family: 'AvenirRegular';
+  font-weight: normal;
+  overflow: hidden !important;
+}
+.btn-primary:hover,
+.btn-primary:disabled {
+  background-color: var(--primary-color);
+  opacity: 60%;
+}
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-color) !important;
+}
+.rotateIcon {
+  transform: rotate(180deg);
+}
+.layout {
+  @apply max-w-7xl mx-auto px-5;
+}
+/* Adding specificity */
+html,
+body,
+.my-scrollable-container {
+  scrollbar-width: thin !important;
+  scrollbar-color: #888 #f0f0f0 !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888 !important;
+  border-radius: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0 !important;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+.main-head.slidedown {
+  @apply fixed top-0 w-full bg-base-100 py-3 lg:py-5;
+}
+.main-head.slidedown {
+  animation: slidedown 0.6s forwards;
+}
+
+@keyframes slidedown {
+  from {
+    top: -250px;
+  }
+  to {
+    top: 0;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+.main-head.slidedown {
+  @apply text-base-content;
+}
+/* handle pagination inside swiper */
+.swiper-pagination .swiper-pagination-bullet {
+  @apply border-[2px]  w-[15px] h-[15px] rounded-full !bg-transparent opacity-[1];
+}
+.swiper-pagination .swiper-pagination-bullet {
+  border-color: var(--primary-color) !important;
+}
+.swiper-pagination .swiper-pagination-bullet-active {
+  background-color: var(--primary-color) !important;
+  opacity: 1;
+  width: 15px;
+  height: 15px;
+}
+
+/* horizontal scroll */
+.scroll_section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 300vw; /* Make the width large enough to accommodate all images */
+  display: flex;
+  justify-content: space-between; /* Ensures space between the images */
+  will-change: transform;
+  padding-left: 5vw; /* Adjust the padding as needed */
+  padding-right: 5vw;
+}
+/* horizontal scroll */
+
+.alert-error {
+  @apply bg-[#ff5861];
+}
+.alert-success {
+  @apply bg-[#00a96e];
+}
+.alert-info {
+  @apply bg-[#00b6ff];
+}
+
+/* swiper popup show */
+
+.mySwiper .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  @apply text-secondary !text-[12px];
+}
+.swiper-button-prev,
+.swiper-button-next {
+  @apply bg-primary rounded-md;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+/* .home_brands .swiper-slide:not(.swiper-slide-active) img {
+  opacity: 0.5;
+} */
+/* horizontal scroll */
+
+/* range slider */
+.rengeSLiderCon .noUi-handle {
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid var(--primary-color);
+  border-radius: 50%;
+}
+.rengeSLiderCon .noUi-handle::after {
+  content: none !important;
+  height: 0;
+}
+.rengeSLiderCon .noUi-handle::before {
+  content: none !important;
+  height: 0;
+}
+
+.rengeSLiderCon .noUi-connect {
+  background-color: var(--primary-color);
+}
+.rengeSLiderCon .noUi-horizontal {
+  height: 9px !important;
+  width: 95% !important;
+}
+
+/* all products */
+.global-attribute.active {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading_more_products svg {
+  animation: rotate 2s linear infinite;
+}
+.color-attribute.active {
+  position: relative; /* To position the inner circle */
+}
+
+.color-attribute.active {
+  @apply border-primary;
+}
+
+/* single product */
+.mySwiperProduct .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.mySwiperProduct .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari */
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.add-rate-section .collapse-title,
+:where(.collapse > input[type='checkbox']),
+:where(.collapse > input[type='radio']) {
+  min-height: 0rem !important;
+}
+
+/* cart */
+.mini_cart .products {
+  max-height: calc(100vh - 420px);
+  overflow: auto;
+}
+
+.card_design input[type='radio']:checked + .image-label {
+  border-color: var(--primary-color);
+}
+.steps .step-primary:after {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+.steps .step-primary + .step-primary:before {
+  background-color: var(--primary-color);
+}
+
+.cartPage .collapse-title::after {
+  left: 0;
+}
+[dir='ltr'] .cartPage .collapse-title::after {
+  right: 0;
+}
+.blog.mt-5.mb-5 {
+  @apply max-w-7xl mx-auto px-5;
+}
+.loyalty_button_footer {
+  display: none !important;
+}
+.divider-horizontal:before {
+  background-color: var(--primary-color) !important;
+  width: 4px !important;
+}
+.divider::after {
+  /* background-color: var(--primary-color) !important; */
+  /* width: 4px !important; */
+}
+.divider::before {
+  /* background-color: var(--primary-color) !important; */
+  /* width: 4px !important; */
+}
+
+details > summary:hover {
+  background-color: transparent !important;
+}
+
+/* add first swiper margin right */
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100px); /* Adjust the distance as needed */
+  }
+}
+
+/* Apply the animation to the icon */
+.swipe-icon {
+  animation: slide-right 2s ease-in-out infinite; /* Adjust duration and timing function */
+}
+.swipe-icon-con {
+  right: 17px;
+}
+[dir='ltr'] .swipe-icon-con {
+  right: 0;
+  left: 17px;
+}
+.featured_products .special_btn {
+  @apply px-[20px] sm:px-[50px];
+}
+
+.whatts-icon-container {
+  border-radius: 9px 0 0 9px;
+}
+.product_custom_variants .select-xs {
+  height: 1.2rem !important;
+  min-height: 1.2rem !important;
+}
+.color-attribute-product.active {
+  position: relative; /* To position the inner circle */
+}
+
+.color-attribute-product.active {
+  @apply border-primary;
+}
+.containerCountFake {
+  /* background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  text-align: center; */
+  /* position: relative; */
+  overflow: hidden;
+  width: 300px;
+}
+
+/* .containerCountFake::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #ffe066, #ffc700, #ff9800);
+  background-size: 200% 100%;
+  animation: gradientFlow 3s linear infinite;
+} */
+
+h2 {
+  color: #37474f;
+  margin-bottom: 25px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ffe066, #ffc700, #ff9800);
+  border-radius: 3px;
+}
+
+.views-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border-radius: 18px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6e6e6;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.views-counter:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.views-counter::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: linear-gradient(45deg, #ffc700, #ff9800, #ffc700, #ff9800);
+  background-size: 400% 400%;
+  z-index: -1;
+  animation: gradientShift 8s ease infinite;
+  opacity: 0.1;
+  border-radius: 22px;
+}
+
+.icon-container {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff4cc;
+  border-radius: 50%;
+  z-index: 0;
+  animation: pulse 2s infinite;
+}
+
+.views-icon {
+  width: 24px;
+  height: 24px;
+  color: #ffc700;
+  z-index: 1;
+  position: relative;
+}
+
+.counter-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.counter-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+#views-count {
+  font-size: 24px;
+  font-weight: 800;
+  color: #e6ac00;
+  min-width: 36px;
+  text-align: center;
+  transition: all 0.5s ease;
+}
+
+.counter-label {
+  font-size: 14px;
+  color: #78909c;
+  font-weight: 500;
+}
+
+.progress-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.progress-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #78909c;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background-color: #eceff1;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+#views-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #ffe066, #ffc700, #ff9800);
+  background-size: 200% 100%;
+  animation: gradientFlow 2s linear infinite;
+  transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.timer-icon {
+  width: 18px;
+  height: 18px;
+  animation: spin 5s linear infinite;
+  color: #ffc700;
+}
+
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  background-color: #ffc700;
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatParticle 4s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+    width: 4px;
+    height: 4px;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) translateX(20px);
+    opacity: 0;
+    width: 2px;
+    height: 2px;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+.bounce {
+  animation: bounce 0.6s ease;
+}
+
+.highlight {
+  animation: highlight 0.8s ease;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #ffe066;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 400px) {
+  .container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .views-counter {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .counter-content {
+    align-items: center;
+  }
+}

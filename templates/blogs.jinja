@@ -1,0 +1,174 @@
+{% extends "layout.jinja" %}
+
+
+{% block title %} {{ store.name }} -  {{ _("Blog") }} {% endblock %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+      {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("Blog") }
+                ] %}
+      {% include 'components/breadcrumbs.jinja' %}
+
+    {% if settings.banners_banner_blogs_page_image %}
+       {% set image = settings.banners_banner_blogs_page_image %}
+       {% include 'components/shared_banner.jinja' %}
+    {% endif %}
+
+    <div class="my-5 layout blogs_page">
+      <div class="blogs flex flex-wrap gap-3 sm:gap-5 justify-center">
+        
+      </div>
+       <div class="container-pagination flex justify-center items-center gap-3 my-4">  
+                <button  type="button" class="prev-btn w-[40px] h-[40px] rounded-full flex justify-center items-center border border-primary {% if session.lang.code == 'en' %}rotateIcon{% else %}''{% endif %} ">
+                    <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.3999 1C1.3999 1 6.1999 3.75655 6.1999 5.00115C6.1999 6.24575 1.3999 9 1.3999 9" stroke="#1E293B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button> 
+                <ul class="pagination-orders flex gap-3 flex-wrap justify-center ">
+                  
+                </ul>
+                <button  type="button" class="next-btn w-[40px] h-[40px] rounded-full flex justify-center items-center border border-primary {% if session.lang.code == 'en' %}rotateIcon{% else %}''{% endif %} ">
+                    <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.6001 1C6.6001 1 1.8001 3.75655 1.8001 5.00115C1.8001 6.24575 6.6001 9 6.6001 9" stroke="#1E293B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button> 
+        </div>
+     </div>
+
+{% endblock %}
+
+{% block footer_scripts %}
+<script>
+  let currentPage = 1;
+  let blogsPerPage = 3;
+  const blogs = {{ blogs | tojson  }};
+  console.log(blogs);
+  const tempBlogs = blogs.filter((blog)=> blog.slug !== "brands" && blog.slug !== "aboutus");
+
+
+  // Render current posts
+  const renderPosts = () => {
+    const indexOfLastPost = currentPage * blogsPerPage;
+    const indexOfFirstPost = indexOfLastPost - blogsPerPage;
+    const currentBlogs = tempBlogs.slice(indexOfFirstPost, indexOfLastPost);
+    let tempPosts = [];
+
+    const fetchPromises = currentBlogs.map(blog => {
+        const tempObj = {};
+        return zid.page.fetch(blog.id, blog.slug).then(res => {
+          
+            res.data.storePage.metafields.forEach(meta => {
+                switch (meta.slug) {
+                    case "ImageForBlog":
+                        tempObj.image = meta.value.full_size;
+                        break;
+                }
+            });
+            return { blog, tempObj };
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+
+    Promise.all(fetchPromises).then(results => {
+    
+        results.forEach(({ blog, tempObj }) => {
+                tempPosts += `                  
+                    <div class="card bg-base-100 w-96 shadow-xl">
+                        <figure class="h-40 md:h-48 lg:h-64 overflow-hidden">
+                            <img
+                            class="w-full h-full object-cover"
+                            src="${tempObj.image ? tempObj.image : '{{ "product-img.svg" | asset_url }}'}"
+                            alt="${blog.title}" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title">${blog.title}</h2>
+                            <div class="card-actions justify-start">
+                               <a  href="/blogs/${ blog.slug }" class="btn btn-primary !px-[10px]">{{ _("Read More") }}</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            
+        });
+
+        document.querySelector('.blogs_page .blogs').innerHTML = tempPosts;
+        handlePagination();
+    });
+};
+
+  // pagination 
+  const nextBtn = document.querySelector(".blogs_page .next-btn");
+  const prevBtn = document.querySelector(".blogs_page .prev-btn");
+  const pagantionOrder = document.querySelector(".blogs_page  .pagination-orders");
+      let pageNumbers = [];
+
+  const handlePagination = ()=>{
+       pageNumbers = [];
+
+        for (let i = 1; i <= Math.ceil(tempBlogs.length / blogsPerPage); i++) {
+            pageNumbers.push(i);
+        } 
+        if(pageNumbers.length <= 1){
+            pagantionOrder.innerHTML = '';
+            nextBtn.style.display = 'none';
+            prevBtn.style.display = 'none';
+            return;
+        }else{
+            nextBtn.style.display = 'flex';
+            prevBtn.style.display = 'flex';  
+        }
+        let pagination = '';
+        pageNumbers.forEach(number => {
+            pagination += `<li class="page-item cursor-pointer w-[40px] h-[40px] border border-primary text-primary !px-[0px] rounded-full w-[40px] h-[40px] flex justify-center items-center text-base font-normal transition ease-in-out duration-500 ${currentPage === number? 'text-secondary bg-primary ' : ''}" data-page="${number}">${number}</li>`;
+        });
+        pagantionOrder.innerHTML = pagination;
+            document.querySelectorAll('.blogs_page .pagination-orders .page-item').forEach(page => {
+                page.addEventListener('click', function() {
+                    document.querySelectorAll('.blogs_page  .pagination-orders .page-item').forEach(item => {
+                        item.classList.remove('activePagination');
+                    });
+
+                    this.classList.add('activePagination');
+
+                    // Update currentPage
+                    currentPage = parseInt(this.getAttribute('data-page'));
+                    renderPosts();
+                });      
+            }); 
+        
+  }
+  // Bind event listener for next button
+  nextBtn.addEventListener('click', function(e) {
+        if (currentPage < pageNumbers.length) {
+            currentPage++; 
+            renderPosts();
+        } else {
+            currentPage = 1; 
+            renderPosts();
+        }
+    });
+   prevBtn.addEventListener('click', function(e) {
+        if (currentPage <= 1) {
+          return;
+        } else {
+            currentPage--;
+            renderPosts();
+        }
+    });
+
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderPosts();
+ 
+  });
+</script>
+{% endblock %} 
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

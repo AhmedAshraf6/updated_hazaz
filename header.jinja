@@ -1,0 +1,611 @@
+<header class="z-[2] main-head w-full bg-base-100 top-0 asd" data-as="asd">
+
+       {# to make post request to change currency #}
+       <form action="/customer/lang-shipping-country" method="POST" id="lang-shipping-country" class="absolute">
+                     <input type="hidden" name="_token" value="{{ csrf_token }}" />
+                     <input id="country" type="hidden" value="{{session.lang.code}}" name="country" />
+                     <input id="language" type="hidden" name="language" value="ar" />
+                     <input id="redirect-to" type="hidden" name="redirect_to" value="{{ requestUri() }}" />
+                     <input id="input-change-session-currency" type="hidden" name="currency" value="{{ session.currency.code }}">
+                     <input id="input-change-session-currency-symbol" type="hidden" name="currency_symbol" value="{{ session.currency.symbol }}">
+       </form>
+       <div class="header hidden ">
+              <div class="real_modal">
+              {% set hideDestination = true %}{% set hideLanguage = true %}{% set hideCurrency = false %}
+              {% include 'vitrin:shared/region_settings_dialog.jinja' %}
+              </div>
+       </div>       
+
+       {# messages comes from zid #}
+       {% include 'vitrin:shared/store_messages.jinja' %}
+       {# annocnement bar #}
+        {% set ab_settings = settings %}
+        {% include 'components/header_announcement_bar.jinja' %}
+
+       {# top header #}
+       {% include 'components/header_top.jinja' %}
+
+       <div class="divider hidden lg:flex"></div>
+
+       {# bottom header #}
+       {% include 'components/header_bottom.jinja' %}
+
+       {# <div class="divider hidden lg:flex" style="heig ht:1px"></div> #}
+       {# responsive header #}
+       {% include 'components/header_responsive.jinja' %}
+   
+        
+</header>
+      <script>
+
+      const str = {{ store | tojson }};
+      const customer = {{ customer | tojson }};
+      const localss = {{ locals | tojson }};
+
+       const session = {{ session | tojson }};
+      console.log("store");
+      console.log(str);
+      console.log("customer");
+      console.log(customer);
+      console.log(session);
+ 
+       // handle currency change
+       const allCurrencies = document.querySelectorAll(
+       '.all_currencies .currency_box'
+       );
+       allCurrencies.forEach((currency) => {
+              currency.addEventListener('click', function (event) {
+                     document.querySelectorAll('.all_currencies svg').forEach((svg) => {
+                     svg.classList.add('hidden');
+                     });
+                     document
+                     .querySelectorAll('.all_currencies .currency_box')
+                     .forEach((cur) => {
+                            cur.classList.remove('active');
+                     });
+
+                     const selectedSvg = this.querySelector('svg');
+
+                     if (selectedSvg) {
+                     selectedSvg.classList.remove('hidden');
+                     }
+                     this.classList.add('active');
+              });
+       });
+
+       // action change currnecy
+        const saveBtns = document.querySelectorAll('.save_currency');
+
+      saveBtns.forEach((saveBtn) => {
+          saveBtn.addEventListener('click', function () {
+              const activeCurrencyBox = document.querySelector('.currency_box.active');
+
+              if (activeCurrencyBox) {
+                  const currencyCode = activeCurrencyBox.dataset.code;
+                  const currencySymbol = activeCurrencyBox.dataset.symbol;
+                  const countryCode = activeCurrencyBox.dataset.countrycode;
+                  const currencyFlag = activeCurrencyBox.dataset.flag;      
+
+                  // Optionally, close the modal after saving
+                  const currencyModal = document.getElementById('currencyModal');
+                  currencyModal.close();
+
+                  // real modal
+                  document.getElementById('inputCurrencyCode').value = currencyCode;
+                  document.getElementById('inputCurrencySymbol').value = currencySymbol;
+                  document.getElementById('inputCountryCode').value = countryCode;
+                  document.getElementById('modal-select-destination-city-save').click();
+              }
+              console.log('Button clicked');
+          });
+      });
+
+       //  handle search
+       function getProductFromSearch(value, searchResultSection, searchResultProducts, loadingSpinner,moreBtnSearch) {
+              if (!value) {
+                     searchResultProducts.innerHTML = '';
+                     searchResultSection.classList.add("hidden");
+                     loadingSpinner.classList.add("hidden");
+                     moreBtnSearch.classList.add("hidden");
+                     return;
+              }
+
+              searchResultProducts.innerHTML = ''; 
+              searchResultSection.classList.remove("hidden");
+              loadingSpinner.classList.remove("hidden");
+
+              zid.products.list({ search: value }, { showErrorNotification: true }).then((data) => {
+                     let productFromSearch = '';
+                     const productsCount = data.products.data.length;
+
+                     if (productsCount > 0) {
+                     data.products.data.slice(0, 3).forEach((pr) => {
+                            productFromSearch += `
+                            <a href="${pr.html_url}" class="search-card-box flex items-center gap-4">
+                                   <div class="avatar">
+                                          <div class="w-16 rounded">
+                                          <img 
+                                          src="${pr?.images?.length ? pr.images[0]?.image?.full_size : '{{ "product-img.svg" | asset_url }}'}"
+                                          />
+                                          </div>
+                                   </div>
+                                   <div class="search-info">
+                                          <h6 class="font-bold">${pr.name}</h6>
+                                          <div class="flex gap-2 mt-2 priceContainer">
+                                          <span class="${pr.formatted_sale_price ? "line-through text-xs" : "text-sm text-secondary"}">${pr.formatted_price}</span>
+                                          ${pr.formatted_sale_price ? `<span class="text-red-700 text-sm">${pr.formatted_sale_price}</span>` : ""}
+                                          </div>
+                                   </div>
+                            </a>`;
+                     });
+                     if(productsCount > 3){
+                         moreBtnSearch.classList.remove("hidden");
+                         moreBtnSearch.querySelector("a").href = `/products?search=${value}`;
+                     }
+
+                     searchResultProducts.innerHTML = productFromSearch;
+
+                     } else {
+                     searchResultSection.classList.remove("hidden");
+                     searchResultProducts.innerHTML = '<h2 class="text-base-content text-center w-full">{{ _("No products found") }}</h2>';
+                     }
+
+              }).catch((error) => {
+                    console.log(error);
+                     searchResultSection.classList.remove("hidden");
+                     searchResultProducts.innerHTML = '<h2 class="text-base-content text-center w-full">{{ _("An error occurred, please try again") }}</h2>';
+              }).finally(() => {
+                     loadingSpinner.classList.add("hidden");
+              });
+       }
+       function handleSearchResponsive(){
+              const searchIcon = document.querySelector('.search_responsive');
+              const searchBoxRes = document.querySelector('.search_box_responsive');
+
+            searchIcon.addEventListener('click',()=>{
+              searchBoxRes.classList.toggle('hidden');
+            })
+       };
+
+       function handleSearch2(){
+             document.querySelectorAll('.search_input').forEach((inputElement) => {
+                     const searchResultSection = inputElement.closest('.search-container').querySelector(".result_search_box");
+                     const searchResultProducts = inputElement.closest('.search-container').querySelector(".result_search");
+                     const loadingSpinner = inputElement.closest('.search-container').querySelector(".search_loading");
+                     const moreBtnSearch = inputElement.closest('.search-container').querySelector(".search_more_btn");
+
+                     inputElement.addEventListener('keyup', function(event) {
+                            const inputValue = event.target.value;
+                          
+                            getProductFromSearch(inputValue, searchResultSection, searchResultProducts, loadingSpinner,moreBtnSearch);
+                            if (event.key === 'Enter') {
+                              return;
+                            }
+                            
+                     });
+
+                  inputElement.addEventListener('keydown', function(event) {
+                        if (event.key === 'Enter') {
+                          console.log("entered");
+                            event.preventDefault(); // Prevent form submission (if inside a form)
+                            const searchQuery = inputElement.value.trim();
+                            if (searchQuery) {
+                                window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+                            }
+                        }
+                   });
+              });
+       };
+       
+       // handle sticky menu
+       const mainMenus = document.querySelectorAll('.main-head');
+       window.addEventListener('scroll', () => {
+              mainMenus.forEach(mainMenu => {
+                     if (window.scrollY > 1) {
+                     mainMenu.classList.add('fixed');
+                    //  mainMenu.classList.remove('mt-5');
+                    //  document.querySelector(".search_box_responsive").style.top = "78px";
+                     } else {
+                     mainMenu.classList.remove('fixed');
+                    //  mainMenu.classList.add('mt-5');
+                    //  document.querySelector(".search_box_responsive").style.top = "100px";
+
+                     }
+              });
+       });
+       
+       document.addEventListener("DOMContentLoaded",()=>{
+         handleSearch2();
+         handleSearchResponsive();
+       });
+    
+       // handle dark light mode
+       const themes = {
+              light: 'light',
+              dark: 'dark',
+       };
+
+       const inputTheme = document.querySelectorAll('.theme-controller');
+       let theme = localStorage.getItem('theme') || themes.light;
+       const darkModeText = document.querySelector('.dark_mode_text');
+
+       function applyTheme(theme) {
+              document.body.setAttribute('data-theme', theme);
+              localStorage.setItem('theme', theme);
+       }
+ 
+
+       function setThemeIcon(isDark) {
+              inputTheme.forEach((th)=> {
+                th.innerHTML = isDark ? getMoonIcon() : getSunIcon();
+              });
+              boxBgModeChange();
+       }
+
+       function boxBgModeChange() {
+              const isLight = theme === themes.light;
+               inputTheme.forEach((th)=> {
+                  th.style.backgroundColor = isLight ? "#000" : "#fff";
+                  th.style.color = isLight ? "#fff" : "#000";
+              });
+       }
+
+       function toggleTheme() {
+              theme = theme === themes.light ? themes.dark : themes.light;
+              applyTheme(theme);
+              setThemeIcon(theme === themes.dark);
+       }
+     
+       function getMoonIcon() {
+        if(darkModeText){
+          darkModeText.textContent = '{{ _("Night Mode") }}';
+        }
+       return `
+              <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            class="moonIcon w-full h-auto fill-neutral "
+                            >
+                            <rect x="0" y="0" width="24" height="24" fill="rgba(255, 255, 255, 0)" />
+                            <g
+                                   fill="none"
+                                   stroke="currentColor"
+                                   strokeDasharray="2"
+                                   strokeDashoffset="2"
+                                   strokeLinecap="round"
+                                   strokeWidth="2"
+                            >
+                                   <path d="M0 0">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="d"
+                                   begin="1.2s"
+                                   dur="0.2s"
+                                   values="M12 19v1M19 12h1M12 5v-1M5 12h-1;M12 21v1M21 12h1M12 3v-1M3 12h-1"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="stroke-dashoffset"
+                                   begin="1.2s"
+                                   dur="0.2s"
+                                   values="2;0"
+                                   />
+                                   </path>
+                                   <path d="M0 0">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="d"
+                                   begin="1.5s"
+                                   dur="0.2s"
+                                   values="M17 17l0.5 0.5M17 7l0.5 -0.5M7 7l-0.5 -0.5M7 17l-0.5 0.5;M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="stroke-dashoffset"
+                                   begin="1.5s"
+                                   dur="1.2s"
+                                   values="2;0"
+                                   />
+                                   </path>
+                                   <animateTransform
+                                   attributeName="transform"
+                                   dur="30s"
+                                   repeatCount="indefinite"
+                                   type="rotate"
+                                   values="0 12 12;360 12 12"
+                                   />
+                            </g>
+                            <g fill="currentColor">
+                                   <path d="M15.22 6.03L17.75 4.09L14.56 4L13.5 1L12.44 4L9.25 4.09L11.78 6.03L10.87 9.09L13.5 7.28L16.13 9.09L15.22 6.03Z">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="fill-opacity"
+                                   dur="0.4s"
+                                   values="1;0"
+                                   />
+                                   </path>
+                                   <path d="M19.61 12.25L21.25 11L19.19 10.95L18.5 9L17.81 10.95L15.75 11L17.39 12.25L16.8 14.23L18.5 13.06L20.2 14.23L19.61 12.25Z">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="fill-opacity"
+                                   begin="0.2s"
+                                   dur="0.4s"
+                                   values="1;0"
+                                   />
+                                   </path>
+                            </g>
+                            <g
+                                   fill="currentColor"
+                                   stroke="currentColor"
+                                   strokeLinecap="round"
+                                   strokeLinejoin="round"
+                                   strokeWidth="2"
+                            >
+                                   <path d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z" />
+                                   <set attributeName="opacity" begin="0.6s" to="0" />
+                            </g>
+                            <mask id="lineMdMoonFilledToSunnyFilledLoopTransition0">
+                                   <circle cx="12" cy="12" r="12" fill="#fff" />
+                                   <circle cx="18" cy="6" r="12" fill="#fff">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="cx"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="18;22"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="cy"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="6;2"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="r"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="12;3"
+                                   />
+                                   </circle>
+                                   <circle cx="18" cy="6" r="10">
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="cx"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="18;22"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="cy"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="6;2"
+                                   />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="r"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="10;1"
+                                   />
+                                   </circle>
+                            </mask>
+                            <circle
+                                   cx="12"
+                                   cy="12"
+                                   r="10"
+                                   fill="currentColor"
+                                   mask="url(#lineMdMoonFilledToSunnyFilledLoopTransition0)"
+                                   opacity="0"
+                            >
+                                   <set attributeName="opacity" begin="0.6s" to="1" />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="r"
+                                   begin="0.6s"
+                                   dur="0.4s"
+                                   values="10;6"
+                                   />
+                            </circle>
+                            </svg>`;
+       }
+
+       function getSunIcon() {
+          if(darkModeText){
+          darkModeText.textContent = '{{ _("Sun Mode") }}';
+        }
+       return `
+               <svg
+                                   xmlns="http://www.w3.org/2000/svg"
+                                   width="24"
+                                   height="24"
+                                   viewBox="0 0 24 24"
+                                   class="sunIcon w-full h-auto fill-neutral"
+                            >
+                                   <g
+                                   fill="none"
+                                   stroke="currentColor"
+                                   strokeLinecap="round"
+                                   strokeLinejoin="round"
+                                   strokeWidth="2"
+                                   >
+                                   <g strokeDasharray="2">
+                                   <path d="M12 21v1M21 12h1M12 3v-1M3 12h-1">
+                                          <animate
+                                          fill="freeze"
+                                          attributeName="stroke-dashoffset"
+                                          dur="0.2s"
+                                          values="4;2"
+                                          />
+                                   </path>
+                                   <path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5">
+                                          <animate
+                                          fill="freeze"
+                                          attributeName="stroke-dashoffset"
+                                          begin="0.2s"
+                                          dur="0.2s"
+                                          values="4;2"
+                                          />
+                                   </path>
+                                   </g>
+                                   <path
+                                   fill="currentColor"
+                                   d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z"
+                                   opacity="0"
+                                   >
+                                   <set attributeName="opacity" begin="0.5s" to="1" />
+                                   </path>
+                                   </g>
+                                   <g fill="currentColor" fillOpacity="0">
+                                   <path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z">
+                                   <animate
+                                          id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0"
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="0.6s;lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+6s"
+                                          dur="0.4s"
+                                          values="0;1"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.2s"
+                                          dur="0.4s"
+                                          values="1;0"
+                                   />
+                                   </path>
+                                   <path d="M13.61 5.25L15.25 4l-2.06-.05L12.5 2l-.69 1.95L9.75 4l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z">
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3s"
+                                          dur="0.4s"
+                                          values="0;1"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.2s"
+                                          dur="0.4s"
+                                          values="1;0"
+                                   />
+                                   </path>
+                                   <path d="M19.61 12.25L21.25 11l-2.06-.05L18.5 9l-.69 1.95l-2.06.05l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z">
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+0.4s"
+                                          dur="0.4s"
+                                          values="0;1"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.8s"
+                                          dur="0.4s"
+                                          values="1;0"
+                                   />
+                                   </path>
+                                   <path d="m20.828 9.731l1.876-1.439l-2.366-.067L19.552 6l-.786 2.225l-2.366.067l1.876 1.439L17.601 12l1.951-1.342L21.503 12z">
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3.4s"
+                                          dur="0.4s"
+                                          values="0;1"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="fill-opacity"
+                                          begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.6s"
+                                          dur="0.4s"
+                                          values="1;0"
+                                   />
+                                   </path>
+                                   </g>
+                                   <mask id="lineMdSunnyFilledLoopToMoonFilledLoopTransition1">
+                                   <circle cx="12" cy="12" r="12" fill="#fff" />
+                                   <circle cx="22" cy="2" r="3" fill="#fff">
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="cx"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="22;18"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="cy"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="2;6"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="r"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="3;12"
+                                   />
+                                   </circle>
+                                   <circle cx="22" cy="2" r="1">
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="cx"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="22;18"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="cy"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="2;6"
+                                   />
+                                   <animate
+                                          fill="freeze"
+                                          attributeName="r"
+                                          begin="0.1s"
+                                          dur="0.4s"
+                                          values="1;10"
+                                   />
+                                   </circle>
+                                   </mask>
+                                   <circle
+                                   cx="12"
+                                   cy="12"
+                                   r="6"
+                                   fill="currentColor"
+                                   mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"
+                                   >
+                                   <set attributeName="opacity" begin="0.5s" to="0" />
+                                   <animate
+                                   fill="freeze"
+                                   attributeName="r"
+                                   begin="0.1s"
+                                   dur="0.4s"
+                                   values="6;10"
+                                   />
+                                   </circle>
+                            </svg>`;
+       }
+
+      inputTheme.forEach((theme) => {
+        theme.addEventListener('click', toggleTheme);
+      });
+
+      if(darkModeText){
+         darkModeText.addEventListener('click', function() {
+           document.querySelector('.theme-controller').click();
+        });
+      }
+      applyTheme(theme);
+      setThemeIcon(theme === themes.dark);
+
+</script>

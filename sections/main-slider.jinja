@@ -1,0 +1,58 @@
+<section section-id="{{ sectionId }}" class="px-[20px]">
+  <div class="swiper main_slider " >
+    <div class="swiper-wrapper">
+      {% for slide in settings.slider %}
+        {% if slide.image %}
+          <a href="{{ slide.url_button }}" class="swiper-slide w-full">
+            <div class="relative aspect-ratio">
+              <div class="skeleton skeltonMain w-full h-full absolute" aria-hidden="true"></div>
+              
+              {% if slide.img_slider_mobile %}
+                <!-- Desktop Image -->
+                <img data-src="{{ slide.image }}"
+                    class="w-full hidden sm:block h-full max-w-full object-cover lazy rounded-[10px]"
+                    alt="Slide Image"
+                    onload="document.querySelector('.skeltonMain').remove()">
+                
+                <!-- Mobile Image -->
+                <img data-src="{{ slide.img_slider_mobile }}"
+                    class="w-full block sm:hidden h-full max-w-full object-cover lazy rounded-[10px]"
+                    alt="Slide Image"
+                    onload="document.querySelector('.skeltonMain').remove()">
+              {% else %}
+                <!-- Fallback Image -->
+                <img data-src="{{ slide.image }}"
+                    class="w-full h-auto max-w-full object-cover lazy rounded-[10px]"
+                    alt="Slide Image"
+                    onload="document.querySelector('.skeltonMain').remove()">
+              {% endif %}
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainSlider = document.querySelector('.main_slider');
+    if(mainSlider){
+      let swiper = new Swiper('.main_slider', {
+        slidesPerView: 1,
+        autoHeight: true,
+        spaceBetween: 16,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+            dynamicMainBullets: 5
+         }         
+      }); 
+    }
+  });
+</script>

@@ -1,0 +1,78 @@
+{% extends "layout.jinja" %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+  {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("All Questions") }
+                ] %}
+  {% include 'components/breadcrumbs.jinja' %}
+      {% if settings.banners_banner_question_page %}
+        {% set image = settings.banners_banner_question_page %}
+        {% include 'components/shared_banner.jinja' %}
+      {% endif %}
+      
+
+    <section class="my-5 layout allQuestions">
+      <div class="flex flex-col gap-3 sm:gap-5">
+          {% if product.questions is defined and product.questions is not empty and product.questions.data is defined and product.questions.data is not empty %}
+             {% for key, question in product.questions.data %}
+                <div class="collapse collapse-plus bg-base-200">
+                    <input type="radio" name="my-accordion-3" {% if key == 0 %}checked="checked"{% endif %} />
+                    <div class="collapse-title text-xl font-medium">{{ question.question }}</div>
+                    <div class="collapse-content">
+                    <p>{{ question.answers[0].answer }}</p>
+                    </div>
+                </div>
+             {% endfor %}
+          {% endif %}
+      </div>
+      {% if product.questions is defined and (product.questions.pages|length) > 1 %}
+        <div class="flex gap-3 mt-5 sm:mt-8">
+            <!-- Previous Page Link -->
+            <a 
+                class="join-item btn btn-outline {{ 'disabled pointer-events-none opacity-50' if product.questions.current_page == 1 else '' }}"  
+                {% if product.questions.current_page > 1 %}
+                href="/products-questions?id={{ product.id }}&page={{ product.questions.current_page - 1 }}"
+                {% endif %}
+                aria-label="{{ _("Previous") }}">
+                {{ _("Previous") }}
+            </a>
+
+            <div class="join">
+                {% for page in product.questions.pages %}
+                <a 
+                    class="join-item btn {{ 'disabled btn-active pointer-events-none opacity-50' if product.questions.current_page == page else '' }}" 
+                    {% if product.questions.current_page != page %}
+                    href="/products-questions?id={{ product.id }}&page={{ page }}"
+                    {% endif %}>
+                    {{ page }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- Next Page Link -->
+            <a 
+                class="join-item btn btn-outline {{ 'disabled pointer-events-none opacity-50' if product.questions.current_page == product.questions.last_page else '' }}" 
+                {% if product.questions.current_page < product.questions.last_page %}
+                href="/products-questions?id={{ product.id }}&page={{ product.questions.current_page + 1 }}"
+                {% endif %}
+                aria-label="{{ _("Next") }}">
+                {{ _("Next") }}
+            </a>
+        </div>
+        {% endif %}
+
+    </section>
+
+
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

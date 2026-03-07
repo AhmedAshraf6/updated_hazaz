@@ -1,0 +1,341 @@
+<div class="custom_gift_card border border-base-200 rounded-2xl p-4">
+
+    <button class="btn brn-outline w-full h-[50px] gift_card_btn {% if cart.gift_card_details | length > 0 %}hidden{% else %}flex{% endif %}" onclick="gift_card.showModal()">
+        {{ _("Send as a Gift") }}
+        <img src="{{ 'gift_card.gif' | asset_url }}" alt="gift card image" class="h-full"/>
+    </button>
+    {# gift card founded #}
+    <div class="gift_card_created {% if cart.gift_card_details | length > 0 %}block{% else %}hidden{% endif %}">
+      <div class="flex flex-col gap-3 sm:gap-5">
+        {# img #}
+       <div class="self-center">
+          <img src="{{ 'gift_card_3.gif' | asset_url }}" alt="gift card image" class="h-auto">
+       </div>
+        <div class="flex flex-wrap justify-between gap-3">
+          <span>{{ _("These products will be sent as a gift") }}</span>
+          <button type="button" onclick="removeGiftCard()" class="remove_gift_card">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="loading loading-infinity loading-sm hidden"></span>
+          </button>
+        </div>
+        {# details #}
+        <div class="flex flex-col gap-3 details">
+          <div class="flex items-center gap-2">
+              <span class="font-semibold">{{ _("Gift Sender's Name") }}:</span>
+              <span class="sender">{{cart.gift_card_details.sender_name}}</span>
+          </div>
+          <div class="flex items-center gap-2">
+              <span class="font-semibold">{{ _("Gift Receiver's Name") }}:</span>
+              <span class="receiver"> {{cart.gift_card_details.receiver_name}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dialog id="gift_card" class="modal">
+        <div class="modal-box ">
+            <form method="dialog">
+              <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <div class="flex flex-col justify-center gap-3 sm:gap-5 items-center mt-3 sm:mt-5">
+              <ul class="steps w-full">
+                <li class="step step-primary" >{{ _("Design") }}</li>
+                <li class="step" >{{ _("Preview") }}</li>
+                <li class="step" >{{ _("Finish") }}</li>
+              </ul>
+              <!-- Form first step -->
+              <form  id="makeGiftCard" class="step-container" class="flex flex-col gap-3 sm:gap-5" data-step="design_card">
+                <div class="flex flex-col gap-3">
+
+                    <label class="input input-bordered flex items-center gap-2">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            class="h-4 w-4 opacity-70">
+                            <path
+                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                        </svg>
+                        <input type="text" class="grow" placeholder="{{ _("Gift Sender's Name") }}" name="sender_name"/>
+                    </label>
+                    
+                    <label class="input input-bordered flex items-center gap-2">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            class="h-4 w-4 opacity-70">
+                            <path
+                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                        </svg>
+                        <input type="text" class="grow" placeholder="{{ _("Gift Receiver's Name") }}" name="receiver_name"/>
+                    </label>
+                    <label class="input input-bordered flex items-center gap-2">
+                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" class="fill-current">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7499 9.74506V10.0001C19.7505 10.7996 19.432 11.5664 18.8649 12.13L16.7499 14.2525C16.3554 14.6433 15.7196 14.6433 15.325 14.2525L15.25 14.17C15.1071 14.0242 15.1071 13.7908 15.25 13.645L17.8299 11.065C18.1053 10.7795 18.2562 10.3966 18.2499 10.0001V9.74506C18.2502 9.34529 18.091 8.96192 17.8074 8.68007L17.3199 8.19258C17.0381 7.90905 16.6547 7.74977 16.2549 7.75008H15.9999C15.6002 7.74977 15.2169 7.90905 14.935 8.19258L12.355 10.7501C12.2092 10.893 11.9758 10.893 11.83 10.7501L11.7475 10.6676C11.3567 10.273 11.3567 9.63717 11.7475 9.24257L13.87 7.11259C14.4374 6.55379 15.2037 6.2435 15.9999 6.2501H16.2549C17.0508 6.24947 17.8143 6.56513 18.3774 7.12759L18.8724 7.62259C19.4349 8.18567 19.7505 8.94918 19.7499 9.74506ZM10.4874 14.455L14.4549 10.4876C14.5254 10.4166 14.6212 10.3766 14.7212 10.3766C14.8212 10.3766 14.917 10.4166 14.9874 10.4876L15.5124 11.0126C15.5834 11.083 15.6234 11.1788 15.6234 11.2788C15.6234 11.3788 15.5834 11.4746 15.5124 11.5451L11.5449 15.5125C11.4745 15.5835 11.3787 15.6234 11.2787 15.6234C11.1787 15.6234 11.0829 15.5835 11.0124 15.5125L10.4874 14.9875C10.4165 14.9171 10.3765 14.8212 10.3765 14.7212C10.3765 14.6213 10.4165 14.5254 10.4874 14.455ZM14.1699 15.25C14.0241 15.107 13.7907 15.107 13.6449 15.25L11.0724 17.8075C10.7888 18.0929 10.4023 18.2522 9.99996 18.2499H9.74496C9.34518 18.2503 8.96182 18.091 8.67998 17.8075L8.19248 17.32C7.90896 17.0381 7.74967 16.6547 7.74999 16.255V16C7.74967 15.6002 7.90896 15.2168 8.19248 14.935L10.7574 12.355C10.9004 12.2092 10.9004 11.9759 10.7574 11.83L10.6749 11.7475C10.2804 11.3567 9.64457 11.3567 9.24997 11.7475L7.13499 13.87C6.56794 14.4337 6.24937 15.2004 6.25 16V16.2625C6.25137 17.0558 6.56687 17.8162 7.12749 18.3774L7.62249 18.8724C8.18557 19.4349 8.94909 19.7506 9.74496 19.7499H9.99996C10.79 19.7546 11.55 19.4473 12.1149 18.8949L14.2524 16.7575C14.6433 16.3628 14.6433 15.7271 14.2524 15.3325L14.1699 15.25Z" />
+                        </svg>
+                        <input type="url" class="grow" placeholder="{{ _("Attach Link (Video or Audio)") }}" name="media_link"/>
+                    </label>
+                    <textarea placeholder="{{ _("Attach Message") }}" name="gift_message" class="textarea textarea-bordered textarea-md w-full"></textarea>
+                    <div class="flex flex-col gap-2 card_design_section">
+                      <span>{{ _("Design Card") }}</span>
+                      <div class="card_design flex flex-wrap gap-3">                        
+                          
+                      </div>
+                
+                    </div>
+                    
+                </div>             
+                {# actions #}
+                <div class="flex gap-3 justify-end mt-3 sm:mt-5">
+                  <button class="btn btn-primary" type="button" onclick="checkBeforeMoving()">{{ _("Next") }}</button>
+                </div>
+              </form>
+              {# preview second step #}
+              <div class="preview_card step-container  hidden w-min overflow-hidden "  data-step="preview_card">
+                 <div class="flex flex-col gap-3 sm:gap-5 preview_card_section">
+                 </div>           
+                    {# actions #}
+                    <div class="flex gap-3 mt-3 sm:mt-5">
+                        <button class="btn btn-outline flex-1" type="button" onclick="changeStep('design_card','{{ _("Design") }}')">{{ _("Previous") }}</button>
+                        <button class="btn btn-primary flex-1" type="button" onclick="changeStep('review_card','{{ _("Finish") }}')">{{ _("Next") }}</button>
+                    </div>
+              </div>
+              {# review third step #}
+              <div class="review_card step-container hidden w-min"  data-step="review_card">
+                    <div class="flex flex-col gap-3 sm:gap-5">
+                        <div class="flex flex-col  gap-3">
+                          <p class="text-base sm:text-lg leading-8">{{ _("Products will be wrapped as a gift with a greeting card") }}</p>
+                          <p class="text-base sm:text-lg leading-8">{{ _("The invoice will be sent to your email and will not be included with the order") }}</p>
+                        </div>
+                        {# actions #}
+                        <div class="flex gap-3 mt-3 sm:mt-5">
+                          <button class="btn btn-outline flex-1" type="button" onclick="changeStep('preview_card','{{ _("Preview") }}')">{{ _("Previous") }}</button>
+                          <button class="btn btn-primary flex-1 relative" type="button" onclick="saveGiftCard()">
+                                     {{ _("Save") }}
+                                     <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
+                          </button>
+                        </div>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </dialog>
+</div>
+<script>
+const removeGiftCard = () => {
+    const button = document.querySelector('.custom_gift_card .remove_gift_card');
+    const svgIcon = button.querySelector('svg');
+    const loadingSpinner = button.querySelector('.loading');
+
+    svgIcon.classList.add('hidden');
+    loadingSpinner.classList.remove('hidden');
+
+    zid.cart
+        .removeGiftCard({ showErrorNotification: true })
+        .then(function (response) {
+            if (response) {
+                alertMessage('{{ _("Gift card removed successfully") }}', 'success');
+                document.querySelector(".custom_gift_card .gift_card_created").classList.add('hidden');
+                document.querySelector(".custom_gift_card .gift_card_btn").classList.remove('hidden');
+            }
+        })
+        .catch(function (error) {
+            alertMessage(localsLayout.error, 'error');
+        })
+        .finally(function () {
+              loadingSpinner.classList.add('hidden');
+              svgIcon.classList.remove('hidden');
+        });
+};
+
+  const checkBeforeMoving = () => {
+    const sender_name = document.querySelector('input[name="sender_name"]').value;
+    const receiver_name = document.querySelector('input[name="receiver_name"]').value;
+    if (!sender_name || !receiver_name) {
+              alertMessage('{{ _("Please fill in the recipient's and sender's names") }}', 'error');
+              return;
+    }
+    updatePreviewSection();
+    changeStep('preview_card','{{ _("Preview") }}');
+  }
+  function updatePreviewSection() {
+     const customGiftSection = document.querySelector('.custom_gift_card');
+     const previewCardSection = customGiftSection.querySelector('.preview_card_section');
+     const senderName = customGiftSection.querySelector('input[name="sender_name"]').value;
+     const receiverName = customGiftSection.querySelector('input[name="receiver_name"]').value;
+     const mediaLink = customGiftSection.querySelector('input[name="media_link"]').value;
+     const giftMessage = customGiftSection.querySelector('textarea[name="gift_message"]').value;
+     const selectedImage = customGiftSection.querySelector('input[name="card_design"]:checked');
+     previewCardSection.innerHTML = '';
+         if(selectedImage){
+          console.log(selectedImage);
+        const element = `<div>
+                            <img src="${selectedImage.value}" class="w-full h-auto" />
+                         </div>`;
+       previewCardSection.insertAdjacentHTML('beforeend', element);                
+     }
+     if(senderName){
+        const element = `<div class="flex items-center gap-3 flex-wrap">
+                            <div class="flex gap-1 badge badge-primary bg-primary items-center rounded-md border-primary text-secondary">
+                             
+                               {{ _("Sender") }}
+                            </div>
+                            <span class="font-semibold">${senderName}</span>
+                         </div>`;
+       previewCardSection.insertAdjacentHTML('beforeend', element);                
+     }
+     if(receiverName){
+        const element = `<div class="flex items-center gap-3 flex-wrap">
+                            <div class="flex gap-1 badge badge-primary bg-primary items-center rounded-md border-primary text-secondary">
+                            
+                               {{ _("Receiver") }}
+                            </div>
+                            <span class="font-semibold">${receiverName}</span>
+                         </div>`;
+       previewCardSection.insertAdjacentHTML('beforeend', element);                
+     }
+     if(mediaLink){
+        const element = `<div class="flex items-center gap-3 flex-wrap">
+                            <div     class="flex gap-1 badge badge-primary bg-primary items-center rounded-md border-primary text-secondary whitespace-nowrap line-clamp-2">
+                              
+                               {{ _("Video / Audio") }}
+                            </div>
+                            <span class="font-semibold">${mediaLink}</span>
+                         </div>`;
+       previewCardSection.insertAdjacentHTML('beforeend', element);                
+     }
+     if(giftMessage){
+        const element = `<div class="flex items-center gap-3 flex-wrap">
+                            <div class="flex gap-1 badge badge-primary bg-primary items-center rounded-md border-primary text-secondary">
+                                 
+                               {{ _("Message") }}
+                            </div>
+                            <span class="font-semibold">${giftMessage}</span>
+                         </div>`;
+       previewCardSection.insertAdjacentHTML('beforeend', element);                
+     }
+ 
+    
+  }
+  function changeStep(step,stepIndc) {
+      const steps = document.querySelectorAll('.custom_gift_card .step-container');
+      steps.forEach((stepContainer) => {
+          if (stepContainer.dataset.step === step) {
+              stepContainer.classList.remove('hidden'); 
+          } else {
+              stepContainer.classList.add('hidden'); // Hide others
+          }
+      });
+      const stepIndicators = document.querySelectorAll('.steps .step');
+      let isCurrentStep = false;
+
+      stepIndicators.forEach((stepIndicator) => {
+          if (!isCurrentStep) {
+              stepIndicator.classList.add('step-primary'); // Mark current and previous steps as active
+          } else {
+              stepIndicator.classList.remove('step-primary'); // Remove active from future steps
+          }
+
+          // Check if this step is the current step
+          if (stepIndicator.textContent.trim() === stepIndc) {
+              isCurrentStep = true;
+          }
+      });
+
+  }
+  const showCreatedGiftCard = (senderName,receiverName)=>{
+    document.querySelector(".custom_gift_card .gift_card_created").classList.remove('hidden');
+    document.querySelector(".custom_gift_card .gift_card_btn").classList.add('hidden');
+    document.querySelector(".custom_gift_card .sender").textContent = senderName;
+    document.querySelector(".custom_gift_card .receiver").textContent = receiverName;
+  }
+  function saveGiftCard() {
+    const makeGiftCard = document.getElementById('makeGiftCard');
+        const loadingIndicator = document.querySelector('.custom_gift_card .loading');
+        // Check if progress indicator is not hidden
+        if (!loadingIndicator.classList.contains('hidden')) {
+            return;
+        }
+
+
+    const formData = new FormData(makeGiftCard);
+              const data = {};
+
+          formData.forEach((value, key) => {
+              data[key] = value.trim();       
+
+          });
+           const selectedImage = document.querySelector('input[name="card_design"]:checked');
+ 
+          const payload = {
+            giftInfo: {
+              sender_name: data.sender_name,
+              receiver_name: data.receiver_name,
+              media_link: data.media_link || '', // Add media_link if applicable
+              gift_message: data.gift_message || null, // Add gift_message if applicable
+              card_design: data.card_design || '', // Add card_design if applicable
+            },
+          };
+          const {sender_name,receiver_name} = data;
+ 
+          sendGiftCardData(payload);
+          async function sendGiftCardData(data) {
+              // Show the loading overlay
+              loadingIndicator.classList.remove('hidden');
+
+              try {
+              const response = await fetch('/api/v1/cart/submit-gift-card', {
+                  method: 'POST',
+                  headers: {
+                  'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data),
+              });
+           
+              // Check if the response is not OK (i.e., 2xx status code)
+              if (!response.ok) {
+                  const errorText = await response.text();
+                  alertMessage(errorText, 'error');
+                  
+              }
+
+              const responseData = await response.json();
+              if (responseData.status === 'success') {
+                  alertMessage(responseData.data.message, 'success');
+                  showCreatedGiftCard(sender_name,receiver_name);
+                  document.getElementById('gift_card').close()
+                  changeStep('design_card','{{ _("Design") }}');
+                  makeGiftCard.reset();
+              } else {
+                  alertMessage(responseData.data.message, 'error');
+              }
+              } catch (error) {
+                  alertMessage(localsLayout.error, 'error');
+              } finally {
+                  loadingIndicator.classList.add('hidden');
+              }
+          }
+  }
+   
+  const getImagesCardsFromZid =()=>{
+    const inputs = document.querySelectorAll('.gift-card .gift-card__design input');
+    const cardDesignSection = document.querySelector('.card_design_section');
+    const cardDesignRendered = document.querySelector('.card_design');
+    if(inputs.length > 0){
+      inputs.forEach( (inp,index) =>{
+        const element = `<input type="radio" id="image${index}" name="card_design" value="${inp.value}" class="hidden ">
+                    <label for="image${index}" class="image-label cursor-pointer border-2 border-transparent p-1 rounded-md transition-all duration-300 ">
+                      <img src="${inp.value}" alt="Image ${index}" class="max-w-[100px] h-auto">
+                    </label>`;
+        cardDesignRendered.insertAdjacentHTML('beforeend', element);                
+      })            
+    }else{
+      cardDesignSection.classList.add('hidden');
+    }
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    getImagesCardsFromZid();
+  })
+</script>

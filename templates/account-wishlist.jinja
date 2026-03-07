@@ -1,0 +1,44 @@
+{% extends "layout.jinja" %}
+
+{% block header %} {% include 'header.jinja' %} {% endblock %}
+
+{% block main_content %}
+    {% set breadcrumbs = [
+        { label: _("Home"), url: '/' },
+        { label: _("Wishlist") }
+    ] %}
+    {% include 'components/breadcrumbs.jinja' %}
+
+    <div class="my-5 layout favourite_page">
+       <div class="grid grid-cols-1 lg:grid-cols-4 mt-5 sm:mt-8 gap-3 sm:gap-5">
+         <div class="col-span-1">
+           {% include "components/profile_section_dropdown.jinja" %}
+         </div>
+         <div class="col-span-3">
+           {% if wishlist.data|length > 0 %}
+            <div class="flex gap-2">
+                <div class="divider divider-horizontal divider-start m-0 w-auto"></div>
+                <h1 class="text-lg sm:text-xl font-bold">{{ _("Wishlist") }}</h1>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 mt-3 sm:mt-5">
+               {% for product in wishlist.data %}
+                  {% set index = loop.index0 %}
+                  {% include 'components/product-card.jinja' %}
+               {% endfor %}
+            </div>
+           {% else %}
+            <div class="flex flex-col gap-5 items-center justify-center">
+              <div class="w-full max-w-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="w-full h-auto" viewBox="0 0 731.50285 668.45534" role="img"><path d="m507.15272,667.41724h-218.64718c-28.48961,0-51.66784-23.17792-51.66784-51.66784V51.66784c0-28.48992,23.17823-51.66784,51.66784-51.66784h218.64718c28.48992,0,51.66784,23.17792,51.66784,51.66784v564.08156c0,28.48992-23.17792,51.66784-51.66784,51.66784Z" fill="#2f2e41" stroke-width="0"/><path d="m507.37555,653.4731h-219.09284c-21.37703,0-38.76852-17.3918-38.76852-38.76852V49.54354c0-21.37672,17.39149-38.76852,38.76852-38.76852h219.09284c21.37672,0,38.76852,17.3918,38.76852,38.76852v565.16104c0,21.37672-17.3918,38.76852-38.76852,38.76852Z" fill="#fff" stroke-width="0"/><path d="m432.05565,47.53684h-69.7207c-8.03824,0-14.57796-6.53941-14.57796-14.57796s6.53972-14.57796,14.57796-14.57796h69.7207c8.03855,0,14.57796,6.53941,14.57796,14.57796s-6.53941,14.57796-14.57796,14.57796Z" fill="#2f2e41" stroke-width="0"/><path d="m394.58718,373.50182l-.05565-.05565-.05565.05565c-2.70778-2.70556-7.0961-2.70222-9.80166.00557-2.70556,2.7089-2.76009,7.15175-.05231,9.85731h0l9.91629,9.90628,9.90961-9.91852h0c2.70556-2.70889,2.6488-7.15175-.05787-9.85731-2.70778-2.70556-7.0961-2.70222-9.80166.00557h0l-.00111.00111Z" fill="#6c63ff" stroke-width="0"/></svg>
+              </div>
+              <p>{{ _("You have no products in your wishlist") }}</p>
+              <a href="/products" class="btn btn-outline !px-[10px]">{{ _("Shop Now") }}</a>
+            </div>
+           {% endif %}
+         </div>
+       </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.jinja' %} {% endblock %}

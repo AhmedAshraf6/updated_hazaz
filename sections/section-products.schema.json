@@ -1,0 +1,57 @@
+{
+  "name": {
+    "ar": "أفضل المنجات",
+    "en": "Best products"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "title"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "اسم الزر",
+        "en": "button text"
+      },
+      "id": "more_text"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": "عنوان الزر",
+        "en": "Button url"
+      },
+      "id": "btn_url"
+    },
+    {
+      "type": "checkbox",
+      "label": {
+        "ar": "",
+        "en": ""
+      },
+      "noLabel": true,
+      "option": {
+        "ar": "عرض زر  ",
+        "en": "Display button more products"
+      },
+      "id": "display_more"
+    },
+    {
+      "type": "products",
+      "label": {
+        "ar": "اختر قائمة المنتجات ",
+        "en": "Select category products"
+      },
+      "id": "products"
+    }
+  ],
+  "section_id": "8c31c44a-ea45-493e-be29-9d82dc170a7c",
+  "template": "sections/section-products.jinja"
+}

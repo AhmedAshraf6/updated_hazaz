@@ -1,0 +1,715 @@
+{% extends "layout.jinja" %}
+
+{% block title %} {{ store.name }} -  {{ _("Cart") }} {% endblock %}
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+      
+     {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("Shopping Cart") }
+                ] %}
+     {% include 'components/breadcrumbs.jinja' %}
+
+    {% if settings.banners_banner_cart_page_image %}
+       {% set image = settings.banners_banner_cart_page_image %}
+       {% include 'components/shared_banner.jinja' %}
+    {% endif %}
+
+    <div class="my-5 layout cartPage">
+
+            <div class="cart_page hidden">
+                <h1 class="text-lg sm:text-xl font-bold">{{ _("Shopping Cart") }}</h1>
+                {# alert loyality points #}
+                {% include "components/cart_loyality_alert.jinja" %}
+                <div class="mt-5 sm:mt-8 gap-3 sm:gap-5">
+                    {# products and promo code #}
+
+                    <div class="flex flex-col gap-3 sm:gap-5" id="template_for_cart_products_list_custom">
+            
+                    </div>
+                    {# cart info #}
+                 
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 cart_info mt-3 sm:mt-5 ">
+                      <div class="flex flex-col gap-5 sm:gap-8">
+                        {# info box #}
+                        <div class="flex flex-col gap-3 border border-base-200 rounded-2xl p-4 info_box ">
+                           <div tabindex="0" class="collapse collapse-arrow">
+                                <input type="checkbox" class="peer" checked/>
+                                <div class="collapse-title px-0 font-semibold">{{ _("Do you have a discount code") }}</div>
+                                <div class="collapse-content p-0">  
+                                    {% include "components/cart_promocode.jinja" %}
+                                </div>
+                            </div>
+                           <div tabindex="0" class="collapse collapse-arrow mb-3 loyality-section" >
+                                <input type="checkbox" class="peer" checked/>
+                                <div class="collapse-title px-0 font-semibold">{{ _("Redeem reward points from your balance") }}</div>
+                                <div class="collapse-content p-0">  
+                                   {{ _("You have") }} <span class="points font-semibold"></span> {{ _("Reward Points") }}
+                                   {# replace points #}
+                                   {% if customer %}
+                                    <form id="loyalty-points-form" class="loyalty-points-replace mt-3 {% if cart.loyalty_applied_redemption_method %}hidden{% else %}block{% endif %}">
+                                        <span class="text-sm font-light">{{ _("Redeem points to earn rewards for this order") }}</span>
+                                        <div class="flex gap-2 mt-2">
+                                                <select class="select select-bordered w-full max-w-xs text-xs" name="redemptionMethod">
+                                                    <option disabled selected value="">{{ _("Choose") }}</option>                                             
+                                                </select>
+                                                <button type="submit" style="width:65px;padding:0" class="btn btn-primary relative flex  h-[48px] justify-center items-center" disabled>
+                                                        <div class="text">{{ _("Use") }}</div>
+                                                        <span class="loading loading-infinity loading-sm hidden absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"></span>
+                                                </button>
+                                        </div>
+                                    </form>
+                                    {% else %}
+                                    <div class="flex justify-between flex-wrap items-center gap-3">
+                                      <span class="text-sm">{{ _("Log in to view reward points") }}</span>
+                                      <a href="/auth/login" class="btn btn-outline !px-[20px]">
+                                       {{ _("Log in") }}
+                                      </a>
+                                    </div>
+                                   {% endif %}
+                                   
+                                   
+                                   {# after loyality created #}
+                                   <div class="loyalty-points-created  mt-3 {% if cart.loyalty_applied_redemption_method %}block{% else %}hidden{% endif %}"> 
+                                   
+                                     <div class="flex  gap-2" >
+                                        <span class="message_loyality_created border p-2 rounded-md font-semibold m">
+                                          {{ _("Used") }} {{  cart.loyalty_applied_redemption_method.points_to_redeem }} {{ _("points to get a discount") }} {{  cart.loyalty_applied_redemption_method.reward.discount_amount }} {{ session.currency.symbol }}
+                                        </span>
+                                        <button style="width:65px" class="btn btn-error self-start relative flex !px-[0px] !max-w-[65px] h-[48px] justify-center items-center" onclick="deleteLoyaltyPoints(event)">
+                                            <span class="text">{{ _("Delete") }}</span>
+                                                    <span class="loading loading-infinity loading-sm hidden absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"></span>
+                                        </button>                                     
+                                     </div>
+                                   </div>
+
+                                </div>
+                            </div>
+                            <div class="totals_box flex flex-col gap-3">                              
+                            </div>
+                            <a href="{% if customer %}/checkout/choose-address-and-shipping{% else %}/auth/login?redirect_to=/checkout/choose-address-and-shipping{% endif %}" class="btn btn-primary" >{{ _("Proceed to Checkout") }}</a>
+                            <div>{% include 'vitrin:checkout/apple-pay-quick-checkout.jinja' %}</div>
+
+                        </div>
+                         
+                      </div>
+                      <div class="flex flex-col gap-5">
+                          {# gift card #}
+                        {% if store.settings.checkout.gift_order_settings.is_gift_order_enabled == '1' %}
+                            <div class="hidden">
+                                {% include 'vitrin:cart/gift-card.jinja' %}
+                            </div>
+                        {% endif %}
+                        {# <div class="flex flex-col gap-3 border border-base-200 rounded-2xl p-4 ">
+                          {% include 'vitrin:cart/loyalty_widget.jinja' %}
+                        </div> #}
+
+                        {# free shipping #}
+                        <div class="flex flex-col gap-3 border border-base-200 rounded-2xl p-4">
+                            <div class="mt-5 hidden cart-discount-rule-wrapper free-shipping-rule-section">
+                                <div class="flex items-center gap-3">
+                                <div class="message free-shipping-rule-message"></div>
+                                    <img src="{{ 'cart_shopping.gif' | asset_url }}" class="h-[25px] rounded-full"  />
+                                </div>
+
+                                <div class="flex mt-3 discount-progress-linear bg-[#c2c7cc] h-[10px] rounded-[20px]">
+                                <div class="progress-bar free-shipping-rule-progress bg-primary px-[2px] py-[3px] rounded-r-[20px] rounded-l-[20px]" ></div>
+                                <svg
+                                    width="25"
+                                    height="24"
+                                    viewBox="0 0 25 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="self-center"
+                                >
+                                    <rect x="0.568115" y="0.5" width="23" height="23" rx="11.5" fill="white" />
+                                    <rect
+                                    x="0.568115"
+                                    y="0.5"
+                                    width="23"
+                                    height="23"
+                                    rx="11.5"
+                                    stroke="#0A3254"
+                                    />
+                                    <path
+                                    d="M16.9244 15.4375C16.9244 15.8519 16.7503 16.2493 16.4403 16.5424C16.1304 16.8354 15.71 17 15.2717 17C14.8334 17 14.413 16.8354 14.1031 16.5424C13.7932 16.2493 13.619 15.8519 13.619 15.4375C13.619 15.0231 13.7932 14.6257 14.1031 14.3326C14.413 14.0396 14.8334 13.875 15.2717 13.875C15.71 13.875 16.1304 14.0396 16.4403 14.3326C16.7503 14.6257 16.9244 15.0231 16.9244 15.4375ZM10.3137 15.4375C10.3137 15.8519 10.1395 16.2493 9.82961 16.5424C9.51967 16.8354 9.0993 17 8.66098 17C8.22267 17 7.8023 16.8354 7.49236 16.5424C7.18242 16.2493 7.0083 15.8519 7.0083 15.4375C7.0083 15.0231 7.18242 14.6257 7.49236 14.3326C7.8023 14.0396 8.22267 13.875 8.66098 13.875C9.0993 13.875 9.51967 14.0396 9.82961 14.3326C10.1395 14.6257 10.3137 15.0231 10.3137 15.4375Z"
+                                    stroke="#595959"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    />
+                                    <path
+                                    d="M13.6191 15.4375H10.3138M5.35571 7H11.9664C12.9012 7 13.3686 7 13.6588 7.275C13.9497 7.54875 13.9497 7.99063 13.9497 8.875V14.1875M14.2802 8.5625H15.4708C16.0195 8.5625 16.2938 8.5625 16.5212 8.68438C16.7487 8.80563 16.8895 9.02812 17.1717 9.47312L18.2949 11.2419C18.4351 11.4631 18.5051 11.5744 18.5415 11.6969C18.5772 11.82 18.5772 11.9488 18.5772 12.2069V13.875C18.5772 14.4594 18.5772 14.7513 18.4443 14.9688C18.3573 15.1113 18.2321 15.2296 18.0814 15.3119C17.8513 15.4375 17.5426 15.4375 16.9245 15.4375M5.35571 12.625V13.875C5.35571 14.4594 5.35571 14.7513 5.48859 14.9688C5.57562 15.1113 5.70079 15.2296 5.85152 15.3119C6.08157 15.4375 6.39029 15.4375 7.0084 15.4375M5.35571 8.875H9.32215M5.35571 10.75H8.00001"
+                                    stroke="#595959"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    />
+                                </svg>
+                                </div>
+                            </div>
+                        </div>
+                      
+                         {# custom gift card #}
+                        {% if store.settings.checkout.gift_order_settings.is_gift_order_enabled == '1' %}
+                            {% include "components/gift_card.jinja" %}
+                        {% endif %}
+                        {# payment tappy and tamara #}
+                        <div>{% include 'vitrin:cart/payment_widgets.jinja' %}</div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            {# if cart is empty #}
+            <div class="cart-empty justify-center hidden">
+                <div class="flex flex-col items-center gap-3">
+                   <img src="{{ 'empty_cart_page.gif' | asset_url }}" />
+                    <h1 class="text-lg sm:text-xl font-semibold">{{ _("Cart is empty") }}</h1>
+                    <div>
+                        <a href="/" class="btn btn-outline">
+                            {{ _("Back to Shopping") }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {# loading indicator #}
+            <div class="loading_indicator  flex justify-center items-center h-full">
+              <span class="loading loading-spinner loading-lg "></span>
+            </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+{% block footer_scripts %}
+    {{ cart_view_scripts| safe }}
+    <script>
+        console.log("cart page");
+        console.log({{ cart | tojson}});
+        const cart = {{ cart | tojson}};
+        let activeCartPage = document.querySelector('.cartPage');
+        
+     
+
+        // fetch products
+        async function fetchCartPageProducts() {
+            const loadingIndicatorCart = activeCartPage.querySelector(
+                '.loading_indicator'
+            );
+
+            const containerProductsSection = activeCartPage.querySelector('.cart_page');
+            const noProductsSec = activeCartPage.querySelector('.cart-empty');
+
+            try {
+                let cart = await zid.cart.get({ showErrorNotification: true });
+                if (!cart) return false;
+                if (cart?.products_count == 0) {
+                noProductsSec.classList.remove('hidden');
+                noProductsSec.classList.add('flex');
+                containerProductsSection.classList.add('hidden');
+                return;
+                }
+                noProductsSec.classList.add('hidden');
+                containerProductsSection.classList.remove('hidden');
+                createCartPageProducts(cart.products);
+                updateTotalCartPage(cart);
+                return cart;
+            } catch (error) {
+                console.log(error);
+                alertMessage(localsLayout.error, 'error');
+            } finally {
+                loadingIndicatorCart.classList.add('hidden');
+            }
+        }
+
+        // create product
+        const createCartPageProducts = (products) => {
+            const containerOfData = activeCartPage.querySelector('#template_for_cart_products_list_custom');
+
+            let allProducts = '';
+            products.forEach((product, index) => {
+ 
+                allProducts += `
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border border-base-200 rounded-2xl p-4 cartPage-product items-center" data-product="${product.id}">
+                                <!-- Image -->
+                                <a href="${product.url}">
+                                    <img 
+                                    src="${product?.images?.length ? product.images[0]?.thumbs.fullSize : '{{ 'product-img.svg' | asset_url }}'}"
+                                    alt="${product.name}" 
+                                    class="w-24 h-24 object-contain">
+                                </a>
+
+                                <!-- Product Info -->
+                                <div class="flex flex-col gap-2">
+                                    <h2 class="text-base sm:text-lg font-semibold text-primary max-w-auto md:max-w-[150px]">
+                                    ${product.name}
+                                    </h2>
+                                    <div class="flex items-center gap-3">
+                                    <button type="button" class="text-error flex gap-2" onclick="deleteProductCartPage(${product.id})">
+                                          <svg xmlns="http://www.w3.org/2000/svg" height="14" width="12.25" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#d71d1d" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
+                                    </button>
+                                  
+                                    </div>
+                                </div>
+
+                                <!-- Quantity Controls -->
+                                <div class="hidden md:flex items-center overflow-hidden">
+                                    <button 
+                                    type="button" 
+                                    class="w-8 h-8 flex items-center justify-center bg-base-200 hover:bg-base-300 focus:outline-none"
+                                    onclick="updateProductCartPage(${product.id}, ${product.quantity - 1})">
+                                    <svg width="24" height="24" viewBox="0 0 51 50" class="stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 25H38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </button>
+                                    <input 
+                                    type="number" 
+                                    min="1"
+                                    max="${product.is_infinite || product.quantity > 100 ? 100 : product.quantity}"
+                                    value="${product.quantity}" 
+                                    class="w-12 h-8 text-center border-none bg-base-100 focus:outline-none">
+                                    <button 
+                                    type="button" 
+                                    class="w-8 h-8 flex items-center justify-center bg-base-200 hover:bg-base-300 focus:outline-none"
+                                    onclick="updateProductCartPage(${product.id}, ${product.quantity + 1})">
+                                    <svg width="24" height="24" viewBox="0 0 51 50" class="stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13 25H38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M25.5 37.5V12.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </button>
+                                </div>
+
+                                <!-- Pricing -->
+                                <div class=" hidden md:flex flex-col items-end gap-2">
+                                    <div class="flex gap-2">
+                                        ${product.total_before_string ? `<span class="line-through">${product.total_before_string}</span>`:''}
+                                        <span class="font-bold">${product.total_string}</span>
+                                    </div>
+                                    ${
+                                    product.quantity > 1
+                                        ? `<span class="text-sm">${product.net_sale_price ? product.net_sale_price_string : product.net_price_string}</span>`
+                                        : ''
+                                    }
+                                </div>
+
+                                <div class="flex md:hidden justify-between flex-wrap gap-3 ">
+                                    <!-- Quantity Controls -->
+                                    <div class="flex items-center overflow-hidden">
+                                        <button 
+                                        type="button" 
+                                        class="w-8 h-8 flex items-center justify-center bg-base-200 hover:bg-base-300 focus:outline-none"
+                                        onclick="updateProductCartPage(${product.id}, ${product.quantity - 1})">
+                                        <svg width="24" height="24" viewBox="0 0 51 50" class="stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M13 25H38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        </button>
+                                        <input 
+                                        type="number" 
+                                        min="1"
+                                        max="${product.is_infinite || product.quantity > 100 ? 100 : product.quantity}"
+                                        value="${product.quantity}" 
+                                        class="w-12 h-8 text-center border-none bg-base-100 focus:outline-none">
+                                        <button 
+                                        type="button" 
+                                        class="w-8 h-8 flex items-center justify-center bg-base-200 hover:bg-base-300 focus:outline-none"
+                                        onclick="updateProductCartPage(${product.id}, ${product.quantity + 1})">
+                                        <svg width="24" height="24" viewBox="0 0 51 50" class="stroke-current" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M13 25H38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M25.5 37.5V12.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Pricing -->
+                                    <div class="flex flex-col items-end gap-2">
+                                        <div class="flex gap-2">
+                                            ${product.total_before_string ? `<span class="line-through">${product.total_before_string}</span>`:''}
+                                            <span class="font-bold">${product.total_string}</span>
+                                        </div>
+                                        ${
+                                        product.quantity > 1
+                                            ? `<span class="text-sm">${product.net_sale_price ? product.net_sale_price_string : product.net_price_string}</span>`
+                                            : ''
+                                        }
+                                    </div>
+                                </div>
+                                
+                            </div>
+                    `;
+            });
+            containerOfData.innerHTML = allProducts;
+        };
+
+        // update product
+        function updateProductCartPage(productId, qn) {
+        if (qn == 0) {
+            deleteProductCartPage(productId);
+            return;
+        }
+
+        // animation
+
+        const productItem = document.querySelector(
+            `.cartPage-product[data-product='${productId}']`
+        );
+        const productTable = activeCartPage.querySelector('.totals_box');
+
+        if (productItem) {
+            productItem.style.transition = 'opacity 0.3s';
+            productItem.style.opacity = '0.3';
+        }
+        if(productTable){
+            productTable.style.transition = 'opacity 0.3s';
+            productTable.style.opacity = '0.3';
+        }
+
+        zid.cart
+            .updateProduct({product_id: productId, quantity: qn}, { showErrorNotification: true })
+            .then(function (response) {
+            if (response) {
+                fetchCart();
+                fetchCartPageProducts();
+            }
+            })
+            .finally(() => {
+                productItem.style.transition = 'opacity 600ms';
+                productItem.style.opacity = 1;
+                productTable.style.transition = 'opacity 600ms';
+                productTable.style.opacity = 1;
+            });
+        }
+
+        // delete product
+        function deleteProductCartPage(product_id) {
+        // animation
+        const productItem = activeCartPage.querySelector(
+            `.cartPage-product[data-product='${product_id}']`
+        );
+        const productTable = activeCartPage.querySelector('.totals_box');
+
+        if (productItem) {
+            productItem.style.transition = 'opacity 0.3s';
+            productItem.style.opacity = '0.3';
+        }
+        if(productTable){
+            productTable.style.transition = 'opacity 0.3s';
+            productTable.style.opacity = '0.3';
+        }
+        zid.cart
+            .removeProduct({product_id: product_id}, { showErrorNotification: true })
+            .then(function (response) {
+            if (response) {
+                fetchCart();
+                fetchCartPageProducts();
+            }
+            })
+            .finally(() => {
+                productItem.style.transition = 'opacity 600ms';
+                productItem.style.opacity = 1;
+                productTable.style.transition = 'opacity 600ms';
+                productTable.style.opacity = 1;
+            });
+        }
+
+        // update cart total price
+        function updateTotalCartPage(myCart) {
+            const totalBox = activeCartPage.querySelector(
+                '.totals_box'
+            );
+            let newTotals = '';
+            if(myCart &&  myCart.totals){
+                myCart.totals.forEach((cartTotal)=>{
+                           newTotals += `
+                                    <div class="flex flex-wrap gap-2 justify-between ${cartTotal.code === 'total' ? 'border-t-2 border-base-200 pt-3' : ''}">
+                                        <div class="${cartTotal.code === 'total' ? 'font-bold' : ''}">
+                                            ${cartTotal.title}:
+                                        </div>
+                                        <div class="${cartTotal.code === 'total' ? 'font-bold' : ''}">
+                                            ${cartTotal.value_string}
+                                        </div>
+                                    </div>`;
+                });
+                totalBox.innerHTML = newTotals;         
+            }
+
+            // update loyality
+            getLoyaltyPoints(myCart.total_value);
+
+            // update free shipping
+            if (myCart.fee_shipping_discount_rules) {
+                const freeShippingSection = activeCartPage.querySelector(
+                '.free-shipping-rule-section'
+                );
+                const freeShippingProgress = activeCartPage.querySelector(
+                '.free-shipping-rule-progress'
+                );
+                const freeShippingMessage = activeCartPage.querySelector(
+                '.free-shipping-rule-message'
+                );
+
+                freeShippingSection.classList.remove('hidden');
+
+                const percentage =
+                myCart.fee_shipping_discount_rules.conditions_subtotal
+                    .products_subtotal_percentage_from_min >= 100
+                    ? '100'
+                    : myCart.fee_shipping_discount_rules.conditions_subtotal
+                        .products_subtotal_percentage_from_min;
+                freeShippingProgress.style.width = `${percentage}%`;
+                console.log(freeShippingMessage);
+                if (
+                myCart.fee_shipping_discount_rules.conditions_subtotal.status.code ===
+                'applied'
+                ) {
+                freeShippingMessage.textContent = localsLayout.free_shipping;
+                } else {
+                freeShippingMessage.textContent = `${localsLayout.remaining} ${myCart.fee_shipping_discount_rules.conditions_subtotal.remaining} ${session.currency.symbol} ${localsLayout.free_ship}`;
+                }
+            } else {
+                const freeShippingSection = document.querySelector(
+                '.free-shipping-rule-section'
+                );
+                freeShippingSection.classList.add('hidden');
+            }
+        }
+
+        // send copuon
+        function sendCouponCartPage() {
+            const couponInput = activeCartPage.querySelector('.send-coupon');
+            const progressIndicator = activeCartPage.querySelector(
+                '.send-coupon-progress'
+            );
+            const pormoCodeSection = activeCartPage.querySelector(
+                '.cartPage .message-promo'
+            );
+
+            if (!progressIndicator.classList.contains('hidden')) return;
+            if (couponInput.value.length == 0) {
+                alertMessage(localsLayout.empty_fields, 'error');
+                return;
+            }
+            progressIndicator.classList.remove('hidden');
+
+            zid.cart
+                .applyCoupon({coupon_code: couponInput.value}, { showErrorNotification: true })
+                .then(function (response) {
+                if (response) {
+                    alertMessage(
+                    response.coupon.message.split('-')[1],
+                    'success'
+                    );
+                    pormoCodeSection.classList.remove('hidden');
+                    pormoCodeSection.querySelector('.message').textContent =
+                    response.coupon.message.split('-')[1];
+                    updateTotalCartPage(response);
+                }
+                })
+                .catch(function (err) {
+                alertMessage(localsLayout.error, 'error');
+                })
+                .finally(function () {
+                couponInput.value = '';
+                progressIndicator.classList.add('hidden');
+                });
+        }
+
+        // delete copuon
+        function showPopUpDeletePromoCartPage(element) {
+            const r = element.closest('.message-promo');
+            r.querySelector('.modal').showModal();
+            console.log(element);
+        }
+        function deleteCouponCartPage() {
+                const progressIndicator = activeCartPage.querySelector(
+                    '.delete-coupon-progress'
+                );
+
+                if (!progressIndicator.classList.contains('hidden')) return;
+
+                progressIndicator.classList.remove('hidden');
+
+                zid.cart
+                    .removeCoupons({ showErrorNotification: true })
+                    .then(function (response) {
+                    if (response) {
+                        alertMessage(localsLayout.delete_promo_success, 'success');
+                        setTimeout(() => {
+                        window.location.reload();
+                        }, 3000);
+                    }
+                    progressIndicator.classList.add('hidden');
+                    })
+                    .catch(function (err) {
+                    progressIndicator.classList.add('hidden');
+                    });
+        }      
+          // create loyality points
+         const form = document.getElementById('loyalty-points-form');
+          if(form){
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+    
+                const selectBox = form.querySelector('select[name="redemptionMethod"]');
+                const submitButton = form.querySelector('button[type="submit"]');
+                const loadingIndicator = submitButton.querySelector('.loading');
+                const textIncicator = submitButton.querySelector('.text');
+    
+                if (!loadingIndicator.classList.contains('hidden')) {
+                    return;
+                }
+                if (!selectBox || !submitButton) {
+                    console.error("Select box or submit button not found in the form.");
+                    return;
+                }
+    
+                loadingIndicator.classList.remove("hidden");
+                textIncicator.classList.add("hidden");
+                const selectedOption = selectBox.value;
+    
+                if (!selectedOption) {
+                    alertMessage('{{ _("Please select one from the rewards system") }}', 'error');
+                    loadingIndicator.classList.add("hidden");
+                    textIncicator.classList.remove("hidden");
+                    return;
+                }
+     
+                try {
+                    const response = await zid.cart.getRedemptionMethods({ showErrorNotification: true });
+                    if (response) {
+                        const findId = response.point_redemption_methods.find(method => method.id === selectedOption);
+
+                        if (!findId) {
+                            alertMessage('Redemption method not found.', 'error');
+                            return;
+                        }
+
+                        try {
+                            const addResponse = await zid.cart.addRedemptionMethod(findId, { showErrorNotification: true });
+
+                            if (addResponse) {
+                                alertMessage(addResponse.success, 'success');
+                                setTimeout(() => {
+                                   window.location.reload();
+                                }, 3000); // Timeout duration for reload
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            alertMessage(localsLayout.error, 'error');
+                        }finally{
+                            loadingIndicator.classList.add("hidden");
+                            textIncicator.classList.remove("hidden");
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alertMessage("{{ _("An error occurred, please try again") }}", 'error');
+                } finally {
+                    loadingIndicator.classList.add("hidden");
+                    
+                }
+            });
+        }
+
+
+        const getRedemptionMethods = (points)=>{
+            const selectBox = document.querySelector(".loyalty-points-replace select");
+            const btnSubmit = document.querySelector(".loyalty-points-replace button");
+            let makeBtnNotDisabled = false;
+            zid.cart.getRedemptionMethods({ showErrorNotification: true }).then((response)=>{
+                if(response){
+                    console.log(response);
+                   response.point_redemption_methods.forEach((method)=>{
+                      const disabledOption = method.is_active === false || points < method.points_to_redeem;
+                      if(!disabledOption){
+                        makeBtnNotDisabled = true;
+                      }
+                      console.log(method);
+                      const optionElment = `<option value="${method.id}"  ${disabledOption ? 'disabled' : ''} class="font-semibold">${method.name}</option>`;
+                      selectBox.insertAdjacentHTML('beforeend', optionElment);
+                   });
+                   if(makeBtnNotDisabled){
+                      btnSubmit.removeAttribute('disabled');
+                   }
+                }
+            }).catch((error)=>{
+                console.log(error);
+               alertMessage(localsLayout.error, 'error');
+            });
+       }
+        function deleteLoyaltyPoints(event) {
+            const button = event.currentTarget; // Ensure we reference the button
+            const progressIndicator = button.querySelector('.loading');
+            const progressText = button.querySelector('.text');
+
+            if (!progressIndicator.classList.contains('hidden')) return;
+
+            progressIndicator.classList.remove('hidden');
+            progressText.classList.add('hidden');
+
+            zid.cart
+                .removeRedmptionMethod({ showErrorNotification: true })
+                .then((response) => {
+                    if (response) {
+                        alertMessage(response.success, 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000); // Timeout duration for reload
+                    }
+                })
+                .catch((err) => {
+                    console.error("Error removing redemption method:", err);
+                    alertMessage(localsLayout.error, 'error');
+                })
+                .finally(() => {
+                    progressIndicator.classList.add('hidden');
+                    progressText.classList.remove('hidden');
+                });
+      }
+       const getLoyaltyPoints = (total)=>{
+            if(!customer) return;
+            zid.cart.getCalculatedPoints(total, { showErrorNotification: true }).then((response)=>{
+                if(response){
+                   document.querySelector('.cartPage .alert-loyality .number').textContent = response.points;
+                }
+            }).catch((error)=>{
+               alertMessage(localsLayout.error, 'error');
+            });
+       }
+       const customer = {{ customer | tojson }};
+       const getCustomerLoyalityPoints = ()=>{
+           if(!customer){
+              document.querySelector('.cartPage .loyality-section .points').textContent = 0;
+              return;
+           }
+            zid.cart.getCustomerLoyaltyPoints({ showErrorNotification: true }).then((response)=>{
+                if(response){
+                   document.querySelector('.cartPage .loyality-section .points').textContent = response.points.available_poitns;
+                   getRedemptionMethods(response.points.available_poitns);
+                }
+            }).catch((error)=>{
+               alertMessage(localsLayout.error, 'error');
+            });
+       }
+       
+     
+       
+       document.addEventListener('DOMContentLoaded',()=>{
+        fetchCartPageProducts();
+        getCustomerLoyalityPoints();
+       });
+        function cartProductsHtmlChanged(html, cart){
+
+            // free shipping
+
+        }
+
+    </script>
+{% endblock %}

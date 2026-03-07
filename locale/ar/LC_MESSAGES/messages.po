@@ -1,0 +1,534 @@
+# Arabic translations for hazaz-world theme.
+# Copyright (C) 2026 hazaz
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2026-03-06 00:00+0300\n"
+"PO-Revision-Date: 2026-03-06 00:00+0300\n"
+"Language: ar\n"
+"Language-Team: ar <ar@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "(Including VAT)"
+msgstr "(شامل ضريبة القيمة المضافة)"
+
+msgid "Account Holder Name"
+msgstr "اسم المحول له"
+
+msgid "Account Number"
+msgstr "رقم الحساب"
+
+msgid "Account Profile"
+msgstr "الملف الشخصي"
+
+msgid "Add Address"
+msgstr "أضف عنوان"
+
+msgid "Add Discount Coupon"
+msgstr "أضف كوبون الخصم"
+
+msgid "Add Now"
+msgstr "أضف الان"
+
+msgid "Add Question"
+msgstr "أضف سؤالك"
+
+msgid "Add Review"
+msgstr "أضف تقييمك"
+
+msgid "Add to Cart"
+msgstr "أضف للسلة"
+
+msgid "Add your question, and we will reply as soon as possible"
+msgstr "أضف سؤالك وسيتم الرد عليك في أقرب وقت"
+
+msgid "Address deleted successfully"
+msgstr "تم حذف العنوان بنجاح"
+
+msgid "Addresses"
+msgstr "العناويين"
+
+msgid "All Categories"
+msgstr "جميع التصنيفات"
+
+msgid "All Products"
+msgstr "جميع المنتجات"
+
+msgid "All Questions"
+msgstr "جميع الأسئلة"
+
+msgid "All Reviews"
+msgstr "جميع التقييمات"
+
+msgid "An error occurred, please try again"
+msgstr "حدث خطأ ما حاول مرة أخري"
+
+msgid "Apply"
+msgstr "تطبيق"
+
+msgid "Are you sure you want to delete your account?"
+msgstr "هل أنت متأكد من حذف الحساب"
+
+msgid "Attach Link (Video or Audio)"
+msgstr "ارفاق رابط (فيديو أو صوت)"
+
+msgid "Attach Message"
+msgstr "ارفاق رسالة"
+
+msgid "Attach images with the comment"
+msgstr "ارفاق صور مع التعليق"
+
+msgid "Back to Shopping"
+msgstr "العودة للتسوق"
+
+msgid "Bank Accounts"
+msgstr "الحسابات البنكية"
+
+msgid "Be the first to review this product and share your experience"
+msgstr "كن أول من يقيّم هذا المنتج وشاركنا تجربتك"
+
+msgid "Blog"
+msgstr "المدونة"
+
+msgid "Business Platform"
+msgstr "منصة الأعمال"
+
+msgid "Cart"
+msgstr "السلة"
+
+msgid "Cart is empty"
+msgstr "السلة فارغة"
+
+msgid "Cash on Delivery"
+msgstr "الدفع عند الاستلام"
+
+msgid "Checkout"
+msgstr "الدفع"
+
+msgid "Choose"
+msgstr "اختر"
+
+msgid "Cities"
+msgstr "مدن"
+
+msgid "Clear Filter"
+msgstr "مسح الفلترة"
+
+msgid "Close"
+msgstr " إغلاق"
+
+msgid "Commercial Registration"
+msgstr "السجل التجاري"
+
+msgid "Complete the order now and earn"
+msgstr "اكمل الطلب الآن و اربح"
+
+msgid "Confirm"
+msgstr "تأكيد"
+
+msgid "Congratulations! Enjoy free shipping"
+msgstr "مبروك! تمتع بالشحن المجاني"
+
+msgid "Contact Us"
+msgstr "تواصل معنا"
+
+msgid "Continue Shopping"
+msgstr "متابعة التسوق"
+
+msgid "Country"
+msgstr "الدولة"
+
+msgid "Coupon deleted successfully"
+msgstr "تم حذف الكوبون"
+
+msgid "Covered Cities"
+msgstr "المدن التي يتم تغيطتها"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Day"
+msgstr "يوم"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Delete Account"
+msgstr "حذف الحساب"
+
+msgid "Delete Discount"
+msgstr "حذف الخصم"
+
+msgid "Delete My Account"
+msgstr "حذف حسابي"
+
+msgid "Design"
+msgstr "التصميم"
+
+msgid "Design Card"
+msgstr "تصميم البطاقة"
+
+msgid "Discount"
+msgstr "خصم"
+
+msgid "Do not show my name in customer reviews"
+msgstr "لا تظهر اسمي في قائمة اراء العملاء"
+
+msgid "Do not show my name in the questions list"
+msgstr "لا تظهر اسمي في قائمة الأسئلة "
+
+msgid "Do you have a discount code"
+msgstr "هل لديك كود خصم "
+
+msgid "Do you want to delete the discount coupon?"
+msgstr "هل تريد حذف كوبون الخصم؟"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Example: 966500112245"
+msgstr "مثال:966500112245"
+
+msgid "FAQs"
+msgstr "الأسئلة الشائعة"
+
+msgid "Favorite"
+msgstr "المفضلة"
+
+msgid "Favorites"
+msgstr "المفضلة"
+
+msgid "Filter By"
+msgstr "فلتر بواسطة"
+
+msgid "Finish"
+msgstr "الانتهاء"
+
+msgid "Follow Us"
+msgstr "تابعنا"
+
+msgid "Full Name"
+msgstr "الإسم الكامل"
+
+msgid "Gift Receiver's Name"
+msgstr "اسم مستلم الهدية"
+
+msgid "Gift Sender's Name"
+msgstr "اسم مرسل الهدية"
+
+msgid "Gift card removed successfully"
+msgstr "تمت ازالة بطاقة الإهداء بنجاح"
+
+msgid "Go to Cart"
+msgstr "الذهاب إلي السلة"
+
+msgid "Highest Price"
+msgstr "الأعلى سعر"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Hour"
+msgstr "ساعة"
+
+msgid "IBAN Number"
+msgstr "رقم الآيبان"
+
+msgid "Latest"
+msgstr "الأحدث"
+
+msgid "Link copied"
+msgstr "تم نسخ الرابط"
+
+msgid "Log in"
+msgstr "سجل"
+
+msgid "Log in to view reward points"
+msgstr "سجل دخولك لاستعراض نقاط المكافات"
+
+msgid "Login"
+msgstr "تسجيل دخول"
+
+msgid "Lowest Price"
+msgstr "الأقل سعر"
+
+msgid "Loyalty Points"
+msgstr "نقاط الولاء"
+
+msgid "Maximum character limit is 250"
+msgstr "اقصي عدد للحروف 250 حرف"
+
+msgid "Message"
+msgstr "الرسالة"
+
+msgid "Minute"
+msgstr "دقيقة"
+
+msgid "Mobile Number"
+msgstr "رقم الجوال"
+
+msgid "Monthly Deal Expired"
+msgstr "تم انتهاء صفقة الشهر"
+
+msgid "Most Popular"
+msgstr "الأكثر شعبية"
+
+msgid "Name"
+msgstr "الإسم"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "Night Mode"
+msgstr "الوضع اللليلي"
+
+msgid "No addresses added yet"
+msgstr "لم يتم اضافة عناوين حتي الان"
+
+msgid "No categories available yet"
+msgstr "لا توجد تصنيفات حتى الان"
+
+msgid "No more products"
+msgstr "لا يوجد مزيد من المنتجات"
+
+msgid "No orders yet"
+msgstr "لا يوجد طلبات حتي الان"
+
+msgid "No products"
+msgstr "لا يوجد منتجات"
+
+msgid "No products available for this category yet"
+msgstr "لا يوجد منتجات لهذا التصنيف حتي الان"
+
+msgid "No products found"
+msgstr "لا يوجد منتجات"
+
+msgid "No questions yet"
+msgstr "لا توجد أي أسئلة حتى الآن"
+
+msgid "No reviews yet"
+msgstr "لا توجد أي تقييمات حتى الآن"
+
+msgid "Notify me when the product is available"
+msgstr "نبهني عندما يكون المنتج متاح"
+
+msgid "Optional"
+msgstr "اختياري"
+
+msgid "Order"
+msgstr "الطلب"
+
+msgid "Orders"
+msgstr "الطلبات"
+
+msgid "Out of Stock"
+msgstr "نفذت الكمية"
+
+msgid "Payment Options"
+msgstr "خيارات الدفع"
+
+msgid "Payment and Shipping Options"
+msgstr "خيارات الدفع والتوصيل"
+
+msgid "Please fill in all fields"
+msgstr "يرجي تعبئة جميع الحقول"
+
+msgid "Please fill in the recipient's and sender's names"
+msgstr "يرجي تعبئة اسم المستلم واسم المرسل"
+
+msgid "Please fill in the required fields"
+msgstr "يرجي تعبئة الحقول المطلوبة"
+
+msgid "Please select one from the rewards system"
+msgstr "من فضلك اختار واحدة من نظام المكافات"
+
+msgid "Please select product options"
+msgstr "يجب تحديد خيارات المنتج"
+
+msgid "Preview"
+msgstr "المعاينة"
+
+msgid "Previous"
+msgstr "السابق"
+
+msgid "Price"
+msgstr "السعر"
+
+msgid "Proceed to Checkout"
+msgstr "إتمام عملية الشراء"
+
+msgid "Product Details"
+msgstr "تفاصيل المنتج"
+
+msgid "Product Overview"
+msgstr "لمحة عن المنتج"
+
+msgid "Product successfully added to the cart"
+msgstr "تمت إضافة المنتج إلي السلة بنجاح"
+
+msgid "Products"
+msgstr "المنتجات"
+
+msgid "Products will be wrapped as a gift with a greeting card"
+msgstr "المنتجات سيتم تغليفها كهدية مع بطاقة اهداء"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "Questions"
+msgstr "الاسئلة"
+
+msgid "Read More"
+msgstr "اقرأ المزيد"
+
+msgid "Receiver"
+msgstr "المستلم"
+
+msgid "Redeem points to earn rewards for this order"
+msgstr "استبدال النقاط للحصول على مكافآت على هذا الطلب"
+
+msgid "Redeem reward points from your balance"
+msgstr "صرف نقاط مكافآت من رصيدك"
+
+msgid "Remaining"
+msgstr "متبقي"
+
+msgid "Reviews"
+msgstr "التقييمات"
+
+msgid "Reward Points"
+msgstr "نقاط مكافآت"
+
+msgid "Rewards System"
+msgstr "نظام المكافآت"
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Search for products..."
+msgstr "ابحث عن المنتجات..."
+
+msgid "Second"
+msgstr "ثانية"
+
+msgid "Send"
+msgstr "إرسال"
+
+msgid "Send as a Gift"
+msgstr "أرسلها كهدية"
+
+msgid "Sender"
+msgstr "المرسل"
+
+msgid "Share Product"
+msgstr "مشاركة المنتج"
+
+msgid "Shipping Cost"
+msgstr "تكلفة الشحن"
+
+msgid "Shipping Options"
+msgstr "خيارات الشحن"
+
+msgid "Shop Now"
+msgstr "تسوق الان"
+
+msgid "Shopping Cart"
+msgstr "سلة الشراء"
+
+msgid "Sign Out"
+msgstr "تسجيل الخروج"
+
+msgid "Similar Products"
+msgstr "المنتجات المشابهة"
+
+msgid "Sold Over"
+msgstr "مُباع أكثر من "
+
+msgid "Sorry, the page you requested is not available"
+msgstr "نعتذر، الصفحة التي طلبتها غير متوفرة"
+
+msgid "Sort By"
+msgstr "ترتيب حسب"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Store Owner"
+msgstr "مالك المتجر"
+
+msgid "Subscribe to the newsletter"
+msgstr "الإشتراك في النشرة البريدية"
+
+msgid "Successfully sent"
+msgstr "تم الإرسال بنجاح"
+
+msgid "Sun Mode"
+msgstr "الوضع النهاري"
+
+msgid "The cart was updated successfully"
+msgstr "تم تحديث السلة بنجاح"
+
+msgid "The invoice will be sent to your email and will not be included with the order"
+msgstr "ستصلك الفاتورة على البريد الإلكتروني ولن ترفق مع الطلب"
+
+msgid "These products will be sent as a gift"
+msgstr "سيتم ارسال هذه المنتجات كهدية"
+
+msgid "Total"
+msgstr "المجموع"
+
+msgid "Use"
+msgstr "استخدم"
+
+msgid "Used"
+msgstr "استخدمت"
+
+msgid "VAT Number:"
+msgstr "الرقم الضريبي:"
+
+msgid "Video / Audio"
+msgstr "فيديو / صوت"
+
+msgid "View"
+msgstr "مشاهدة"
+
+msgid "Wishlist"
+msgstr "قائمة الرغبات"
+
+msgid "Write your comment"
+msgstr "اكتب تعليقك"
+
+msgid "You have"
+msgstr "لديك"
+
+msgid "You have exceeded the allowed image limit (3 images). Please remove one image to proceed. Supported formats: png, jpg, jpeg, gif."
+msgstr "لقد تجاوزت الحد المسموح به للصور (3 صور). يرجى إزالة صورة واحدة لمتابعة.الصيغ الدعومة: png. jpg. jpeg. gif"
+
+msgid "You have no products in your wishlist"
+msgstr "لا يوجد لديك أي منتجات في قائمة الرغبات"
+
+msgid "You need to log in first"
+msgstr "يجب عليك تسجيل دخول أولا"
+
+msgid "Your data has been successfully updated"
+msgstr "تم تحديث بياناتك بنجاح"
+
+msgid "for free shipping"
+msgstr "على الشحن المجاني"
+
+msgid "once"
+msgstr "مرة"
+
+msgid "points to get a discount"
+msgstr "نقطة للحصول علي خصم"
+
+msgid "product code"
+msgstr "رمز المنتج"
+

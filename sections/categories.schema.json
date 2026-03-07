@@ -1,0 +1,60 @@
+{
+  "name": {
+    "ar": "تصنيفات صغيرة",
+    "en": "special categories"
+  },
+  "icon": "fal fa-presentation",
+  "display": true,
+  "settings": [
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      },
+      "id": "title"
+    },
+    {
+      "type": "checkbox",
+      "label": {
+        "ar": "عرض زر جميع التصنيفات",
+        "en": ""
+      },
+      "noLabel": true,
+      "option": {
+        "ar": "عرض زر جميع التصنيفات",
+        "en": "Display button more products"
+      },
+      "id": "display_more"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "نص زر جميع التصنيفات",
+        "en": "More text"
+      },
+      "id": "more_text"
+    },
+    {
+      "type": "list",
+      "noLabel": true,
+      "settings_label": {
+        "ar": "التصنيف",
+        "en": "category"
+      },
+      "settings": [
+        {
+          "type": "category",
+          "label": {
+            "ar": "التصنيف",
+            "en": "category"
+          },
+          "id": "category"
+        }
+      ],
+      "id": "categories"
+    }
+  ],
+  "section_id": "93adc6da-bd56-4215-b3de-906c7ccff147",
+  "template": "sections/categories.jinja"
+}

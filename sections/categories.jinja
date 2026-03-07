@@ -1,0 +1,101 @@
+
+<section section-id="{{ sectionId }}" class="sub_cats-lazy-swiper  text-base-content my-5 lg:my-8 ">
+    <div>
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-5 mt-5 px-3 sm:px-5">
+        <h2 class="text-[18px] sm:text-5xl leading-[2rem] sm:!leading-[3.25rem]  font-bold">{{ settings.title }}</h2>
+         {% if settings.display_more %}
+            <a class="btn btn-primary !text-xs sm:text-base special_btn" href="/categories">{{ settings.more_text }}</a>
+         {% endif %}
+      </div>
+      <div class="relative">
+          <div class="absolute  top-1/2 -translate-y-1/2">
+            <img src="{{ 'swipe.svg' | asset_url }}" alt="image" class="w-[30px] h-[30px] object-contain">
+          </div>
+          <div class="swiper sub_categories">
+                 <div class="swiper-wrapper items-stretch"> <!-- Add items-stretch here -->
+                     {% for cat in settings.categories %}
+                          <div class="swiper-slide h-auto" style="height:auto">
+                              <div class="h-full"> 
+                                   <a href="/categories/{{ cat.category.id }}/{{ cat.category.slug }}" class="card bg-base-100 flex flex-col h-full gap-2">
+                                        <figure class="flex justify-center w-full h-[150px] rounded-xl overflow-hidden">
+                                            <img 
+                                                {% if cat.category.image %}
+                                                    src="{{ cat.category.image }}"
+                                                {% else %}
+                                                    src="{{ 'product-img.svg' | asset_url }}"
+                                                {% endif %}
+                                                alt="{{ cat.category.name }}"
+                                                class="w-full h-full object-contain transition-opacity duration-300"
+                                                loading="lazy"
+                                                onload="this.style.opacity = 1"
+                                                style="opacity: 0;"
+                                                width="150"
+                                                height="150"
+                                            />
+                                        </figure>
+                                        <div class="card-body !py-0 flex flex-col items-center text-center flex-grow" style="padding-top:0px;padding-bottom:0px;">
+                                            <h2 class="text-sm sm:text-base font-normal sm:font-semibold line-clamp-2">{{ cat.category.name }}</h2>
+                                        </div>
+                                    </a>
+                              </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+                  <div class="mt-8">
+                    <div class="swiper_pagination_sub_cats swiper-pagination"></div>
+                  </div>
+          </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const lazySections = document.querySelectorAll(".sub_cats-lazy-swiper ");
+    
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                initializeSwiperCats(entry.target);
+                observer.unobserve(entry.target); // Stop observing once initialized
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: "100px 0px", // Trigger 100px BEFORE the element enters the viewport
+        threshold: 0 // Optional: Can be 0 if rootMargin is used
+    });
+
+    lazySections.forEach(section => observer.observe(section));
+
+    function initializeSwiperCats(section) {
+        const swiperContainer = section.querySelector('.sub_categories');
+        if (!swiperContainer.classList.contains("swiper-initialized")) {
+            setTimeout(() => { // Small delay for stability
+                new Swiper(swiperContainer, {
+                    slidesPerView: 3.7,
+                    spaceBetween: 10,
+                    breakpoints: {
+                        640: { slidesPerView: 5.7, spaceBetween: 10 },
+                        768: { slidesPerView: 6.7, spaceBetween: 10 },
+                        1024: { slidesPerView: 8.7, spaceBetween: 10 }
+                    },
+                    on: {
+                        slideChange: function () {
+                            const firstSlide = this.slides[0];
+                            firstSlide.style.marginInlineStart = this.isBeginning ? '38px' : '0';
+                        },
+                        init: function () {
+                            const firstSlide = this.slides[0];
+                            if (this.isBeginning) {
+                                firstSlide.style.marginInlineStart = '38px';
+                            }
+                        }
+                    }
+                });
+            }, 50);
+        }
+    }
+});
+</script>

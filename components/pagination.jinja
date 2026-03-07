@@ -1,0 +1,67 @@
+{% if totalPages > 1 %}
+<div class="products-pagination" aria-label="products navigation">
+
+    <button 
+        class="join-item btn btn-outline mt-3 sm:mt-5 {% if currentPage == 1 %}disabled opacity-50 pointer-events-none{% endif %}"
+        {% if currentPage > 1 %}
+        onclick="window.location.href='{{ session.url.include_query_params(page=(currentPage - 1)) }}'"
+        {% endif %}>
+        {{ _("Previous") }}
+    </button>
+    
+    
+
+    <!-- Page number buttons -->
+    <div class="join justify-center gap-2">
+        {% if currentPage > 3 and totalPages > 5 %}
+        <button 
+            class="join-item btn"
+            onclick="window.location.href='{{ session.url.include_query_params(page=1) }}'">
+            1
+        </button>
+        <span class="join-item btn btn-disabled">...</span>
+        {% endif %}
+
+        {% if currentPage <= 2 %}
+            {% set startPage = 1 %}
+        {% else %}
+            {% set startPage = (currentPage - 2) %}
+        {% endif %}
+
+        {% if (currentPage + 2) <= totalPages %}
+            {% set endPage = (currentPage + 2) %}
+        {% else %}
+            {% set endPage = totalPages %}
+        {% endif %}
+
+        {% for n in range(startPage, endPage + 1) %}
+        <button 
+            class="join-item btn {% if currentPage == n %}btn-active{% endif %}"
+            {% if currentPage != n %}
+            onclick="window.location.href='{{ session.url.include_query_params(page=n) }}'"
+            {% endif %}>
+            {{ n }}
+        </button>
+        {% endfor %}
+
+        {% if currentPage < (totalPages - 3) and totalPages > 5 %}
+           <span class="join-item btn btn-disabled">...</span>
+        {% endif %}
+
+        {% if currentPage < (totalPages - 2) and totalPages > 5 %}
+        <button 
+            class="join-item btn"
+            onclick="window.location.href='{{ session.url.include_query_params(page=totalPages) }}'">
+            {{ totalPages }}
+        </button>
+        {% endif %}
+    </div>
+    <button 
+            class="join-item btn btn-outline {% if currentPage == totalPages %}disabled opacity-50 pointer-events-none{% endif %}"
+            {% if currentPage < totalPages %}
+            onclick="window.location.href='{{ session.url.include_query_params(page=(currentPage + 1)) }}'"
+            {% endif %}>
+            {{ _("Next") }}
+     </button>
+</div>
+{% endif %}

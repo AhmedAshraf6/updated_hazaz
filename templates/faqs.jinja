@@ -1,0 +1,36 @@
+{% extends "layout.jinja" %}
+
+{% block title %} {{ store.name }} -  {{ _("FAQs") }} {% endblock %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+      {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("FAQs") }
+                ] %}
+      {% include 'components/breadcrumbs.jinja' %}
+    <div class="my-5 layout">
+      <h1 class="text-lg sm:text-2xl font-bold">{{ _("FAQs") }}</h1>
+      <div class="flex flex-col gap-3 mt-3 sm:mt-5">
+        {% for key, faq in faqs %}
+            <div class="collapse collapse-arrow bg-base-200">
+                    <input type="radio" name="my-accordion-2" />
+                    <div class="collapse-title text-xl font-medium"> {{ faq.question }}</div>
+                    <div class="collapse-content">
+                        <p>{{ faq.answer | safe }}</p>
+                    </div>            
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+   
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}

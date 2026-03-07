@@ -1,0 +1,80 @@
+{
+  "name": {
+    "ar": "صفقة الشهر",
+    "en": "Deal of the month"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "text",
+      "label": {
+        "ar": "العنوان الأساسي",
+        "en": "Main address"
+      },
+      "id": "title"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "الوصف",
+        "en": "Description"
+      },
+      "id": "desc"
+    },
+    {
+      "type": "text",
+      "label": {
+        "ar": "اسم الزرار",
+        "en": "name of button"
+      },
+      "id": "btn_text"
+    },
+    {
+      "type": "url",
+      "label": {
+        "ar": "رابط الزرار",
+        "en": "url button"
+      },
+      "id": "btn_url"
+    },
+    {
+      "type": "number",
+      "label": {
+        "ar": "قم بإدخال سنة انتهاء صفقة الشهر",
+        "en": "Enter the end year of the month's deal"
+      },
+      "info": {
+        "ar": "يجب ان لايتجاوز عدد الايام المتبقية 99 يوم وعمل حفظ لتري النتيجة",
+        "en": "The maximum number of days remaining should not exceed 99 days and make save to see the result"
+      },
+      "id": "deal_expiry_year"
+    },
+    {
+      "type": "number",
+      "label": {
+        "ar": "قم بإدخال شهر انتهاء صفقة الشهر",
+        "en": "Enter the expiration month of the month's deal"
+      },
+      "id": "deal_expiry_month"
+    },
+    {
+      "type": "number",
+      "label": {
+        "ar": "قم بإدخال يوم انتهاء صفقة الشهر",
+        "en": "Enter the end day of the month's deal"
+      },
+      "id": "deal_expiry_day"
+    },
+    {
+      "type": "number",
+      "label": {
+        "ar": "قم بإدخال ساعة انتهاء صفقة الشهر",
+        "en": "Enter the end hour of the month's deal"
+      },
+      "id": "deal_expiry_hour"
+    }
+  ],
+  "section_id": "c8c1845d-d128-46b7-9c70-9b95120bb97c",
+  "template": "sections/deal.jinja"
+}

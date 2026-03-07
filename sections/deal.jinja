@@ -1,0 +1,83 @@
+<section class="py-3 sm:py-5 mt-5 sm:mt-10 bg-base-200">
+  <div class="layout">
+    <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center">
+       <div class="flex flex-col gap-3 text-center sm:text-start">
+          <h2 class="text-2xl sm:text-[44px]">{{ settings.title }}</h2> 
+          <p class="text-base sm:text-lg">{{ settings.desc }}</p> 
+      </div>
+      <div id="countdown" class="flex flex-wrap justify-center items-center lg:justify-start gap-5">
+          <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2 text-center">
+            <span class="countdown font-mono text-5xl">
+              <span class="countdown-days" style="--value:0;"></span>
+            </span>
+            {{ _("Day") }}
+          </div><div class="text-5xl">:</div>
+          <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2  text-center">
+            <span class="countdown font-mono text-5xl">
+              <span class="countdown-hours" style="--value:0;"></span>
+            </span>
+              {{ _("Hour") }}
+          </div><div class="text-5xl">:</div>
+          <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2 text-center">
+            <span class="countdown font-mono text-5xl">
+              <span class="countdown-minutes" style="--value:0;"></span>
+            </span>
+            {{ _("Minute") }}
+          </div><div class="text-5xl">:</div>
+          <div class="bg-base-200 rounded-box text-base-content flex flex-col p-2 text-center">
+            <span class="countdown font-mono text-5xl">
+              <span class="countdown-seconds" style="--value:0;"></span>
+            </span>
+            {{ _("Second") }}
+          </div>
+       </div>
+      <div class="button">
+        <a href="{{ settings.btn_url }}" class="btn btn-primary">{{ settings.btn_text }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const year = {{ settings.deal_expiry_year | tojson }};
+  const month = {{ settings.deal_expiry_month | tojson }};
+  const day = {{ settings.deal_expiry_day | tojson }};
+  const hour = {{ settings.deal_expiry_hour | tojson }};
+
+  function startCountdown(year, month, day, hour) {
+    
+      if(!year || !month || !day || !hour){
+        console.error("Invalid date format. Expected YYYY, MM, DD, HH.");
+        return;
+      }
+
+      // Set the target date and time for the countdown
+      const countDownDate = new Date(year, month - 1, day, hour, 0, 0).getTime();
+
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Update DaisyUI countdown elements
+        document.querySelector(".countdown-days").style.setProperty("--value", days);
+        document.querySelector(".countdown-hours").style.setProperty("--value", hours);
+        document.querySelector(".countdown-minutes").style.setProperty("--value", minutes);
+        document.querySelector(".countdown-seconds").style.setProperty("--value", seconds);
+
+        // If the countdown is finished
+        if (distance < 0) {
+          clearInterval(interval);
+          document.getElementById("countdown").innerHTML = "{{ _("Monthly Deal Expired") }}";
+        }
+      }, 1000);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    startCountdown(year, month, day, hour);
+  });
+</script>

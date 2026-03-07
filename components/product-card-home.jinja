@@ -1,0 +1,466 @@
+
+
+<div class="card product_card  bg-base-100 shadow-xl  flex flex-col justify-between h-full {% if product.is_infinite == false and product.quantity <= 0 %}grayscale{% endif %}" data-parent-id="{{ product.id  }}" data-product-id="{{ product.id }}"
+
+>
+  {% set in_wishlist = customer.wishlist is defined and product.id in customer.wishlist %}
+  
+
+
+  <a  href="/products/{{ product.slug }}" class="block relative">
+      {% if product.selected_product.formatted_sale_price %}
+            {% if product.purchase_restrictions.sale_price_period_end %}
+              <div class="absolute z-[1] bottom-[20px] sm:bottom-[40px] left-1/2 -translate-x-1/2">   
+                  <div id="countdownProductPage" class="flex  justify-center lg:justify-start gap-2">
+                          <div class="bg-[#f94343] text-[#fff] rounded-md  flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px]">
+                              <span class="countdown font-mono text-[12px]">
+                              <span class="countdown-days" style="--value:0;"></span>
+                              </span>
+                              {{ _("Day") }}
+                          </div>
+                          <div class="bg-[#f94343] text-[#fff] rounded-md  flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px] ">
+                              <span class="countdown font-mono text-[12px]">
+                              <span class="countdown-hours" style="--value:0;"></span>
+                              </span>
+                              {{ _("Hour") }}
+                          </div>
+                          <div class="bg-[#f94343] text-[#fff] rounded-md  flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px]">
+                              <span class="countdown font-mono text-[12px]">
+                              <span class="countdown-minutes" style="--value:0;"></span>
+                              </span>
+                              {{ _("Minute") }}
+                          </div>
+                          <div class="bg-[#f94343] text-[#fff] rounded-md  flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px]">
+                              <span class="countdown font-mono text-[12px]">
+                              <span class="countdown-seconds" style="--value:0;"></span>
+                              </span>
+                              {{ _("Second") }}
+                          </div>
+                  </div>
+              </div>
+            {% endif %}
+          {% endif %}
+
+    <figure class="{% if makeCustomHeight %} h-40 {% else %} h-40 md:h-48 lg:h-64 {% endif %} overflow-hidden relative group">
+        <!-- Skeleton Loader (ONLY for the first image) -->
+  <div class="skeleton w-full h-full absolute top-0 z-10"></div>
+
+        <!-- Main Image (lazy-loaded) -->
+        <img 
+          class="main_img lazy w-full h-full object-contain absolute top-0 {% if product.images|length > 1 %}transition-opacity duration-500 ease-in-out group-hover:opacity-0 {% endif %}"
+          {% if product.images %}
+            data-src="{{ product.images[0].image.full_size }}"
+            data-srcset="{{ product.images[0].image.medium }} 768w, {{ product.images[0].image.full_size }} 1200w"
+          {% elif product.videos %}
+            data-src="{{ product.videos[0].image.full_size }}"
+            data-srcset="{{ product.videos[0].image.medium }} 768w, {{ product.videos[0].image.full_size }} 1200w"
+          {% else %}
+            data-src="{{ 'product-img.svg' | asset_url }}"
+            data-srcset="{{ 'product-img.svg' | asset_url }} 768w, {{ 'product-img.svg' | asset_url }} 1200w"
+          {% endif %}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="{{ product.name }}"
+          onload="this.previousElementSibling.remove()"
+          
+        />
+
+        <!-- Hover Image (no skeleton here) -->
+        {% if product.images|length > 1 %}
+          <img 
+            class="lazy w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 absolute top-0"
+            data-src="{{ product.images[1].image.full_size }}"
+            data-srcset="{{ product.images[1].image.medium }} 768w, {{ product.images[1].image.full_size }} 1200w"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            alt="{{ product.name }}"
+            loading="lazy"
+          />
+        {% endif %}
+      </figure>
+  </a>
+
+  <div class="card-body justify-between flex-col flex-grow  min-h-[200px] gap-2 px-0 py-0">
+    <div></div>
+    <h2 class="product_name font-normal text-center sm:font-semibold text-base sm:text-lg leading-7 line-clamp-2 h-[56px] px-2">
+      {{ product.name }}
+    </h2>
+
+      <div class=" gap-3 px-2 formated_sale_price justify-center {% if product.formatted_sale_price %}flex{% else %}hidden{% endif %}">
+        <span class="line-through text-xs lg:text-sm text-neutral-content formated_sale_price_old">{{ product.formatted_price }}</span>
+        <span class="text-red-700 font-bold text-sm lg:text-lg formated_sale_price_new">{{ product.formatted_sale_price }}</span>
+      </div>
+
+      <div class="text-base-content font-bold text-sm formated_price_box lg:text-lg mx-2 text-center {% if product.formatted_sale_price %}hidden{% else %}block{% endif %}">
+        <span class="formated_price">{{ product.formatted_price }}</span>
+      </div>
+   {% if product.badge.body.ar %}
+      <div class="badge badge-outline text-xs sm:text-sm px-2 self-center">{{ product.badge.body.ar }}</div>
+    {% endif %}
+
+    {# variants #}    
+    <div class="product_custom_variants flex-col gap-2 items-center {% if product.has_options %}flex{% else %}hidden{% endif %}"></div>
+    {# variants #}
+
+   
+{% if product.is_infinite == false and product.quantity <= 0 %}
+        <div class="flex  justify-between   text-[#fff]">
+          <div class="grid grid-cols-2 gap-2 bg-primary">
+            <button style="border-radius:0px 0px 8px 0px" type="button" onclick="handleShowProductPopup('{{ product.id }}')" class=" btn btn-primary !px-[0px] !py-[0px]">
+              <svg width="30" height="30" class="stroke-[#fff] rounded-md p-1"  viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.5 30C7.5 30 15.2411 14.5177 28.788 14.5177C42.335 14.5177 50.076 30 50.076 30C50.076 30 42.335 45.4822 28.788 45.4822C15.2411 45.4822 7.5 30 7.5 30Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M28.7882 35.8057C31.9947 35.8057 34.5942 33.2064 34.5942 29.9999C34.5942 26.7934 31.9947 24.1941 28.7882 24.1941C25.5817 24.1941 22.9824 26.7934 22.9824 29.9999C22.9824 33.2064 25.5817 35.8057 28.7882 35.8057Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            {% if customer %}
+              <button onclick="addToWishlist(this, '{{ product.id }}',event)" type="button" class="{% if in_wishlist %}filled{% endif %}">
+              
+                  <svg  class="h-5 w-5 stroke-[#fff] {% if in_wishlist %}fill-[#fff]{% endif %}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                  </svg>
+                  
+                <span class="loading loading-spinner loading-xs loader hidden"></span>
+              </button>
+            {% else %}
+              <button  onclick="alertMessage('{{ _("You need to log in first") }}', 'info')" type="button">
+                  <svg class="h-5 w-5 stroke-[#fff] flex-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                  </svg>
+                  
+                  <span class="loading loading-spinner loading-xs loader hidden"></span>
+              </button>
+            {% endif %}
+          </div>
+          <button style="border-radius:0px 0px 0px 8px;flex-grow:1;"  class="relative self-center btn btn-primary !px-[0px] text-[#fff]" disabled>{{ _("Out of Stock") }}</button>
+        </div>
+
+        {% else %}
+        <div class="flex  justify-between   text-[#fff]">
+          <div class="grid grid-cols-2 gap-2 bg-primary">
+            <button style="border-radius:0px 0px 8px 0px" type="button" onclick="handleShowProductPopup('{{ product.id }}')" class=" btn btn-primary !px-[0px] !py-[0px]">
+              <svg width="30" height="30" class="stroke-[#fff] rounded-md p-1"  viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.5 30C7.5 30 15.2411 14.5177 28.788 14.5177C42.335 14.5177 50.076 30 50.076 30C50.076 30 42.335 45.4822 28.788 45.4822C15.2411 45.4822 7.5 30 7.5 30Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M28.7882 35.8057C31.9947 35.8057 34.5942 33.2064 34.5942 29.9999C34.5942 26.7934 31.9947 24.1941 28.7882 24.1941C25.5817 24.1941 22.9824 26.7934 22.9824 29.9999C22.9824 33.2064 25.5817 35.8057 28.7882 35.8057Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            {% if customer %}
+              <button onclick="addToWishlist(this, '{{ product.id }}',event)" type="button" class="absolute top-4 right-4  z-[1] {% if in_wishlist %}filled{% endif %}">
+              
+                  <svg  class="h-5 w-5 stroke-[#fff] {% if in_wishlist %}fill-[#fff]{% endif %}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                  </svg>
+                  
+                <span class="loading loading-spinner loading-xs loader hidden"></span>
+              </button>
+            {% else %}
+              <button style="border-radius:0px" onclick="alertMessage('{{ _("You need to log in first") }}', 'info')" type="button" class="btn btn-primary !px-[0px] !py-[0px]">
+                  <svg class="h-5 w-5 stroke-[#fff] flex-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
+                  </svg>
+                  
+                  <span class="loading loading-spinner loading-xs loader hidden"></span>
+              </button>
+            {% endif %}
+          </div>
+          <button style="border-radius:0px 0px 0px 8px;flex-grow:1;"  class=" relative self-center btn btn-primary !px-[0px] !py-[0px]  text-[#fff] add_to_cart" type="button" onclick="addToCartAfterCheck(this,'{{ product.id }}','{{
+          product.purchase_restrictions.min_quantity_per_cart | default(1) }}','{{ product.has_options | default(false) }}','{{ product.slug }}','{{
+          isProductOptionsActivated
+        }}')">
+            {{ _("Add to Cart") }}
+            <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
+          </button>
+        </div>
+      {% endif %}
+ 
+  </div>
+</div>
+
+<script>
+      // const arColorSettingsProductCard ={{ settings.product_page_product_ar_color_name | tojson}}; 
+      // const enColorSettingsProductCard ={{ settings.product_page_product_en_color_name | tojson}};
+
+      function addToCartAfterCheck(btn, productId, qn, hasVariants,prSlug,isProductOptionsActivated=false) {
+        const parentCardThis = btn.closest('.card');
+
+        // Get color variant data if it exists
+        const activeColorElement = parentCardThis.querySelector(".color-attribute-product.active");
+        const colorDataName = parentCardThis.querySelector(".color-attribute-product")?.getAttribute("data-name");
+        const selects = parentCardThis.querySelectorAll("select[data-name]");
+
+        console.log(hasVariants);
+
+        if (hasVariants) {
+          // Handle color variant check
+          if (colorDataName) {
+            if (!activeColorElement) {
+              alertMessage('{{ _("Please select product options") }}', 'error');
+              return;
+            }
+          }
+
+          // Handle selects
+          for (let select of selects) {
+            const name = select.getAttribute("data-name");
+            const value = select.value;
+            if (name && !value) {
+              alertMessage('{{ _("Please select product options") }}', 'error');
+              return;
+            }
+          }
+        }
+        if(hasVariants){
+           if (isProductOptionsActivated) {
+             addToCart(btn, productId, qn);
+           }else{
+            window.location.href = `/products/${prSlug}`;
+           }
+        }else{
+          // All checks passed or hasVariants is false
+          addToCart(btn, productId, qn);
+        }
+      }
+
+    function handleRequestWillSend(event){
+         // git active color value and all select values
+          const allOptions = event.target.closest(".product_custom_variants");
+          const productId = event.target.closest(".card").getAttribute('data-parent-id');
+          const currentCard = event.target.closest(".card");
+          const selectedData = {};
+          const activeColor = allOptions.querySelector(".color-attribute-product.active");
+          if (activeColor) {
+            const value = activeColor.getAttribute("data-value");
+            const name = activeColor.getAttribute("data-name");
+            selectedData[name] = value;
+          }
+          const selects = allOptions.querySelectorAll("select[data-name]");
+          selects.forEach(select => {
+            const name = select.getAttribute("data-name");
+            const value = select.value;
+            selectedData[name] = value;
+          });
+      
+        console.log(productId);
+        const jsonString = JSON.stringify(selectedData);
+        const encodedOptions = encodeURIComponent(jsonString); 
+
+
+         const url = `https://alamalhazazy.com/api/v1/products/${productId}?options=${encodedOptions}`;
+
+        fetch(url, {
+          method: 'GET', // GET is default, but can be explicit
+           headers: {
+               "Accept": "application/json",
+                "Content-Type": "application/json",
+                // Optional: if any custom headers are required
+                "Custom-Theme": "1", // example from your screenshot
+          },
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Parse JSON response
+          })
+          .then(data => {
+            console.log("API Response (Parsed):", data);
+            // Handle data (e.g., update UI)
+            updateUiProductCard(currentCard,data.data.product.selected_product,data.data.product);
+          })
+          .catch(error => {
+            console.error("Fetch Error:", error);
+            // Handle errors (e.g., show user message)
+          });
+    }
+
+    function updateUiProductCard(currentCard,selected_product,parentProduct){
+         if(selected_product){
+
+            currentCard.setAttribute("data-product-id", selected_product.id);
+            if (selected_product?.images.length > 0) {
+              const imageUrl = selected_product.images[0].image.full_size;
+              const mediumUrl = selected_product.images[0].image.medium;
+              const imgElement = currentCard.querySelector('.main_img');
+    
+              // Reset for lazy loading
+              imgElement.classList.add('lazy');
+              imgElement.removeAttribute('src');        // Clear old src
+              imgElement.removeAttribute('srcset');     // Clear old srcset
+    
+              imgElement.setAttribute('data-src', imageUrl);
+              imgElement.setAttribute('data-srcset', `${mediumUrl} 768w, ${imageUrl} 1200w`);
+    
+              // Reobserve it for lazy loading again
+              imageObserver.observe(imgElement);
+            }
+    
+            if(selected_product.formatted_sale_price){
+                currentCard.querySelector('.formated_sale_price').classList.remove('hidden');
+                currentCard.querySelector('.formated_price_box').classList.add('hidden');
+                currentCard.querySelector('.formated_sale_price_old').textContent = selected_product.formatted_price;
+                currentCard.querySelector('.formated_sale_price_new').textContent = selected_product.formatted_sale_price;
+            }else{
+                currentCard.querySelector('.formated_sale_price').classList.add('hidden');
+                currentCard.querySelector('.formated_price_box').classList.remove('hidden');
+                currentCard.querySelector('.formated_price').textContent = selected_product.formatted_price;
+            }
+            
+            const addToCartButton = currentCard.querySelector('.add_to_cart');
+              if (addToCartButton) {
+              if (selected_product.is_infinite === false && selected_product.quantity <= 0) {
+                addToCartButton.disabled = true;
+                addToCartButton.removeAttribute('onclick');
+                addToCartButton.innerHTML = '{{ _("Out of Stock") }}';
+                currentCard.classList.add('grayscale');
+              } else {
+                addToCartButton.disabled = false;
+                addToCartButton.setAttribute(
+                  'onclick',
+                  `addToCartAfterCheck(this,'${selected_product.id}',${selected_product.purchase_restrictions.min_quantity_per_cart},'${parentProduct.has_options}','${parentProduct.slug}','1')`
+                );
+                addToCartButton.innerHTML = '{{ _("Add to Cart") }} <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>';
+                currentCard.classList.remove('grayscale');
+              }
+            }
+         }
+     }
+
+     function colorVariantClicked(event) {
+          event.preventDefault();
+          const nameVariant = event.target.closest(".variants-options");
+          if (nameVariant) {
+              nameVariant.querySelectorAll(".attribute").forEach(variant => {
+                  variant.classList.remove('active');
+              });
+              const realTar = event.target.closest(".attribute");
+              realTar.classList.add('active');
+          }
+          handleRequestWillSend(event);
+      }
+  (() => {
+    const color_option_name_ar = {{ colorOptionNameAr | tojson }};
+    const color_option_name_en = {{ colorOptionNameEn | tojson }};
+     // handle variations
+    const handleVariationsProductCard = (product) => {
+        const productVariantWrappers = document.querySelectorAll(`[data-parent-id="${product.id}"]`);
+        productVariantWrappers.forEach((wrapper) => {
+            const globalVarinatsOptions = wrapper.querySelector(".product_custom_variants");
+
+            // Clear old options
+            globalVarinatsOptions.innerHTML = "";
+           
+            if(product.variants.length > 0) {
+                product.options.forEach((option,index) => {
+                    if(option.name.trim().toLowerCase() === "color" || option.name.trim() === "الون") {
+                        let tempChoices = "";
+                        const uniqueColors = [
+                            ...new Map(
+                                product.variants.flatMap(product =>
+                                    product.attributes
+                                        .filter(attribute => attribute.name === "الون")
+                                        .map(attribute => [attribute.value, { colorValue: attribute.value, name: attribute.name, image: product?.images[0]?.image?.thumbnail }])
+                                )
+                            ).values()
+                        ];
+                        
+                        for (let choice of uniqueColors) {
+                            tempChoices += `
+                                <div 
+                                    onclick="colorVariantClicked(event)"
+                                    data-value="${choice.colorValue}" 
+                                    data-name="${choice.name}" 
+                                    class="attribute color-attribute-product color-variant ${choice.image ?'w-[40px] h-[40px]':'min-w-[40px] min-h-[40px]'} rounded-md cursor-pointer border flex justify-center items-center" 
+                                > 
+                                    ${choice.image ? `
+                                        <div onclick="colorVariantClicked(event)" class="w-[30px] h-[30px]" style="background-image: url('${choice.image || ''}');
+                                        background-size: cover; 
+                                        background-position: center; 
+                                        background-repeat: no-repeat;" >
+                                        </div>`:
+                                        `<div class="min-w-[30px] min-h-[30px] rounded-lg text-base text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer">
+                                            ${choice.colorValue}
+                                        </div>`}
+                                </div>`;
+                        }
+
+                        globalVarinatsOptions.insertAdjacentHTML("beforeend", `
+                            <div class="variants-options flex flex-col items-center gap-3">
+                                <div class="flex gap-3 flex-wrap">${tempChoices}</div>
+                            </div>`);
+                    } else {
+                        let tempOptionsGlobal = `<select class="select select-bordered select-xs w-full max-w-xs" data-name="${option.name}" onchange="handleRequestWillSend(event)">
+                            <option disabled selected value="">اختر</option>`;
+                        for (let choice of option.choices) {
+                            tempOptionsGlobal += `<option value="${choice}">${choice}</option>`;
+                        }
+                        tempOptionsGlobal += `</select>`;
+                        
+                        globalVarinatsOptions.insertAdjacentHTML("beforeend", `
+                            <div class="variants-options flex flex-col items-center gap-1">
+                                <h2 class="variant_title text-primary font-semibold text-xs sm:text-sm">${option.name}:</h2>
+                                ${tempOptionsGlobal}
+                            </div>
+                        `);
+                    }
+                });
+            }
+        });
+    };
+
+    function startCountdownHome(dateString) {
+                  const prCard2 = {{ product | tojson }};
+
+            const productVariantWrapperForCount = document.querySelector(`[data-parent-id="${prCard2.id}"]`);
+            const daysSelector = productVariantWrapperForCount.querySelector(".countdown-days");
+            const hoursSelector = productVariantWrapperForCount.querySelector(".countdown-hours");
+            const minutesSelector = productVariantWrapperForCount.querySelector(".countdown-minutes");
+            const secondsSelector = productVariantWrapperForCount.querySelector(".countdown-seconds");
+
+            if (!dateString) {
+                console.error("Invalid date format. Expected a string in ISO 8601 format (e.g., '2025-01-22T20:59:59.000000Z').");
+                return;
+            }
+
+            // Parse the date string into a Date object
+            const countDownDate = new Date(dateString).getTime();
+
+            if (isNaN(countDownDate)) {
+                console.error("Invalid date string. Unable to parse the date.");
+                return;
+            }
+
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Calculate days, hours, minutes, and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update DaisyUI countdown elements
+                daysSelector.style.setProperty("--value", days);
+                hoursSelector.style.setProperty("--value", hours);
+                minutesSelector.style.setProperty("--value", minutes);
+                secondsSelector.style.setProperty("--value", seconds);
+
+                // If the countdown is finished
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById("countdownProductPage").innerHTML = "{{ _("Monthly Deal Expired") }}";
+                }
+            }, 1000);
+     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+            console.log("product Card");
+            const prCard3 = {{ product | tojson }};
+             if(prCard3.purchase_restrictions.sale_price_period_end){
+                startCountdownHome(prCard3.purchase_restrictions.sale_price_period_end);
+            }
+            zid.products.list({id: prCard3.id}, { showErrorNotification: true }).then((res) => {
+            handleVariationsProductCard(res.product);
+            }).catch((err) => console.log(err));
+        
+    });
+  })();
+
+</script>

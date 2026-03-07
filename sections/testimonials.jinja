@@ -1,0 +1,81 @@
+<section section-id="{{ sectionId }}" class="text-base-content my-5 lg:my-8 layout">
+  <h3 class="text-2xl sm:text-5xl leading-[2rem] sm:!leading-[3.25rem] text-center font-bold">{{ settings.title_one }}</h3>
+  <h2 class="text-lg sm:text-xl text-center text-base-content mt-3">{{ settings.title_two }}</h2>
+  <div class="swiper textimonials_swiper mt-3 sm:mt-5">
+     <div class="swiper-wrapper">
+         {% for item in settings.testimonials %}
+            <div class="swiper-slide">
+               <div class="flex flex-col items-center   gap-3 sm:gap-5">
+                 {# <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.9847 0.439997C11.2514 1.24 11.3847 1.90666 11.3847 2.44C11.3847 2.92 11.3047 3.56 11.1447 4.36C7.57136 4.36 5.78469 6.2 5.78469 9.88C5.78469 11.2133 6.47802 11.96 7.86469 12.12C9.89135 12.28 10.9047 13.5867 10.9047 16.04C10.9047 17.9067 10.4514 19.3467 9.54469 20.36C8.69135 21.32 7.11802 21.8 4.82469 21.8C1.67802 21.8 0.104688 19.6667 0.104688 15.4C0.104688 11.1333 0.958021 7.58666 2.66469 4.76C4.37135 1.88 7.14469 0.439997 10.9847 0.439997ZM25.4647 0.439997C25.7314 1.24 25.8647 1.90666 25.8647 2.44C25.8647 2.92 25.7847 3.56 25.6247 4.36C22.0514 4.36 20.2647 6.2 20.2647 9.88C20.2647 11.2133 20.958 11.96 22.3447 12.12C24.3714 12.28 25.3847 13.5867 25.3847 16.04C25.3847 17.9067 24.9314 19.3467 24.0247 20.36C23.1714 21.32 21.598 21.8 19.3047 21.8C16.158 21.8 14.5847 19.6667 14.5847 15.4C14.5847 11.1333 15.438 7.58666 17.1447 4.76C18.8514 1.88 21.6247 0.439997 25.4647 0.439997Z" fill="#6A451B"/>
+                  </svg> #}
+                  <p class="text-sm leading-6 text-center sm:text-start">{{ item.desc }}</p>
+                  {% if item.rate and item.rate > 0 %}
+                        {% if item.rate > 5 or item.rate < 0 %}
+                           {% if item.rate > 5 %}
+                             {% set maxRate = 5 %} 
+                           {% else %}
+                             {% set maxRate = 0 %} 
+                           {% endif %}
+                        {% else %}
+                            {% set maxRate = item.rate %} 
+                        {% endif %}
+
+                        <div class="testimonial-rating flex items-center gap-2">
+                                {% for n in range(1, maxRate + 1) %}
+                                    <svg class="star filled" width="24" height="24" viewBox="0 0 24 24" fill="gold" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 .587l3.668 7.435 8.2 1.191-5.934 5.782 1.4 8.168L12 18.897l-7.334 3.866 1.4-8.168L.132 9.213l8.2-1.191L12 .587z"/>
+                                    </svg>
+                                {% endfor %}
+
+                           {% if  maxRate != 5 %}
+                              
+                              {% for n in range(1, 5 - maxRate + 1) %}
+                                <svg class="star unfilled" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="gold">
+                                    <path d="M12 .587l3.668 7.435 8.2 1.191-5.934 5.782 1.4 8.168L12 18.897l-7.334 3.866 1.4-8.168L.132 9.213l8.2-1.191L12 .587z" stroke-width="2"/>
+                                </svg>
+                              {% endfor %}
+                           {% endif %}
+                           
+                            
+                        </div>
+                    {% endif %}         
+                    {# <div class="avatar">
+                          <div class="w-16">
+                            <img src="{{ item.image }}" alt="image" class="rounded-full" />
+                          </div>
+                    </div> #}
+
+               </div>
+            </div>
+         {% endfor %}
+     </div>
+     <div class="mt-8">
+         <div class="swiper-pagination-textimonials swiper-pagination"></div>
+     </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const textimonialsSlider = document.querySelector('.textimonials_swiper');
+    if(textimonialsSlider){
+      let swiper = new Swiper('.textimonials_swiper', {
+        slidesPerView: 1,
+        spaceBetween: 16,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination-textimonials',
+            clickable: true,
+            dynamicBullets: true,
+            dynamicMainBullets: 5
+        },
+        breakpoints: {
+            768: {
+                slidesPerView:  3,
+                spaceBetween: 10
+            }
+        }         
+      }); 
+    }
+  });
+</script>

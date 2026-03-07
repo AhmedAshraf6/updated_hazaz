@@ -1,0 +1,79 @@
+<section section-id="{{ sectionId }}" class="featured_products py-5 lg:py-10 text-base-content my-5 lg:my-8">
+    <div class="layout">
+       <div class="grid grid-cols-4 gap-3 sm:gap-5">
+         <div class="col-span-1 relative">
+            <div class="w-full home-image-wrapper">
+              <img src="{{ settings.image }}" alt="image" class="w-full h-96 object-cover rounded-xl absolute z-[2] py-5">
+            </div>
+         </div>
+         <div class="col-span-3">
+            <a href="{{ settings.btn_url }}" class="flex gap-2 items-center justify-end mb-3 text-primary">
+              {{ settings.btn_text }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="stroke-primary {% if session.lang.code == 'ar' %} rotateIcon {% endif %}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4 rotate-180"><path d="m9 18 6-6-6-6"></path></svg>
+            </a>
+            <div class="swiper home_image_silder_before">
+                <div class="swiper-wrapper items-stretch">
+                      {% for key,item in settings.products %}
+                          <div class="swiper-slide  h-auto" style="height:auto">
+                              <div class="h-full"> 
+                                {% set product = item.product %}{% set index = key %}{% set makeCustomHeight = true %}
+                                {% include 'components/product-card.jinja' %}
+                               </div>
+                          </div>
+                      {% endfor %}
+                </div>
+                <style>
+.home-image-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 100%;
+  background-color: {{ settings.color }};
+  z-index: 1;
+  border-radius:12px;
+}
+
+</style>
+               
+            </div>
+         </div>
+       </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+   
+        
+              const elSliderImage = document.querySelector('.home_image_silder_before');
+
+        if(elSliderImage){
+
+          const swiperNewInHome = new Swiper('.home_image_silder_before', {
+              slidesPerView:1,
+              spaceBetween: 30,
+              breakpoints: {
+                    640: {
+                    slidesPerView: 1.5,
+                    spaceBetween: 20,
+                  },
+  
+                  768: {
+                      slidesPerView: 2.5,
+                      spaceBetween: 10
+                  },
+                  1024: {
+                      slidesPerView: 3.5,
+                      spaceBetween: 10
+                  }
+              }
+          }); 
+                    
+        }
+                  
+  });
+      
+</script>

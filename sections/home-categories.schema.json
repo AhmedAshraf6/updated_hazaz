@@ -1,0 +1,39 @@
+{
+  "name": {
+    "ar": "تصنيفات مميزة",
+    "en": "special categories"
+  },
+  "icon": "fal fa-presentation",
+  "display": true,
+  "settings": [
+    {
+      "type": "list",
+      "noLabel": true,
+      "settings_label": {
+        "ar": "التصنيف",
+        "en": "category"
+      },
+      "settings": [
+        {
+          "type": "category",
+          "label": {
+            "ar": "التصنيف",
+            "en": "category"
+          },
+          "id": "category"
+        },
+        {
+          "type": "text",
+          "label": {
+            "ar": "وصف التصنيف",
+            "en": "category description"
+          },
+          "id": "cat_desc"
+        }
+      ],
+      "id": "categories"
+    }
+  ],
+  "section_id": "14338581-40b8-43c9-93a0-0910cb88a75a",
+  "template": "sections/home-categories.jinja"
+}

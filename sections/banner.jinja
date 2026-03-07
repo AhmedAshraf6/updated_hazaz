@@ -1,0 +1,42 @@
+<section class="py-3 banner-img lazy-banner" 
+    section-id="{{ sectionId }}"
+    data-lg-scroll-offset="130"
+    data-md-scroll-offset="130"
+    data-sm-scroll-offset="94"   
+>
+    <div class="{% if settings.container_type == 'container' %} layout {% endif %}">
+        <div class='flex my-5 sm:my-10 relative z-[1]  {% if settings.container_type == "no-container" %} m-0 {% endif %}'>
+                <a aria-label="banner url" href="{{ settings.url }}" style="z-index: 9" class="w-full flex-1"> 
+                    <div class="relative aspect-video skeleton-parent">  
+                        <div class="skeleton skBanner w-full h-full absolute"></div>           
+                        {% if settings.image %} 
+                            <img class=" hidden lg:block  w-full h-auto object-contain md:object-cover rounded-3xl lazy" data-src="{{ settings.image }}" alt="ads banner"
+                            onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
+                             data-src="{{ settings.image }}"
+                            data-srcset="{{ settings.image }} 768w, {{ settings.image }} 1200w"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        {% endif %}  
+                        {% if settings.image_mobile %} 
+                            <img loading="lazy" class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" data-src="{{ settings.image_mobile }}" alt="ads banner"
+                              onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
+                            data-srcset="{{ settings.image_mobile }} 768w, {{ settings.image_mobile }} 1200w"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        {% else %}
+                            <img class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" data-src="{{ settings.image }}" alt="ads banner" 
+                           onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
+                             data-src="{{ settings.image }}"
+                              data-srcset="{{ settings.image }} 768w, {{ settings.image }} 1200w"
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        {% endif %}  
+                    </div>
+                </a>
+        </div>        
+    </div>
+</section>
+<script>
+
+
+</script>

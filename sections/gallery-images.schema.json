@@ -1,0 +1,56 @@
+{
+  "name": {
+    "ar": "أقسام مميزة",
+    "en": "special categories"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": [
+    {
+      "type": "list",
+      "label": {
+        "ar": "القسم",
+        "en": "category"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": [
+        {
+          "type": "image",
+          "label": {
+            "ar": "الصورة",
+            "en": "image"
+          },
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": {
+            "ar": "النص الفرعي",
+            "en": "secondary title"
+          },
+          "id": "title_one"
+        },
+        {
+          "type": "text",
+          "label": {
+            "ar": "العنوان",
+            "en": "address"
+          },
+          "id": "title_two"
+        },
+        {
+          "type": "url",
+          "label": {
+            "ar": "اللينك",
+            "en": "url"
+          },
+          "id": "url"
+        }
+      ],
+      "id": "images"
+    }
+  ],
+  "section_id": "ecf85720-e758-4b1f-86d5-55daff677601",
+  "template": "sections/gallery-images.jinja"
+}

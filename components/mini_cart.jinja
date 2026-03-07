@@ -1,0 +1,149 @@
+<aside class="flex flex-col justify-between gap-3 mini_cart h-full p-4">
+  {# top inlude head and products #}
+  <div class="mini_cart_products_section">
+     <p class="text-lg sm:text-xl border-b-[1px] border-secondary pb-3">{{ _("Cart") }}</p>
+     <!-- product list -->
+     <div class="products mt-3 sm:mt-5 flex-col gap-3 h- hidden my-scrollable-container"></div>
+  </div>
+  <div class="loading_indicator flex justify-center items-center h-full">
+            <span class="loading loading-spinner loading-lg "></span>
+
+  </div>
+  <div class="no-products  flex-col justify-center  items-center h-full hidden">
+     <img src="{{ 'empty_cart.gif' | asset_url }}" />
+     <p class="text-lg sm:text-xl">{{ _("No products") }}</p>
+     <a href="/products" class="btn btn-outline mt-3 sm:mt-5">{{ _("Add Now") }}</a>
+  </div>
+  {# bottom include info cart #}
+  <div class="mt-auto hidden info_box">
+    <div class="flex flex-col gap-5">
+      {# free shipping #}
+      <div class="mt-5 hidden cart-discount-rule-wrapper free-shipping-rule-section">
+        <div class="flex items-center gap-3">
+          <div class="message free-shipping-rule-message"></div>
+              <img src="{{ 'cart_shopping.gif' | asset_url }}" class="h-[25px] rounded-full"  />
+           </div>
+
+        <div class="flex mt-3 discount-progress-linear bg-[#c2c7cc] h-[10px] rounded-[20px]">
+          <div class="progress-bar free-shipping-rule-progress bg-primary px-[2px] py-[3px] rounded-r-[20px] rounded-l-[20px]" ></div>
+          <svg
+            width="25"
+            height="24"
+            viewBox="0 0 25 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="self-center"
+          >
+            <rect x="0.568115" y="0.5" width="23" height="23" rx="11.5" fill="white" />
+            <rect
+              x="0.568115"
+              y="0.5"
+              width="23"
+              height="23"
+              rx="11.5"
+              stroke="#0A3254"
+            />
+            <path
+              d="M16.9244 15.4375C16.9244 15.8519 16.7503 16.2493 16.4403 16.5424C16.1304 16.8354 15.71 17 15.2717 17C14.8334 17 14.413 16.8354 14.1031 16.5424C13.7932 16.2493 13.619 15.8519 13.619 15.4375C13.619 15.0231 13.7932 14.6257 14.1031 14.3326C14.413 14.0396 14.8334 13.875 15.2717 13.875C15.71 13.875 16.1304 14.0396 16.4403 14.3326C16.7503 14.6257 16.9244 15.0231 16.9244 15.4375ZM10.3137 15.4375C10.3137 15.8519 10.1395 16.2493 9.82961 16.5424C9.51967 16.8354 9.0993 17 8.66098 17C8.22267 17 7.8023 16.8354 7.49236 16.5424C7.18242 16.2493 7.0083 15.8519 7.0083 15.4375C7.0083 15.0231 7.18242 14.6257 7.49236 14.3326C7.8023 14.0396 8.22267 13.875 8.66098 13.875C9.0993 13.875 9.51967 14.0396 9.82961 14.3326C10.1395 14.6257 10.3137 15.0231 10.3137 15.4375Z"
+              stroke="#595959"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M13.6191 15.4375H10.3138M5.35571 7H11.9664C12.9012 7 13.3686 7 13.6588 7.275C13.9497 7.54875 13.9497 7.99063 13.9497 8.875V14.1875M14.2802 8.5625H15.4708C16.0195 8.5625 16.2938 8.5625 16.5212 8.68438C16.7487 8.80563 16.8895 9.02812 17.1717 9.47312L18.2949 11.2419C18.4351 11.4631 18.5051 11.5744 18.5415 11.6969C18.5772 11.82 18.5772 11.9488 18.5772 12.2069V13.875C18.5772 14.4594 18.5772 14.7513 18.4443 14.9688C18.3573 15.1113 18.2321 15.2296 18.0814 15.3119C17.8513 15.4375 17.5426 15.4375 16.9245 15.4375M5.35571 12.625V13.875C5.35571 14.4594 5.35571 14.7513 5.48859 14.9688C5.57562 15.1113 5.70079 15.2296 5.85152 15.3119C6.08157 15.4375 6.39029 15.4375 7.0084 15.4375M5.35571 8.875H9.32215M5.35571 10.75H8.00001"
+              stroke="#595959"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {# promo code #}
+      <div class="promo-code">
+        <div class="join w-full">
+          <input
+            class="input input-bordered join-item w-full send-coupon"
+            placeholder="{{ _("Add Discount Coupon") }}"
+          />
+          <button
+            type="button"
+            class="btn btn-primary !px-[20px] join-item relative"
+            onclick="sendCoupon()"
+          >
+            {{ _("Apply") }}
+            <span
+              class="loading loading-infinity loading-sm send-coupon-progress hidden absolute left-[5px] top-1/2 -translate-y-1/2"
+            ></span>
+          </button>
+        </div>
+        <div class="message-promo hidden">
+          <div class="flex justify-between items-center flex-wrap gap-2 mt-3 sm:mt-5">
+            <span class="message text-primary font-bold"></span>
+              <button
+              class="delete-promo text-error"
+              onclick="showPopUpDeletePromo(this)"
+            >
+              {{ _("Delete Discount") }}
+
+            </button>
+            <dialog id="pr" class="modal">
+              <div class="modal-box">
+                  <h3 class="text-lg font-bold">{{ _("Do you want to delete the discount coupon?") }}</h3>
+                    <div class="flex gap-3 mt-3">
+                      <div class="modal-action flex-1 mt-0">
+                        <form method="dialog" class="w-full">
+                          <!-- if there is a button in form, it will close the modal -->
+                          <button class="btn w-full">{{ _("Close") }}</button>
+                        </form>
+                      </div>
+                      <button type="button" class="btn btn-error flex-1 relative" onclick="deleteCoupon()">
+                         {{ _("Confirm") }}
+                                     <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2 delete-coupon-progress"></span>
+
+                      </button>
+                    </div>
+                </div>
+            </dialog>
+
+          </div>
+        </div>
+      </div>
+ 
+      {# total amount #}
+      <div class="flex justify-between items-center flex-wrap gap-2">
+        <div class="total flex  flex-col gap-2">
+          <p class="text-lg sm:text-xl font-semibold">{{  _("Total") }}</p>
+          <p class="font-light text-sm">{{  _("(Including VAT)") }}</p>
+        </div>
+        <div>
+          <span class="total_price text-lg sm:text-xl font-semibold text-primary"></span>
+        </div>
+      </div>
+      {# buttons #}
+      <div class="flex justify-between gap-2">
+          {% if store.availability.closed_now %}
+              <a href="#"
+                  class="btn btn-primary"
+                  disabled="disabled"
+              >
+                  {{ _("Cart") }}
+              </a>
+          {% else %}
+              <a class="btn btn-primary flex-1" href="{% if customer %}/checkout/choose-address-and-shipping{% else %}/auth/login?redirect_to=/checkout/choose-address-and-shipping{% endif %}">{{ _("Checkout") }}</a>
+          {% endif %}
+          <a class="btn btn-outline flex-1" href="/cart/view">{{ _("Cart") }}</a>
+      </div>
+
+    </div>
+  </div>
+</aside>
+
+<script>
+
+
+
+
+</script>

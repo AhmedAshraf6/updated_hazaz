@@ -1,0 +1,53 @@
+           {# promo code #}
+                        <div class="flex-col gap-3 border border-base-200 rounded-2xl p-4 mt- sm:mt-5">
+                              <div class="promo-code">
+                                    
+                                    <div class="flex flex-col gap-3 flex-1">
+                                            <input
+                                                class="input input-bordered  w-full send-coupon"
+                                                placeholder="{{ _("Add Discount Coupon") }}"
+                                            />
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary self-start relative"
+                                                onclick="sendCouponCartPage()"
+                                            >
+                                                {{ _("Apply") }}
+                                                <span
+                                                class="loading loading-infinity loading-sm send-coupon-progress hidden absolute left-[5px] top-1/2 -translate-y-1/2"
+                                                ></span>
+                                            </button>
+                                    </div>
+                                    <div class="message-promo hidden">
+                                    <div class="flex justify-between items-center flex-wrap gap-2 mt-3 sm:mt-5">
+                                        <span class="message text-secondary font-bold"></span>
+                                        <button
+                                        class="delete-promo text-error"
+                                        onclick="showPopUpDeletePromo(this)"
+                                        >
+                                        {{ _("Delete Discount") }}
+
+                                        </button>
+                                        <dialog id="pr" class="modal">
+                                        <div class="modal-box">
+                                            <h3 class="text-lg font-bold">{{ _("Do you want to delete the discount coupon?") }}</h3>
+                                                <div class="flex gap-3 mt-3">
+                                                <div class="modal-action flex-1 mt-0">
+                                                    <form method="dialog" class="w-full">
+                                                    <!-- if there is a button in form, it will close the modal -->
+                                                    <button class="btn w-full">{{ _("Close") }}</button>
+                                                    </form>
+                                                </div>
+                                                <button type="button" class="btn btn-error flex-1 relative" onclick="deleteCouponCartPage()">
+                                                    {{ _("Confirm") }}
+                                                                <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2 delete-coupon-progress"></span>
+
+                                                </button>
+                                                </div>
+                                            </div>
+                                        </dialog>
+
+                                    </div>
+                                    </div>
+                                </div>
+                        </div>

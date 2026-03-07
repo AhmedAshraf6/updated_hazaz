@@ -1,0 +1,105 @@
+{
+  "components": {
+    "ar": [
+      {
+        "settings": {
+          "slider": []
+        },
+        "template": "sections/main-slider.jinja"
+      },
+      {
+        "settings": {
+          "container_type": "full",
+          "image": "",
+          "image_mobile": "",
+          "url": ""
+        },
+        "template": "sections/banner.jinja"
+      },
+      {
+        "settings": {
+          "title": "أحدث المنتجات",
+          "more_text": "عرض الكل",
+          "btn_url": "/products",
+          "display_more": true,
+          "products": []
+        },
+        "template": "sections/section-products.jinja"
+      },
+      {
+        "settings": {
+          "title": "تسوق حسب الفئة",
+          "display_more": false,
+          "more_text": "عرض الكل",
+          "categories": []
+        },
+        "template": "sections/categories.jinja"
+      },
+      {
+        "settings": {
+          "images": []
+        },
+        "template": "sections/gallery-images.jinja"
+      },
+      {
+        "settings": {
+          "image": "",
+          "color": "#ffffff",
+          "btn_text": "عرض الكل",
+          "btn_url": "/products",
+          "products": []
+        },
+        "template": "sections/image-slider-two.jinja"
+      },
+      {
+        "settings": {
+          "title": "",
+          "desc": "",
+          "btn_text": "تسوق الآن",
+          "btn_url": "/products",
+          "deal_expiry_year": "",
+          "deal_expiry_month": "",
+          "deal_expiry_day": "",
+          "deal_expiry_hour": ""
+        },
+        "template": "sections/deal.jinja"
+      },
+      {
+        "settings": {
+          "section_one": {
+            "title": "",
+            "description": "",
+            "image": "",
+            "btn_text": "",
+            "btn_url": "",
+            "products": []
+          },
+          "section_two": {
+            "title": "",
+            "description": "",
+            "image": "",
+            "btn_text": "",
+            "btn_url": "",
+            "products": []
+          }
+        },
+        "template": "sections/image-slider.jinja"
+      },
+      {
+        "settings": {
+          "categories": []
+        },
+        "template": "sections/home-categories.jinja"
+      },
+      {
+        "settings": {
+          "title_one": "آراء عملائنا",
+          "title_two": "",
+          "testimonials": []
+        },
+        "template": "sections/testimonials.jinja"
+      }
+    ],
+    "en": []
+  }
+}

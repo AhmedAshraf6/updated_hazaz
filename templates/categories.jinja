@@ -1,0 +1,78 @@
+{% extends "layout.jinja" %}
+
+
+{% block header %} {{ include('header.jinja') }} {% endblock %}
+
+
+{% block main_content %}
+      {% set breadcrumbs = [
+                    { label: _("Home"), url: '/' },
+                    { label: _("All Categories") }
+                ] %}
+      {% include 'components/breadcrumbs.jinja' %}
+      {% if settings.banners_banner_categories_page %}
+        {% set image = settings.banners_banner_categories_page %}
+        {% include 'components/shared_banner.jinja' %}
+      {% endif %}
+      
+
+      <div class="my-5 layout allProductsPage">
+       {% if categories|length > 0 %}
+         <div class="flex flex-wrap gap-3">
+           {% for cat in categories %}
+            <a href="/categories/{{ cat.id }}/{{ cat.slug }}" class="card bg-base-100 shadow-xl w-96">
+                <figure class="px-10 pt-10">
+                    <img
+                       {% if cat.cover_image %}
+                                src="{{ cat.cover_image }}"
+                            {% else %}
+                                src="{{ 'product-img.svg' | asset_url }}"
+                        {% endif %}
+                      alt="{{cat.img_alt_text}}"
+                    class="rounded-xl h-full w-full object-cover" />
+                </figure>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">{{ cat.name }}</h2>
+                </div>
+             </a>
+             {% if cat.sub_categories|length > 0 %}
+                {% for subCat in cat.sub_categories %}
+                    <a href="/categories/{{ subCat.id }}/{{ subCat.slug }}" class="card bg-base-100 shadow-xl w-96">
+                        <figure class="px-10 pt-10">
+                            <img
+                              {% if subCat.cover_image %}
+                                        src="{{ subCat.cover_image }}"
+                                    {% else %}
+                                        src="{{ 'product-img.svg' | asset_url }}"
+                                {% endif %}
+                              alt="{{subCat.img_alt_text}}"
+                            class="rounded-xl h-full w-full object-cover" />
+                        </figure>
+                        <div class="card-body items-center text-center">
+                            <h2 class="card-title">{{ subCat.name }}</h2>
+                        </div>
+                    </a>
+                {% endfor %}
+             {% endif %}
+             
+           {% endfor %}
+         </div>
+       {% else %}
+         <h3 class="text-center text-lg sm:text-xl">{{  _("No categories available yet")  }}</h3>
+       {% endif %}
+      </div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block footer %} {{ include('footer.jinja') }} {% endblock %}
+
+{% block footer_scripts %}
+    <script>
+        console.log({{ categories | tojson}});
+    </script>
+{% endblock %}

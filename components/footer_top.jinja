@@ -1,0 +1,107 @@
+<div class="layout">
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center lg:items-start justify-center lg:justify-between gap-3 py-y lg:py-5">
+       {# {% if store.settings.branding.logo or footer_settings.about_us_des %}
+        <div class="flex flex-col items-center lg:items-start  gap-3  flex-1">
+          {% if store.settings.branding.logo  %}
+            <a href="/" class="footer-logo">
+                <img src="{{ store.settings.branding.logo }}" alt="{{ store.name }}" class="w-[180px] h-[55px] object-contain" />
+            </a>
+          {% endif %}
+          {% if  footer_settings.about_us_des  %}
+            <p  class="text-center  lg:text-start">
+              {{ footer_settings.about_us_des | safe  }}
+            </p>
+          {% endif %}
+        </div>
+       {% endif %} #}
+    <div class="lg:flex-1 flex flex-col lg:flex-row">
+      {# important links 1 #}
+      {% if not (footer_settings.links_1_hide) %}
+        <div class="flex flex-col items-center lg:items-start  gap-2 flex-1 mt-3 lg:mt-0">
+          <h2 class="text-lg lg:text-xl font-medium mb-1 text-primary">{{ footer_settings.links_1_title }}</h2>
+          {% for link in footer_settings.links_1_links %}
+            <p><a class="text-base lg:text-[13px] text-[#fff]" href="{{ link.url }}">{{ link.title }}</a></p>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {# important links 2 #}
+     {% if not (footer_settings.links_2_hide) %}
+        <div class="flex flex-col items-center lg:items-start  gap-2 flex-1">
+          <h2 class="text-lg lg:text-xl font-medium mb-1  text-primary" >{{ footer_settings.links_2_title }}</h2>
+          {% for link in footer_settings.links_2_links %}
+            <p><a class="text-base lg:text-[13px] text-[#fff]" href="{{ link.url }}">{{ link.title }}</a></p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+      <div class="flex flex-col items-center lg:items-start  gap-3  sm:gap-5 lg:flex-1">
+          {# social #}
+          <div class="flex flex-col items-center lg:items-start  gap-3 footer-social flex-1 box">
+            {# {% if footer_settings.social_media_title %}
+              <h3 class="text-lg lg:text-xl font-bold mb-1">{{  footer_settings.social_media_title }}</h3>
+            {% else %}
+              <h3 class="text-lg lg:text-xl font-bold mb-1">{{  _("Follow Us") }}</h3>
+            {% endif %} #}
+            <div class="flex flex-wrap items-center gap-3">
+              {% include "components/footer_social_media.jinja" %}
+            </div>
+          </div>
+          <div class="flex items-center lg:items-start flex-1  flex-wrap gap-2 ">
+                    <div class="flex flex-wrap gap-3">
+                    
+                      {% for payment_method in store.payment_methods %}
+                          <a href="/shipping-and-payment"  class="bg-[#ffffff24] p-[5px] rounded-md flex items-center justify-center" aria-label="payment method">
+                            <img src="{{ image_url(payment_method.icon, h=26, q=100) }}"  alt="" width="36"  alt='payments' class="max-w-[20px] max-h-[20px] object-cover">
+                          </a>
+                      {% endfor %}
+                       {% for shipping_method in store.shipping_methods %}
+                            <a href="/shipping-and-payment"  class="bg-[#ffffff24] p-[5px] rounded-md flex items-center justify-center" aria-label="payment method">
+                              <img src="{{ image_url(shipping_method.icon, h=26, q=100) }}"  alt="" width="36" alt='shipping' class="max-w-[20px] max-h-[20px] object-cover">
+                            </a>
+                        {% endfor %}
+                    </div>  
+          </div>
+          <div class="flex flex-col lg:flex-row items-center lg:items-start gap-3  flex-[2]">
+            {% include "components/footer_vat.jinja" %}
+          </div>
+          {# Contact us #}
+          {# <div class="flex flex-col items-center lg:items-start  gap-3 footer-social flex-1 box">
+            {% if footer_settings.contact_us_title %}
+              <h3 class="text-lg lg:text-xl font-bold mb-1">{{  footer_settings.contact_us_title }}</h3>
+            {% else %}
+              <h3 class="text-lg lg:text-xl font-bold mb-1">{{  _("Contact Us") }}</h3>
+            {% endif %}
+            <div class="flex flex-col gap-2 ">
+               {% if store.settings.contact.phone %}
+                  <a class="flex items-center gap-2" href="tel:{{ store.settings.contact.phone }}" aria-label="Phone">
+                     <svg class="stroke-current" width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M27.4998 21.1501V24.9001C27.5012 25.2482 27.4299 25.5928 27.2904 25.9118C27.151 26.2308 26.9464 26.5171 26.6899 26.7525C26.4334 26.9878 26.1305 27.167 25.8007 27.2785C25.4709 27.39 25.1215 27.4315 24.7748 27.4001C20.9283 26.9822 17.2335 25.6678 13.9873 23.5626C10.9671 21.6435 8.40646 19.0828 6.48729 16.0626C4.37477 12.8016 3.0601 9.08886 2.64979 5.22512C2.61856 4.87945 2.65964 4.53107 2.77042 4.20215C2.8812 3.87323 3.05926 3.57098 3.29325 3.31465C3.52725 3.05831 3.81205 2.85351 4.12953 2.71327C4.44702 2.57304 4.79022 2.50045 5.13729 2.50012H8.88729C9.49393 2.49415 10.082 2.70897 10.542 3.10454C11.002 3.5001 11.3024 4.04943 11.3873 4.65012C11.5456 5.8502 11.8391 7.02853 12.2623 8.16262C12.4305 8.61003 12.4669 9.09626 12.3672 9.56372C12.2675 10.0312 12.0359 10.4603 11.6998 10.8001L10.1123 12.3876C11.8917 15.5171 14.4829 18.1082 17.6123 19.8876L19.1998 18.3001C19.5397 17.964 19.9687 17.7324 20.4362 17.6327C20.9037 17.533 21.3899 17.5694 21.8373 17.7376C22.9714 18.1608 24.1497 18.4543 25.3498 18.6126C25.957 18.6983 26.5115 19.0041 26.908 19.472C27.3044 19.9399 27.515 20.5371 27.4998 21.1501Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>                    
+                      <span  class="text-base lg:text-lg">{{ store.settings.contact.phone }}</span>
+                   </a>
+               {% endif %} 
+               {% if store.settings.contact.email %}
+                  <a class="flex items-center gap-2" target="_blank" href="mailTo:{{ store.settings.contact.email }}"  aria-label="Emails">
+                      <svg class="stroke-current" width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 5H25C26.375 5 27.5 6.125 27.5 7.5V22.5C27.5 23.875 26.375 25 25 25H5C3.625 25 2.5 23.875 2.5 22.5V7.5C2.5 6.125 3.625 5 5 5Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M27.5 7.5L15 16.25L2.5 7.5"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                  
+                      <span class="text-base lg:text-lg">{{ store.settings.contact.email }}</span>
+                   </a>
+               {% endif %} 
+               {% if footer_settings.business_location_title  %}
+                  <div class="flex items-center gap-2">
+                      <svg class="stroke-current" width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15.0001 16.7873C17.154 16.7873 18.9001 15.0413 18.9001 12.8873C18.9001 10.7334 17.154 8.9873 15.0001 8.9873C12.8462 8.9873 11.1001 10.7334 11.1001 12.8873C11.1001 15.0413 12.8462 16.7873 15.0001 16.7873Z" stroke-width="1.5"/>
+                      <path d="M4.52512 10.6125C6.98762 -0.212497 23.0251 -0.199996 25.4751 10.625C26.9126 16.975 22.9626 22.35 19.5001 25.675C16.9876 28.1 13.0126 28.1 10.4876 25.675C7.03762 22.35 3.08762 16.9625 4.52512 10.6125Z"  stroke-width="1.5"/>
+                      </svg>                   
+                      <span class="text-base lg:text-lg">{{  footer_settings.business_location_title }}</span>
+                   </div>
+               {% endif %} 
+             
+            </div>
+          </div> #}
+      </div>
+    </div>
+</div>

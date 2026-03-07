@@ -1,0 +1,15 @@
+{% if slide.img_slider  %} 
+    <img src="{{ slide.img_slider }}" alt="Slider" class="img-fluid rounded-2 img-web w-100" style="max-height: 370px;"> 
+    {% else %}
+    <img src="{{ image_url(store.settings.branding.logo, w=235, q=85, f='auto') }}" style="object-fit: contain;min-height: auto; height: auto;" class='p-2 img-web' width="150px" />
+{% endif %} 
+
+{% if slide.img_slider_mobile  %} 
+    <img src="{{ slide.img_slider_mobile }}" alt="Slider" class="img-fluid rounded-2 img-mobile w-100">
+    {% else %}
+    {% if slide.img_slider  %} 
+        <img src="{{ slide.img_slider }}" alt="Slider" class="img-fluid rounded-2 img-mobile w-100"  style="max-height: 370px;"> 
+        {% else %}
+        <img src="{{ image_url(store.settings.branding.logo, w=235, q=85, f='auto') }}" style="object-fit: contain;min-height: auto; height: auto;" class='p-2 img-mobile' width="150px" />
+    {% endif %} 
+{% endif %}
