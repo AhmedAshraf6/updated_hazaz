@@ -595,13 +595,13 @@
         // end handle variatons
 
         function fetchMoreProducts (query){
-                console.log('fetchMoreProducts query:', query);
-                zid.products.list({categories: {{ category.id | tojson }}, ...query}).then(function (response) {
+                console.log('fetchMoreProducts query:', query, 'lastPage:', lastPage, 'currentPage:', currentPage);
+                zid.products.list({category_id: {{ category.id | tojson }}, ...query}).then(function (response) {
                         console.log('fetchMoreProducts response:', response);
                         const productsList = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
                         if(productsList.length > 0){
                             currentPage++;
-                            addProducts(response.products);
+                            addProducts(response.products || response);
                         }else{
                            document.querySelector(".loading_more_products").classList.add('hidden');
                         }
