@@ -114,10 +114,10 @@
               searchResultSection.classList.remove("hidden");
               loadingSpinner.classList.remove("hidden");
 
-              zid.products.list({ search: value }).then((data) => {
+              zid.products.list({ q: value, page_size: 10 }).then((data) => {
                      console.log('search response:', data);
                      let productFromSearch = '';
-                     const productsList = data?.products?.data || data?.products?.results || data?.products || data?.results || data?.data || [];
+                     const productsList = data?.results || data?.products?.data || data?.products?.results || data?.products || data?.data || [];
                      const productsCount = productsList.length;
 
                      if (productsCount > 0) {

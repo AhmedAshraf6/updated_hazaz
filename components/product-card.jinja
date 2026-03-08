@@ -182,7 +182,7 @@
             {% endif %}
           </div>
           <button style="border-radius:0px 0px 0px 8px;flex-grow:1;"  class=" relative self-center btn btn-primary !px-[0px] !py-[0px]  text-[#fff] add_to_cart" type="button" onclick="addToCartAfterCheck(this,'{{ product.id }}','{{
-          product.purchase_restrictions.min_quantity_per_cart | default(1) }}','{{ product.has_options | default(false) }}','{{ product.slug }}','yes')">
+          product.purchase_restrictions.min_quantity_per_cart | default(1) }}',{{ product.has_options | tojson }},'{{ product.slug }}',true)">
             {{ _("Add to Cart") }}
             <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
           </button>
@@ -197,12 +197,15 @@
     function addToCartAfterCheck(btn, productId, qn, hasVariants,prSlug,isProductOptionsActivated=true) {
         const parentCardThis = btn.closest('.card');
 
+        // Use selected variant ID if available, otherwise use parent product ID
+        const selectedProductId = parentCardThis.getAttribute('data-product-id') || productId;
+
         // Get color variant data if it exists
         const activeColorElement = parentCardThis.querySelector(".color-attribute-product.active");
         const colorDataName = parentCardThis.querySelector(".color-attribute-product")?.getAttribute("data-name");
         const selects = parentCardThis.querySelectorAll("select[data-name]");
 
-        console.log(hasVariants);
+        console.log('hasVariants:', hasVariants, 'productId:', productId, 'selectedProductId:', selectedProductId);
 
         if (hasVariants) {
           // Handle color variant check
@@ -225,18 +228,18 @@
         }
         if(hasVariants){
            if (isProductOptionsActivated) {
-             addToCart(btn, productId, qn);
+             addToCart(btn, selectedProductId, qn);
            }else{
             window.location.href = `/products/${prSlug}`;
            }
         }else{
           // All checks passed or hasVariants is false
-          addToCart(btn, productId, qn);
+          addToCart(btn, selectedProductId, qn);
         }
     }
 
     function handleRequestWillSend(event){
-         // git active color value and all select values
+         // get active color value and all select values
           const allOptions = event.target.closest(".product_custom_variants");
           const productId = event.target.closest(".card").getAttribute('data-parent-id');
           const currentCard = event.target.closest(".card");
@@ -251,47 +254,31 @@
           selects.forEach(select => {
             const name = select.getAttribute("data-name");
             const value = select.value;
-            selectedData[name] = value;
+            if (name && value) selectedData[name] = value;
           });
-      
-        console.log(productId);
-        const jsonString = JSON.stringify(selectedData);
-        const encodedOptions = encodeURIComponent(jsonString); 
 
+        console.log('Selected options:', selectedData);
 
-         const url = `https://alamalhazazy.com/api/v1/products/${productId}?options=${encodedOptions}`;
-
-        fetch(url, {
-          method: 'GET', // GET is default, but can be explicit
-           headers: {
-               "Accept": "application/json",
-                "Content-Type": "application/json",
-                // Optional: if any custom headers are required
-                "Custom-Theme": "1", // example from your screenshot
-          },
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
+        // Match variant client-side from stored product data
+        const storedProduct = currentCard._productData;
+        if (storedProduct && storedProduct.variants) {
+            const matchedVariant = storedProduct.variants.find(variant => {
+                return variant.attributes.every(attr => {
+                    return selectedData[attr.name] === attr.value;
+                });
+            });
+            if (matchedVariant) {
+                console.log("Matched variant:", matchedVariant);
+                updateUiProductCard(currentCard, matchedVariant, storedProduct);
             }
-            return response.json(); // Parse JSON response
-          })
-          .then(data => {
-            console.log("API Response (Parsed):", data);
-            // Handle data (e.g., update UI)
-            updateUiProductCard(currentCard,data.data.product.selected_product,data.data.product);
-          })
-          .catch(error => {
-            console.error("Fetch Error:", error);
-            // Handle errors (e.g., show user message)
-          });
+        }
     }
 
     function updateUiProductCard(currentCard,selected_product,parentProduct){
          if(selected_product){
 
             currentCard.setAttribute("data-product-id", selected_product.id);
-            if (selected_product?.images.length > 0) {
+            if (selected_product?.images?.length > 0) {
               const imageUrl = selected_product.images[0].image.full_size;
               const mediumUrl = selected_product.images[0].image.medium;
               const imgElement = currentCard.querySelector('.main_img');
@@ -330,7 +317,7 @@
                 addToCartButton.disabled = false;
                 addToCartButton.setAttribute(
                   'onclick',
-                  `addToCartAfterCheck(this,'${selected_product.id}',${selected_product.purchase_restrictions?.min_quantity_per_cart ?? 1},'${parentProduct.has_options ?? false}','${parentProduct.slug}','1')`
+                  `addToCartAfterCheck(this,'${selected_product.id}',${selected_product.purchase_restrictions?.min_quantity_per_cart ?? 1},${!!(parentProduct.has_options)},'${parentProduct.slug}',true)`
                 );
                 addToCartButton.innerHTML = '{{ _("Add to Cart") }} <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>';
                 currentCard.classList.remove('grayscale');
@@ -356,13 +343,16 @@
     const color_option_name_en = {{ colorOptionNameEn | tojson }};
      // handle variations
     const handleVariationsProductCard = (product) => {
-        const productVariantWrapper = document.querySelector(`[data-parent-id="${product.id}"]`);
+        const prCardId = {{ product.id | tojson }};
+        const productVariantWrapper = document.querySelector(`[data-parent-id="${prCardId}"]`);
+            if (!productVariantWrapper) return;
             const globalVarinatsOptions = productVariantWrapper.querySelector(".product_custom_variants");
+            if (!globalVarinatsOptions) return;
 
             // Clear old options
             globalVarinatsOptions.innerHTML = "";
-           
-            if(product.variants.length > 0) {
+
+            if(product.variants && product.variants.length > 0 && product.options) {
                 product.options.forEach((option,index) => {
                     if(option.name.trim().toLowerCase() === "color" || option.name.trim() === "الون") {
                         let tempChoices = "";
@@ -423,6 +413,7 @@
                   const prCard2 = {{ product | tojson }};
 
             const productVariantWrapperForCount = document.querySelector(`[data-parent-id="${prCard2.id}"]`);
+            if (!productVariantWrapperForCount) return;
             const daysSelector = productVariantWrapperForCount.querySelector(".countdown-days");
             const hoursSelector = productVariantWrapperForCount.querySelector(".countdown-hours");
             const minutesSelector = productVariantWrapperForCount.querySelector(".countdown-minutes");
@@ -468,13 +459,31 @@
     document.addEventListener("DOMContentLoaded", function () {
             console.log("product Card");
             const prCard = {{ product | tojson }};
-             if(prCard.purchase_restrictions.sale_price_period_end){
+             if(prCard.purchase_restrictions && prCard.purchase_restrictions.sale_price_period_end){
                 startCountdown(prCard.purchase_restrictions.sale_price_period_end);
             }
-            zid.products.list({id: prCard.id}, { showErrorNotification: true }).then((res) => {
-               handleVariationsProductCard(res.product);
-            }).catch((err) => console.log(err));
-        
+            zid.products.get(prCard.id).then((res) => {
+               console.log('product card fetch response:', res);
+               const product = res?.product || res;
+               if (product) {
+                   // Store product data on card element for client-side variant matching
+                   const cardEl = document.querySelector(`[data-parent-id="${prCard.id}"]`);
+                   if (cardEl) cardEl._productData = product;
+                   handleVariationsProductCard(product);
+               }
+            }).catch((err) => {
+               console.log('product card get error, falling back to list:', err);
+               // Fallback to list if get is not available
+               zid.products.list({id: prCard.id}).then((res) => {
+                   const product = res?.product || (res?.results && res.results[0]) || res;
+                   if (product) {
+                       const cardEl = document.querySelector(`[data-parent-id="${prCard.id}"]`);
+                       if (cardEl) cardEl._productData = product;
+                       handleVariationsProductCard(product);
+                   }
+               }).catch((err2) => console.log('product card list fallback error:', err2));
+            });
+
     });
   })();
 

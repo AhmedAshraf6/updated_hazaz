@@ -7,7 +7,7 @@
       </div>
       <div class="flex flex-col gap-5">
       
-        {% for review in reviews | slice(0, 4) %}
+        {% for review in reviews[:4] %}
                 <div class="review flex flex-wrap justify-between gap-2">
                   <div class="flex flex-col gap-2 ">
                     <span class="text-base sm:text-lg font-medium">{{ review.customer.name }}</span>
@@ -17,7 +17,7 @@
                   </div>
                   <div class=" text-lg leading-8 text-base-content">{{ review.comment | safe }}</div>
                     <div class="card-date user-review-date text-sm font-light">
-                        {{ format_datetime(review.created_at, 'd-m-Y') }}
+                        {{ format_datetime(review.created_at) }}
                       </div>
                   {% if  review.images|length > 0 %}
                   

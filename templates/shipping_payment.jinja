@@ -39,7 +39,7 @@
                              </div>
                             </th>
                             <td>
-                              {% for city in shipping_method.delivery_option_cities | slice(0, 3) %}
+                              {% for city in shipping_method.delivery_option_cities[:3] %}
                                  {{city.name}} {% if loop.last == false %}<span >,</span>{% endif %}
                               {% endfor %}
                                  {% if shipping_method.delivery_option_cities | length > 3 %}

@@ -38,7 +38,7 @@
                         <tr>
                             <th><a class="text-secondary underline" href="/orders/{{ order.code }}/invoice">#{{ order.id }}</a></th>
                             <td>{{ order.order_status.name }}</td>
-                            <td>{{ format_datetime(order.created_at, 'd-m-Y') }}</td>
+                            <td>{{ format_datetime(order.created_at) }}</td>
                             <td>{{ order.order_total_string }}</td>
                             <td><a href="/orders/{{ order.code }}/invoice" class="btn btn-primary !px-[5px]">{{ _("View") }}</a></td>
                         </tr>

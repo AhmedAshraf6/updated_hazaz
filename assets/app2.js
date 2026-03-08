@@ -136,8 +136,8 @@ function addToCart(button, product_id, quantity) {
 
   zid.cart
     .addProduct({
-      product_id: product_id,
-      quantity: quantity,
+      product_id: String(product_id),
+      quantity: Number(quantity) || 1,
     }, { showErrorNotification: true })
     .then(function (response) {
       if (response) {
@@ -247,10 +247,10 @@ function handleShowProductPopup(productId) {
 
   // Fetch the product details
   zid.products
-    .list({ id: productId }, { showErrorNotification: true })
+    .get(productId)
     .then((response) => {
-      if (response && response.results && response.results.length > 0) {
-        const product = response.results[0];
+      const product = response?.product || (response?.results && response.results[0]) || response;
+      if (product) {
         // Hide the spinner and show the content
         loadingPopupShowProduct.classList.add('hidden');
         modalContent.classList.remove('hidden');

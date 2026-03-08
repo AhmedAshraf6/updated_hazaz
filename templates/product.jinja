@@ -617,28 +617,35 @@
         // handle variations
         const handleVariations = ()=>{
             const globalVarinatsOptions = document.querySelector(".custom_variants");
-            if(product.variants.length > 0){
-             
+            if(product.variants && product.variants.length > 0 && product.options){
+
+              // Find selected variant's attributes by matching ID
+              const selectedVariant = product.variants.find(v => v.id === product.selected_product?.id);
+              const selectedAttributes = selectedVariant?.attributes || product.selected_product?.attributes || [];
+
               product.options.forEach((option,index)=>{
+                  // Find selected value for this option
+                  const selectedValue = selectedAttributes.find(a => a.name === option.name)?.value;
+
                   if(option.name.trim().toLowerCase() === "color" || option.name.trim() === "الون"){
                     let tempChoices = "";
                      const uniqueColors = [
                         ...new Map(
-                            product.variants.flatMap(product =>
-                            product.attributes
+                            product.variants.flatMap(variant =>
+                            (variant.attributes || [])
                                 .filter(attribute => attribute.name === "الون")
-                                .map(attribute => [attribute.value, { colorValue: attribute.value, name: attribute.name, image: product?.images[0]?.image?.thumbnail }])
+                                .map(attribute => [attribute.value, { colorValue: attribute.value, name: attribute.name, image: variant?.images[0]?.image?.thumbnail }])
                             )
                         ).values()
                     ];
                for (let choice of uniqueColors) {
                 tempChoices += `
-                    <div 
+                    <div
                     onclick="globalVariantClicked(event)"
-                    data-value="${choice.colorValue}" 
-                    data-name="${choice.name}" 
+                    data-value="${choice.colorValue}"
+                    data-name="${choice.name}"
                     class="attribute color-attribute color-variant ${choice.image ?'w-[50px] h-[50px] ':'min-w-[50px] min-h-[50px]'} rounded-md cursor-pointer border flex justify-center items-center
-                        ${product.selected_product.attributes[index].value === choice.colorValue ? 'active' : ''}" 
+                        ${selectedValue === choice.colorValue ? 'active' : ''}"
                     
                     > 
                     ${choice.image ? `   <div  onclick="globalVariantClicked(event)" class="w-[40px] h-[40px]" style="background-image: url('${choice.image || ''}');
@@ -662,8 +669,9 @@
                     
                   }else{
                          let tempOptionsGLobal = "";
+                    // selectedValue already set above from selectedAttributes
                     for(let choice of option.choices){
-                        tempOptionsGLobal += `<div class="attribute global-attribute global-variant min-w-[60px] min-h-[40px] rounded-lg text-base sm:text-lg text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer ${product.selected_product.attributes[index].value == choice ? 'active':''}" data-value="${choice}" data-name="${ option.name }" onclick="globalVariantClicked(event)">
+                        tempOptionsGLobal += `<div class="attribute global-attribute global-variant min-w-[60px] min-h-[40px] rounded-lg text-base sm:text-lg text-base-content bg-base-100 flex items-center justify-center font-bold cursor-pointer ${selectedValue == choice ? 'active':''}" data-value="${choice}" data-name="${ option.name }" onclick="globalVariantClicked(event)">
                                        ${choice}
                                          </div>`;
                     }
