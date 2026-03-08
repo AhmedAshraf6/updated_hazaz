@@ -77,30 +77,28 @@
                 {% endfor %}
             </ul>
              <div class="flex flex-col gap-3 bg-base-300 mt-auto p-4">
-              {% if customer %}
-                  <button type="button" onclick="window.location.href='/account-profile'" class="flex items-center gap-3">                        
+              {# Logged-in customer button (hidden by default, shown via JS event) #}
+                  <button id="mobile-customer-btn" type="button" onclick="window.location.href='/account-profile'" class="flex items-center gap-3 hidden">
                               <div class="icon">
                                   <svg class="stroke-current" width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                  </svg>   
+                                  </svg>
                               </div>
-                              <span>{{ customer.name }}</span>
+                              <span id="mobile-customer-name"></span>
                     </button>
-                   
-                  {% else %}                   
-                        <button type="btton" onclick="window.location.href='/auth/login'" class="flex gap-3 items-center">
+              {# Login button (shown by default, hidden when customer is fetched) #}
+                        <button id="mobile-login-btn" type="button" onclick="window.location.href='/auth/login'" class="flex gap-3 items-center">
                             <div class="icon">
                                   <svg class="stroke-current" width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                  </svg>   
+                                  </svg>
                             </div>
                             <span>
                             {{ _("Login") }}
                             </span>
                         </button>
-                 {% endif %}
                  {% if not ('hide_language' in ab_settings.header_options) %}
                       {% if session.lang.code == 'ar' %}
                                     <button  class="en  change-language flex gap-[8px] items-center stroke-current" data-code="en" type="button">

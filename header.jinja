@@ -600,4 +600,29 @@
       applyTheme(theme);
       setThemeIcon(theme === themes.dark);
 
+      // Handle customer login state via Vitrin's async event
+      document.addEventListener('zid-customer-fetched', function(event) {
+          const fetchedCustomer = event.detail.customer;
+          if (fetchedCustomer && fetchedCustomer.name) {
+              // Desktop header
+              const desktopDropdown = document.getElementById('desktop-customer-dropdown');
+              const desktopLoginBtn = document.getElementById('desktop-login-btn');
+              const desktopName = document.getElementById('desktop-customer-name');
+              if (desktopDropdown && desktopLoginBtn && desktopName) {
+                  desktopName.textContent = fetchedCustomer.name;
+                  desktopDropdown.classList.remove('hidden');
+                  desktopLoginBtn.classList.add('hidden');
+              }
+              // Mobile sidebar
+              const mobileCustomerBtn = document.getElementById('mobile-customer-btn');
+              const mobileLoginBtn = document.getElementById('mobile-login-btn');
+              const mobileName = document.getElementById('mobile-customer-name');
+              if (mobileCustomerBtn && mobileLoginBtn && mobileName) {
+                  mobileName.textContent = fetchedCustomer.name;
+                  mobileCustomerBtn.classList.remove('hidden');
+                  mobileLoginBtn.classList.add('hidden');
+              }
+          }
+      });
+
 </script>

@@ -577,8 +577,12 @@
              </div>
           </div>
           <div class=" col-span-2 h-full grid grid-cols-3 items-center bg-primary">
-             <button  class="btn btn-primary relative add_to_card_single_product w-full fixed_addtocart text-base sm:text-xl h-full col-span-2 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;">
+             <button  class="btn btn-primary relative add_to_card_single_product w-full fixed_addtocart text-base sm:text-xl h-full col-span-1 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;">
                     {{ _("Add to Cart") }}
+                    <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
+             </button>
+             <button class="btn btn-secondary relative buy_now_btn w-full text-base sm:text-xl h-full col-span-1 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;" onclick="openCheckoutPopup()">
+                    {{ _("Buy Now") }}
                     <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
              </button>  
               
@@ -596,6 +600,8 @@
         </div>
       </div>
     </div>
+
+    {% include "vitrin:checkout/checkout_dialog.jinja" %}
 
 {% endblock %}
 
@@ -1059,6 +1065,24 @@ const initializeSliderProduct = () => {
             
             });
         });
+
+        // handle buy now (checkout popup)
+        async function openCheckoutPopup() {
+            const btn = document.querySelector('.buy_now_btn');
+            if (btn.disabled) return;
+            btn.disabled = true;
+            const loader = btn.querySelector('.loading');
+            if (loader) loader.classList.remove('hidden');
+            try {
+                await zid.cart.buyNow(
+                    { form_id: 'product-form' },
+                    { showErrorNotification: true }
+                );
+            } catch (error) {
+            }
+            btn.disabled = false;
+            if (loader) loader.classList.add('hidden');
+        }
 
         // handle notify me when product outofstock
         document

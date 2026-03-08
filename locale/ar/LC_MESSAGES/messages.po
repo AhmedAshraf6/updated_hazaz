@@ -43,6 +43,9 @@ msgstr "أضف تقييمك"
 msgid "Add to Cart"
 msgstr "أضف للسلة"
 
+msgid "Buy Now"
+msgstr "اشتر الآن"
+
 msgid "Add your question, and we will reply as soon as possible"
 msgstr "أضف سؤالك وسيتم الرد عليك في أقرب وقت"
 
