@@ -174,13 +174,13 @@ function showAddToCartModal(productId) {
           modal.showModal();
         }
       })
-      .catch((error) => console.log(error));
+      .catch(() => {});
   }
 }
 
 // set cart badge
 function fetchCart() {
-  zid.cart.get({ showErrorNotification: true }).then(function (cart) {
+  zid.cart.get().then(function (cart) {
     if (cart && cart.id) {
       setCartBadge(cart.cart_items_quantity ?? cart.products_count);
     }
@@ -326,7 +326,6 @@ function handleShowProductPopup(productId) {
           thumbSlide.innerHTML = `<img src="${image.image.thumbnail}" alt="${product.name}" class="block w-full h-full object-contain sm:object-cover">`;
           galleryContainerThumbs.appendChild(thumbSlide);
         });
-        console.log(product);
         const content = `<div class="flex flex-col gap-3 h-full">
                               <h2 class="card-title line-clamp-2 ">
                                 ${product.name}
@@ -389,10 +388,7 @@ function handleShowProductPopup(productId) {
         modalContent.classList.remove('hidden');
       }
     })
-    .catch((error) => {
-      console.log('from catch');
-      console.log(error);
-
+    .catch(() => {
       alertMessage(localsLayout.error, 'error');
       loadingPopupShowProduct.classList.add('hidden');
       modalContent.classList.remove('hidden');
@@ -446,7 +442,6 @@ function handleImageClick(index, images) {
   initializeImageSwiper();
 
   const handleDocumentClick = (e) => {
-    console.log(e.target);
     if (
       e.target.tagName !== 'IMG' &&
       !e.target.classList.contains('swiper-button-next') &&
@@ -487,7 +482,7 @@ async function fetchMiniCartProducts() {
   const infoBox = activeMiniCart.querySelector('.mini_cart .info_box');
 
   try {
-    let cart = await zid.cart.get({ showErrorNotification: true });
+    let cart = await zid.cart.get();
     if (!cart || !cart.id) return false;
     if ((cart.cart_items_quantity ?? cart.products_count) == 0) {
       noProductsSec.classList.remove('hidden');
@@ -505,7 +500,6 @@ async function fetchMiniCartProducts() {
     updateTotalMiniCart2(cart);
     return cart;
   } catch (error) {
-    console.log(error);
     alertMessage(localsLayout.error, 'error');
   } finally {
     loadingIndicatorCart.classList.add('hidden');
@@ -686,9 +680,7 @@ function deleteProductInsidePage(product_id) {
         alertMessage(localsLayout.error, 'error');
       }
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(() => {});
 }
 
 // update cart total price
@@ -730,7 +722,6 @@ function updateTotalMiniCart2(myCart) {
         : myCart.fee_shipping_discount_rules.conditions_subtotal
             .products_subtotal_percentage_from_min;
     freeShippingProgress.style.width = `${percentage}%`;
-    console.log(freeShippingMessage);
     if (
       myCart.fee_shipping_discount_rules.conditions_subtotal.status.code ===
       'applied'
@@ -780,8 +771,7 @@ function sendCoupon() {
         updateTotalMiniCart2(response);
       }
     })
-    .catch(function (err) {
-      console.log(err);
+    .catch(function () {
       alertMessage(localsLayout.error, 'error');
     })
     .finally(function () {
@@ -794,7 +784,6 @@ function sendCoupon() {
 function showPopUpDeletePromo(element) {
   const r = element.closest('.message-promo');
   r.querySelector('.modal').showModal();
-  console.log(element);
 }
 function deleteCoupon() {
   const progressIndicator = activeMiniCart.querySelector(

@@ -128,7 +128,6 @@
                     window.location.href = '/auth/login';
                 }
               } catch (error) {
-                  console.log(error);
               } finally {
                   loadingIndicator.classList.add('hidden');
               }
@@ -180,9 +179,7 @@
                     alertMessage('{{ _("Your data has been successfully updated") }}', 'success');
                 }
                 const responseData = await response.json();
-                console.log(responseData);
               } catch (error) {
-                  console.log(error);
               } finally {
                   loadingIndicator.classList.add('hidden');
               }

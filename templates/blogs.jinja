@@ -47,7 +47,6 @@
   let currentPage = 1;
   let blogsPerPage = 3;
   const blogs = {{ blogs | tojson  }};
-  console.log(blogs);
   const tempBlogs = blogs.filter((blog)=> blog.slug !== "brands" && blog.slug !== "aboutus");
 
 
@@ -70,9 +69,7 @@
                 }
             });
             return { blog, tempObj };
-        }).catch(err => {
-            console.log(err);
-        });
+        }).catch(() => {});
     });
 
     Promise.all(fetchPromises).then(results => {

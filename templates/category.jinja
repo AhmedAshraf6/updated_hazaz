@@ -151,10 +151,6 @@
         const form = document.querySelector('.products-filters-attribute-form');
         const customerProductCat = {{ customer | tojson}};
 
-        console.log({{ products | tojson}});
-        console.log('category');
-        console.log({{ category | tojson}});
-        
         let currentPage = 2;
         const lastPage = {{ products.pages_count | tojson if products.pages_count is defined else (products.last_page | tojson if products.last_page is defined else 'null') }}
         
@@ -342,10 +338,7 @@
             observeLazyImages();
              // After rendering all products, fetch variants for each
                 items.forEach((product) => {
-                 console.log(product);
                     if (product.has_options) {
-                        console.log("yes next step01");
-                        console.log(product.id);
                         fetchProductVariantsInsideProducts(product.id);
                     }
                     if(product.purchase_restrictions.sale_price_period_end){
@@ -505,7 +498,6 @@
                 selectedData[name] = value;
             });
         
-            console.log(productId);
             const jsonString = JSON.stringify(selectedData);
             const encodedOptions = encodeURIComponent(jsonString); 
 
@@ -528,7 +520,6 @@
                 return response.json(); // Parse JSON response
             })
             .then(data => {
-                console.log("API Response (Parsed):", data);
                 // Handle data (e.g., update UI)
                 updateUiProductCardInsideProducts(currentCard,data.data.product.selected_product,data.data.product);
             })
@@ -595,9 +586,7 @@
         // end handle variatons
 
         function fetchMoreProducts (query){
-                console.log('fetchMoreProducts query:', query, 'lastPage:', lastPage, 'currentPage:', currentPage);
                 zid.products.list({category_id: {{ category.id | tojson }}, ...query}).then(function (response) {
-                        console.log('fetchMoreProducts response:', response);
                         const productsList = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
                         if(productsList.length > 0){
                             currentPage++;
@@ -607,7 +596,6 @@
                         }
 
                     }).catch(function (error){
-                           console.log('fetchMoreProducts error:', error);
                            document.querySelector(".loading_more_products").classList.add('hidden');
 
                     })

@@ -18,9 +18,9 @@
                               <div class="h-full"> 
                                    <a href="/categories/{{ cat.category.id }}/{{ cat.category.slug }}" class="card bg-base-100 flex flex-col h-full gap-2">
                                         <figure class="flex justify-center w-full h-[150px] rounded-xl overflow-hidden">
-                                            <img 
+                                            <img
                                                 {% if cat.category.image %}
-                                                    src="{{ cat.category.image }}"
+                                                    src="{{ image_url(cat.category.image, w=300, f='auto') }}"
                                                 {% else %}
                                                     src="{{ 'product-img.svg' | asset_url }}"
                                                 {% endif %}

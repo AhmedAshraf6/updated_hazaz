@@ -4,27 +4,32 @@
       {% for slide in settings.slider %}
         {% if slide.image %}
           <a href="{{ slide.url_button }}" class="swiper-slide w-full">
-            <div class="relative aspect-ratio">
-              <div class="skeleton skeltonMain w-full h-full absolute" aria-hidden="true"></div>
-              
+            <div class="relative {% if loop.first %}aspect-ratio{% else %}aspect-ratio{% endif %}">
+              {% if not loop.first %}
+                <div class="skeleton skeltonMain w-full h-full absolute" aria-hidden="true"></div>
+              {% endif %}
+
               {% if slide.img_slider_mobile %}
                 <!-- Desktop Image -->
-                <img data-src="{{ slide.image }}"
-                    class="w-full hidden sm:block h-full max-w-full object-cover lazy rounded-[10px]"
+                <img {% if loop.first %}src="{{ image_url(slide.image, w=1700, f='auto') }}" srcset="{{ image_url(slide.image, w=960, f='auto') }} 960w, {{ image_url(slide.image, w=1700, f='auto') }} 1700w" fetchpriority="high"{% else %}data-src="{{ image_url(slide.image, w=1700, f='auto') }}" data-srcset="{{ image_url(slide.image, w=960, f='auto') }} 960w, {{ image_url(slide.image, w=1700, f='auto') }} 1700w"{% endif %}
+                    sizes="100vw"
+                    class="w-full hidden sm:block h-full max-w-full object-cover {% if not loop.first %}lazy{% endif %} rounded-[10px]"
                     alt="Slide Image"
-                    onload="document.querySelector('.skeltonMain').remove()">
-                
+                    {% if not loop.first %}onload="this.closest('.relative').querySelector('.skeleton')?.remove()"{% endif %}>
+
                 <!-- Mobile Image -->
-                <img data-src="{{ slide.img_slider_mobile }}"
-                    class="w-full block sm:hidden h-full max-w-full object-cover lazy rounded-[10px]"
+                <img {% if loop.first %}src="{{ image_url(slide.img_slider_mobile, w=750, f='auto') }}" srcset="{{ image_url(slide.img_slider_mobile, w=400, f='auto') }} 400w, {{ image_url(slide.img_slider_mobile, w=640, f='auto') }} 640w, {{ image_url(slide.img_slider_mobile, w=750, f='auto') }} 750w" fetchpriority="high"{% else %}data-src="{{ image_url(slide.img_slider_mobile, w=750, f='auto') }}" data-srcset="{{ image_url(slide.img_slider_mobile, w=400, f='auto') }} 400w, {{ image_url(slide.img_slider_mobile, w=640, f='auto') }} 640w, {{ image_url(slide.img_slider_mobile, w=750, f='auto') }} 750w"{% endif %}
+                    sizes="100vw"
+                    class="w-full block sm:hidden h-full max-w-full object-cover {% if not loop.first %}lazy{% endif %} rounded-[10px]"
                     alt="Slide Image"
-                    onload="document.querySelector('.skeltonMain').remove()">
+                    {% if not loop.first %}onload="this.closest('.relative').querySelector('.skeleton')?.remove()"{% endif %}>
               {% else %}
                 <!-- Fallback Image -->
-                <img data-src="{{ slide.image }}"
-                    class="w-full h-auto max-w-full object-cover lazy rounded-[10px]"
+                <img {% if loop.first %}src="{{ image_url(slide.image, w=1700, f='auto') }}" srcset="{{ image_url(slide.image, w=640, f='auto') }} 640w, {{ image_url(slide.image, w=960, f='auto') }} 960w, {{ image_url(slide.image, w=1700, f='auto') }} 1700w" fetchpriority="high"{% else %}data-src="{{ image_url(slide.image, w=1700, f='auto') }}" data-srcset="{{ image_url(slide.image, w=640, f='auto') }} 640w, {{ image_url(slide.image, w=960, f='auto') }} 960w, {{ image_url(slide.image, w=1700, f='auto') }} 1700w"{% endif %}
+                    sizes="100vw"
+                    class="w-full h-auto max-w-full object-cover {% if not loop.first %}lazy{% endif %} rounded-[10px]"
                     alt="Slide Image"
-                    onload="document.querySelector('.skeltonMain').remove()">
+                    {% if not loop.first %}onload="this.closest('.relative').querySelector('.skeleton')?.remove()"{% endif %}>
               {% endif %}
             </div>
           </a>

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:docs.zid.sa)"
+      "WebFetch(domain:docs.zid.sa)",
+      "WebSearch"
     ]
   }
 }

@@ -119,9 +119,6 @@
         //  global variables
         const form = document.querySelector('.products-filters-attribute-form');
         const customerProduct = {{ customer | tojson}};
-        console.log({{ products | tojson}});
-        
-        
         let currentPage = 2;
         const lastPage = {{ products.pages_count | tojson if products.pages_count is defined else (products.last_page | tojson if products.last_page is defined else 'null') }}
         
@@ -159,7 +156,6 @@
             let allProds = '';
 
             products.forEach((product) => {
-                console.log(product);
                 const in_wishlist = customerProduct?.wishlist?.includes(product.id);
                 allProds += `
                     <div class="card product_card bg-base-100 shadow-xl flex flex-col justify-between h-full ${product.is_infinite == false && product.quantity <= 0 ? 'grayscale' : ''}" data-parent-id="${ product.id  }" data-product-id="${ product.id }">
@@ -460,7 +456,6 @@
                 selectedData[name] = value;
             });
         
-            console.log(productId);
             const jsonString = JSON.stringify(selectedData);
             const encodedOptions = encodeURIComponent(jsonString); 
 
@@ -483,7 +478,6 @@
                 return response.json(); // Parse JSON response
             })
             .then(data => {
-                console.log("API Response (Parsed):", data);
                 // Handle data (e.g., update UI)
                 updateUiProductCardInsideProducts(currentCard,data.data.product.selected_product,data.data.product);
             })
@@ -548,9 +542,7 @@
 
 
 function fetchMoreProducts(query) {
-    console.log('fetchMoreProducts query:', query);
     zid.products.list({...query}).then(function (response) {
-            console.log('fetchMoreProducts response:', response);
             const products = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
 
             if (products.length > 0) {

@@ -13,7 +13,8 @@
   </div>
   <div class="sm:flex-1 self-end h-full">
     <img 
-      src="{{ cat.category.image_full_size }}" 
+      src="{{ image_url(cat.category.image_full_size, w=640, f='auto') }}"
+      loading="lazy" 
       alt="{{ cat.category.name }}" 
       class="w-full h-full object-contain"
     >
@@ -35,7 +36,8 @@
   </div>
   <div class="sm:flex-1 self-end h-full">
     <img 
-      src="{{ cat.category.image_full_size }}" 
+      src="{{ image_url(cat.category.image_full_size, w=640, f='auto') }}"
+      loading="lazy" 
       alt="{{ cat.category.name }}" 
       class="w-full h-full object-contain"
     >
@@ -57,7 +59,8 @@
   </div>
   <div class="sm:flex-1 self-end h-full">
     <img 
-      src="{{ cat.category.image_full_size }}" 
+      src="{{ image_url(cat.category.image_full_size, w=640, f='auto') }}"
+      loading="lazy" 
       alt="{{ cat.category.name }}" 
       class="w-full h-full object-contain"
     >
@@ -69,5 +72,4 @@
   </div>
 </section>
 <script>
-console.log({{ settings.categories| tojson }});
 </script>

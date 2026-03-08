@@ -79,10 +79,12 @@
                                     <div class="swiper-slide">
                                         <div class="relative aspect-square skeleton-parent">
                                             <div class="skeleton w-full h-full absolute"></div>
-                                            <img 
-                                                src="{{ media.image.full_size }}" 
-                                                alt="{{ media.image.alt }}" 
-                                                data-gallery="gallery1" 
+                                            <img
+                                                src="{{ image_url(media.image.full_size, w=960, f='auto') }}"
+                                                srcset="{{ image_url(media.image.full_size, w=400, f='auto') }} 400w, {{ image_url(media.image.full_size, w=640, f='auto') }} 640w, {{ image_url(media.image.full_size, w=960, f='auto') }} 960w"
+                                                sizes="(max-width: 640px) 100vw, 50vw"
+                                                alt="{{ media.image.alt }}"
+                                                data-gallery="gallery1"
                                                 class="block w-full h-full object-[unset] sm:object-contain glightbox"
                                                 onload="this.closest('.relative').querySelector('.skeleton')?.remove();
                                                         this.closest('.skeleton-parent').classList.remove('aspect-square','relative');
@@ -127,7 +129,7 @@
                                         src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg" 
                                         alt="YouTube video thumbnail" 
                                         class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]" 
-                                        onload="this.previousElementSibling.remove()"
+                                        onload="this.previousElementSibling?.remove()"
                                     >
 
                                     {# Optional play icon overlay #}
@@ -137,11 +139,11 @@
                                         </svg>
                                     </div>
                                 {% else %}
-                                    <img 
-                                        src="{{ media.image.full_size }}" 
-                                        alt="{{ media.image.alt }}" 
-                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]" 
-                                        onload="this.previousElementSibling.remove()"
+                                    <img
+                                        src="{{ image_url(media.image.full_size, w=200, f='auto') }}"
+                                        alt="{{ media.image.alt }}"
+                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
+                                        onload="this.previousElementSibling?.remove()"
                                     >
                                 {% endif %}
                             </div>
@@ -611,9 +613,6 @@
     
         // global variables
         const product = {{ product | tojson}};
-        console.log("single product");
-        console.log(product);
-
         // handle variations
         const handleVariations = ()=>{
             const globalVarinatsOptions = document.querySelector(".custom_variants");
@@ -660,8 +659,6 @@
                     </div>`;
                 }
 
-                    console.log("tempchociescolors");
-                    console.log(tempChoices);
                     globalVarinatsOptions.insertAdjacentHTML("beforeend", `<div class="variants-options flex items-center gap-3 mt-3 sm:mt-5">
                                                     <h2 class="variant_title">${option.name}:</h2>
                                                     <div class="flex gap-3 mt-4 flex-wrap">${tempChoices}</div>
@@ -977,7 +974,7 @@ function updateProductSinglePage(quantity) {
                                 src="${media.image.full_size}" 
                                 alt="${media.image.alt || ''}" 
                                 class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
-                                onload="this.previousElementSibling.remove()"
+                                onload="this.previousElementSibling?.remove()"
                             >
                         `;
                         swiper1.appendChild(slide1);

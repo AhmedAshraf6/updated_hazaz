@@ -4,7 +4,7 @@
         <div class="flex flex-col items-center lg:items-start  gap-3  flex-1">
           {% if store.settings.branding.logo  %}
             <a href="/" class="footer-logo">
-                <img src="{{ store.settings.branding.logo }}" alt="{{ store.name }}" class="w-[180px] h-[55px] object-contain" />
+                <img src="{{ image_url(store.settings.branding.logo, w=180, f='auto') }}" alt="{{ store.name }}" class="w-[180px] h-[55px] object-contain" />
             </a>
           {% endif %}
           {% if  footer_settings.about_us_des  %}
@@ -51,12 +51,12 @@
                     
                       {% for payment_method in store.settings.checkout.payment_methods %}
                           <a href="/shipping-and-payment"  class="bg-[#ffffff24] p-[5px] rounded-md flex items-center justify-center" aria-label="payment method">
-                            <img src="{{ image_url(payment_method.icon, h=26, q=100) }}"  alt="" width="36"  alt='payments' class="max-w-[20px] max-h-[20px] object-cover">
+                            <img src="{{ image_url(payment_method.icon, h=26, q=100, f='auto') }}"  alt="" width="36"  alt='payments' class="max-w-[20px] max-h-[20px] object-cover">
                           </a>
                       {% endfor %}
                        {% for shipping_method in store.shipping_methods %}
                             <a href="/shipping-and-payment"  class="bg-[#ffffff24] p-[5px] rounded-md flex items-center justify-center" aria-label="payment method">
-                              <img src="{{ image_url(shipping_method.icon, h=26, q=100) }}"  alt="" width="36" alt='shipping' class="max-w-[20px] max-h-[20px] object-cover">
+                              <img src="{{ image_url(shipping_method.icon, h=26, q=100, f='auto') }}"  alt="" width="36" alt='shipping' class="max-w-[20px] max-h-[20px] object-cover">
                             </a>
                         {% endfor %}
                     </div>  

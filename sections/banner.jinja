@@ -9,26 +9,27 @@
                 <a aria-label="banner url" href="{{ settings.url }}" style="z-index: 9" class="w-full flex-1"> 
                     <div class="relative aspect-video skeleton-parent">  
                         <div class="skeleton skBanner w-full h-full absolute"></div>           
-                        {% if settings.image %} 
-                            <img class=" hidden lg:block  w-full h-auto object-contain md:object-cover rounded-3xl lazy" data-src="{{ settings.image }}" alt="ads banner"
+                        {% if settings.image %}
+                            <img class=" hidden lg:block  w-full h-auto object-contain md:object-cover rounded-3xl lazy" alt="ads banner"
                             onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
-                             data-src="{{ settings.image }}"
-                            data-srcset="{{ settings.image }} 768w, {{ settings.image }} 1200w"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            data-src="{{ image_url(settings.image, w=1700, f='auto') }}"
+                            data-srcset="{{ image_url(settings.image, w=750, f='auto') }} 750w, {{ image_url(settings.image, w=960, f='auto') }} 960w, {{ image_url(settings.image, w=1700, f='auto') }} 1700w"
+                            sizes="100vw"
                             />
-                        {% endif %}  
-                        {% if settings.image_mobile %} 
-                            <img loading="lazy" class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" data-src="{{ settings.image_mobile }}" alt="ads banner"
+                        {% endif %}
+                        {% if settings.image_mobile %}
+                            <img loading="lazy" class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" alt="ads banner"
                               onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
-                            data-srcset="{{ settings.image_mobile }} 768w, {{ settings.image_mobile }} 1200w"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            data-src="{{ image_url(settings.image_mobile, w=750, f='auto') }}"
+                            data-srcset="{{ image_url(settings.image_mobile, w=400, f='auto') }} 400w, {{ image_url(settings.image_mobile, w=640, f='auto') }} 640w, {{ image_url(settings.image_mobile, w=750, f='auto') }} 750w"
+                            sizes="100vw"
                             />
                         {% else %}
-                            <img class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" data-src="{{ settings.image }}" alt="ads banner" 
+                            <img class=" block lg:hidden w-full h-auto object-contain md:object-cover  rounded-3xl lazy" alt="ads banner"
                            onload="this.closest('.relative').querySelector('.skeleton')?.remove();this.closest('.skeleton-parent').classList.remove('aspect-video')"
-                             data-src="{{ settings.image }}"
-                              data-srcset="{{ settings.image }} 768w, {{ settings.image }} 1200w"
-                              sizes="(max-width: 768px) 100vw, 50vw"
+                            data-src="{{ image_url(settings.image, w=750, f='auto') }}"
+                            data-srcset="{{ image_url(settings.image, w=400, f='auto') }} 400w, {{ image_url(settings.image, w=640, f='auto') }} 640w, {{ image_url(settings.image, w=750, f='auto') }} 750w"
+                            sizes="100vw"
                             />
                         {% endif %}  
                     </div>

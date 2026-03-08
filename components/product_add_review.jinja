@@ -137,11 +137,6 @@
         formData.append(`images[${i}][file]`, files[i]);
     }
 
-    // Log formData entries (for debugging)
-    for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
     sendReview(formData);
 
     async function sendReview(data) {
@@ -153,8 +148,6 @@
                 method: 'POST',
                 body: data,  // Send FormData directly without JSON.stringify
             });
-
-            console.log(response);
 
             if (!response.ok) {
                 const errorText = await response.text();

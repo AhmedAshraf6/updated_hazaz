@@ -17,9 +17,9 @@
                     {% set logoUrlMobile = store.settings.branding.logo %}
                 {% endif %}
 
-                <img class="hidden md:block w-[180px] h-[55px] object-contain" src="{{ image_url(logoUrl, h=175, q=85) }}" alt="{{ store.name }}">
-            
-                <img class="block md:hidden w-[180px] h-[55px] object-contain" src="{{ image_url(logoUrlMobile, h=175, q=85) }}" alt="{{ store.name }}">
+                <img class="hidden md:block w-[180px] h-[55px] object-contain" src="{{ image_url(logoUrl, h=175, q=85, f='auto') }}" alt="{{ store.name }}">
+
+                <img class="block md:hidden w-[180px] h-[55px] object-contain" src="{{ image_url(logoUrlMobile, h=175, q=85, f='auto') }}" alt="{{ store.name }}">
               </a>
               <div class="flex flex-wrap items-center justify-center gap-5 mt-3">
                  {% include "components/header_social_media.jinja" %} 

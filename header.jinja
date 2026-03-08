@@ -43,12 +43,6 @@
       const localss = {{ locals | tojson }};
 
        const session = {{ session | tojson }};
-      console.log("store");
-      console.log(str);
-      console.log("customer");
-      console.log(customer);
-      console.log(session);
- 
        // handle currency change
        const allCurrencies = document.querySelectorAll(
        '.all_currencies .currency_box'
@@ -96,7 +90,6 @@
                   document.getElementById('inputCountryCode').value = countryCode;
                   document.getElementById('modal-select-destination-city-save').click();
               }
-              console.log('Button clicked');
           });
       });
 
@@ -115,7 +108,6 @@
               loadingSpinner.classList.remove("hidden");
 
               zid.products.list({ q: value, page_size: 10 }).then((data) => {
-                     console.log('search response:', data);
                      let productFromSearch = '';
                      const productsList = data?.results || data?.products?.data || data?.products?.results || data?.products || data?.data || [];
                      const productsCount = productsList.length;
@@ -152,8 +144,7 @@
                      searchResultProducts.innerHTML = '<h2 class="text-base-content text-center w-full">{{ _("No products found") }}</h2>';
                      }
 
-              }).catch((error) => {
-                    console.log(error);
+              }).catch(() => {
                      searchResultSection.classList.remove("hidden");
                      searchResultProducts.innerHTML = '<h2 class="text-base-content text-center w-full">{{ _("An error occurred, please try again") }}</h2>';
               }).finally(() => {
@@ -188,7 +179,6 @@
 
                   inputElement.addEventListener('keydown', function(event) {
                         if (event.key === 'Enter') {
-                          console.log("entered");
                             event.preventDefault(); // Prevent form submission (if inside a form)
                             const searchQuery = inputElement.value.trim();
                             if (searchQuery) {

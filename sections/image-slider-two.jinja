@@ -3,7 +3,7 @@
        <div class="grid grid-cols-4 gap-3 sm:gap-5">
          <div class="col-span-1 relative">
             <div class="w-full home-image-wrapper">
-              <img src="{{ settings.image }}" alt="image" class="w-full h-96 object-cover rounded-xl absolute z-[2] py-5">
+              <img src="{{ image_url(settings.image, w=400, f='auto') }}" alt="image" class="w-full h-96 object-cover rounded-xl absolute z-[2] py-5" loading="lazy">
             </div>
          </div>
          <div class="col-span-3">

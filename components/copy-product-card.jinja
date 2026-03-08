@@ -64,27 +64,23 @@
         if
         product.images
         %}
-        data-src="{{ product.images[0].image.full_size }}"
-        data-srcset="{{ product.images[0].image.medium }} 768w, {{
-          product.images[0].image.full_size
-        }} 1200w"
+        data-src="{{ image_url(product.images[0].image.full_size, w=750, f='auto') }}"
+        data-srcset="{{ image_url(product.images[0].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.images[0].image.full_size, w=640, f='auto') }} 640w, {{ image_url(product.images[0].image.full_size, w=750, f='auto') }} 750w"
         {%
         elif
         product.videos
         %}
-        data-src="{{ product.videos[0].image.full_size }}"
-        data-srcset="{{ product.videos[0].image.medium }} 768w, {{
-          product.videos[0].image.full_size
-        }} 1200w"
+        data-src="{{ image_url(product.videos[0].image.full_size, w=750, f='auto') }}"
+        data-srcset="{{ image_url(product.videos[0].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.videos[0].image.full_size, w=750, f='auto') }} 750w"
         {%
         else
         %}
         data-src="{{ 'product-img.svg' | asset_url }}"
-        data-srcset="{{ 'product-img.svg' | asset_url }} 768w, {{ 'product-img.svg' | asset_url }} 1200w"
+        data-srcset="{{ 'product-img.svg' | asset_url }} 400w"
         {%
         endif
         %}
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         alt="{{ product.name }}"
         onload="this.previousElementSibling.remove()"
       />
@@ -93,11 +89,9 @@
       {% if product.images|length > 1 %}
       <img
         class="lazy w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 absolute top-0"
-        data-src="{{ product.images[1].image.full_size }}"
-        data-srcset="{{ product.images[1].image.medium }} 768w, {{
-          product.images[1].image.full_size
-        }} 1200w"
-        sizes="(max-width: 768px) 100vw, 50vw"
+        data-src="{{ image_url(product.images[1].image.full_size, w=750, f='auto') }}"
+        data-srcset="{{ image_url(product.images[1].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.images[1].image.full_size, w=640, f='auto') }} 640w, {{ image_url(product.images[1].image.full_size, w=750, f='auto') }} 750w"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         alt="{{ product.name }}"
       />
       {% endif %}

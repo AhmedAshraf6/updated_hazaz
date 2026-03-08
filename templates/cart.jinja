@@ -20,7 +20,7 @@
 
     <div class="my-5 layout cartPage">
 
-            <div class="cart_page hidden">
+            <div class="cart_page" style="display:none;">
                 <h1 class="text-lg sm:text-xl font-bold">{{ _("Shopping Cart") }}</h1>
                 {# alert loyality points #}
                 {% include "components/cart_loyality_alert.jinja" %}
@@ -157,7 +157,7 @@
                         {% if store.settings.checkout.gift_order_settings.is_gift_order_enabled == '1' %}
                             {% include "components/gift_card.jinja" %}
                         {% endif %}
-                        {# payment tappy and tamara #}
+                        {# payment tabby and tamara #}
                         <div>{% include 'vitrin:cart/payment_widgets.jinja' %}</div>
                       </div>
                     </div>
@@ -191,7 +191,6 @@
 {% block footer_scripts %}
     {% if cart_view_scripts is defined %}{{ cart_view_scripts | safe }}{% endif %}
     <script>
-        console.log("cart page");
         const cart = {{ cart | tojson if cart is defined else 'null' }};
         let activeCartPage = document.querySelector('.cartPage');
         
@@ -207,21 +206,20 @@
             const noProductsSec = activeCartPage.querySelector('.cart-empty');
 
             try {
-                let cart = await zid.cart.get({ showErrorNotification: true });
+                let cart = await zid.cart.get();
                 if (!cart) return false;
                 if (cart?.products_count == 0) {
                 noProductsSec.classList.remove('hidden');
                 noProductsSec.classList.add('flex');
-                containerProductsSection.classList.add('hidden');
+                containerProductsSection.style.display = 'none';
                 return;
                 }
                 noProductsSec.classList.add('hidden');
-                containerProductsSection.classList.remove('hidden');
+                containerProductsSection.style.display = '';
                 createCartPageProducts(cart.products);
                 updateTotalCartPage(cart);
                 return cart;
             } catch (error) {
-                console.log(error);
                 alertMessage(localsLayout.error, 'error');
             } finally {
                 loadingIndicatorCart.classList.add('hidden');
@@ -462,7 +460,6 @@
                     : myCart.fee_shipping_discount_rules.conditions_subtotal
                         .products_subtotal_percentage_from_min;
                 freeShippingProgress.style.width = `${percentage}%`;
-                console.log(freeShippingMessage);
                 if (
                 myCart.fee_shipping_discount_rules.conditions_subtotal.status.code ===
                 'applied'
@@ -523,7 +520,6 @@
         function showPopUpDeletePromoCartPage(element) {
             const r = element.closest('.message-promo');
             r.querySelector('.modal').showModal();
-            console.log(element);
         }
         function deleteCouponCartPage() {
                 const progressIndicator = activeCartPage.querySelector(
@@ -581,7 +577,7 @@
                 }
      
                 try {
-                    const response = await zid.cart.getRedemptionMethods({ showErrorNotification: true });
+                    const response = await zid.cart.getRedemptionMethods();
                     if (response) {
                         const findId = response.point_redemption_methods.find(method => method.id === selectedOption);
 
@@ -622,15 +618,13 @@
             const selectBox = document.querySelector(".loyalty-points-replace select");
             const btnSubmit = document.querySelector(".loyalty-points-replace button");
             let makeBtnNotDisabled = false;
-            zid.cart.getRedemptionMethods({ showErrorNotification: true }).then((response)=>{
+            zid.cart.getRedemptionMethods().then((response)=>{
                 if(response){
-                    console.log(response);
                    response.point_redemption_methods.forEach((method)=>{
                       const disabledOption = method.is_active === false || points < method.points_to_redeem;
                       if(!disabledOption){
                         makeBtnNotDisabled = true;
                       }
-                      console.log(method);
                       const optionElment = `<option value="${method.id}"  ${disabledOption ? 'disabled' : ''} class="font-semibold">${method.name}</option>`;
                       selectBox.insertAdjacentHTML('beforeend', optionElment);
                    });
@@ -638,8 +632,7 @@
                       btnSubmit.removeAttribute('disabled');
                    }
                 }
-            }).catch((error)=>{
-                console.log(error);
+            }).catch(()=>{
                alertMessage(localsLayout.error, 'error');
             });
        }
@@ -674,12 +667,11 @@
       }
        const getLoyaltyPoints = (total)=>{
             if(!customer) return;
-            zid.cart.getCalculatedPoints(total, { showErrorNotification: true }).then((response)=>{
+            zid.cart.getCalculatedPoints(total).then((response)=>{
                 if(response){
                    document.querySelector('.cartPage .alert-loyality .number').textContent = response.points;
                 }
             }).catch((error)=>{
-               alertMessage(localsLayout.error, 'error');
             });
        }
        // customer is already defined globally in header.jinja
@@ -688,13 +680,12 @@
               document.querySelector('.cartPage .loyality-section .points').textContent = 0;
               return;
            }
-            zid.cart.getCustomerLoyaltyPoints({ showErrorNotification: true }).then((response)=>{
+            zid.cart.getCustomerLoyaltyPoints().then((response)=>{
                 if(response){
                    document.querySelector('.cartPage .loyality-section .points').textContent = response.points.available_poitns;
                    getRedemptionMethods(response.points.available_poitns);
                 }
             }).catch((error)=>{
-               alertMessage(localsLayout.error, 'error');
             });
        }
        

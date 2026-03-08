@@ -49,16 +49,16 @@
         <img 
           class="main_img lazy w-full h-full object-contain absolute top-0 {% if product.images|length > 1 %}transition-opacity duration-500 ease-in-out group-hover:opacity-0 {% endif %}"
           {% if product.images %}
-            data-src="{{ product.images[0].image.full_size }}"
-            data-srcset="{{ product.images[0].image.medium }} 768w, {{ product.images[0].image.full_size }} 1200w"
+            data-src="{{ image_url(product.images[0].image.full_size, w=750, f='auto') }}"
+            data-srcset="{{ image_url(product.images[0].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.images[0].image.full_size, w=640, f='auto') }} 640w, {{ image_url(product.images[0].image.full_size, w=750, f='auto') }} 750w"
           {% elif product.videos %}
-            data-src="{{ product.videos[0].image.full_size }}"
-            data-srcset="{{ product.videos[0].image.medium }} 768w, {{ product.videos[0].image.full_size }} 1200w"
+            data-src="{{ image_url(product.videos[0].image.full_size, w=750, f='auto') }}"
+            data-srcset="{{ image_url(product.videos[0].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.videos[0].image.full_size, w=750, f='auto') }} 750w"
           {% else %}
             data-src="{{ 'product-img.svg' | asset_url }}"
-            data-srcset="{{ 'product-img.svg' | asset_url }} 768w, {{ 'product-img.svg' | asset_url }} 1200w"
+            data-srcset="{{ 'product-img.svg' | asset_url }} 400w"
           {% endif %}
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt="{{ product.name }}"
           onload="this.previousElementSibling.remove()"
           
@@ -68,9 +68,9 @@
         {% if product.images|length > 1 %}
           <img 
             class="lazy w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 absolute top-0"
-            data-src="{{ product.images[1].image.full_size }}"
-            data-srcset="{{ product.images[1].image.medium }} 768w, {{ product.images[1].image.full_size }} 1200w"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            data-src="{{ image_url(product.images[1].image.full_size, w=750, f='auto') }}"
+            data-srcset="{{ image_url(product.images[1].image.full_size, w=400, f='auto') }} 400w, {{ image_url(product.images[1].image.full_size, w=640, f='auto') }} 640w, {{ image_url(product.images[1].image.full_size, w=750, f='auto') }} 750w"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             alt="{{ product.name }}"
             loading="lazy"
           />
@@ -186,8 +186,6 @@
         const colorDataName = parentCardThis.querySelector(".color-attribute-product")?.getAttribute("data-name");
         const selects = parentCardThis.querySelectorAll("select[data-name]");
 
-        console.log('hasVariants:', hasVariants, 'productId:', productId, 'selectedProductId:', selectedProductId);
-
         if (hasVariants) {
           // Handle color variant check
           if (colorDataName) {
@@ -238,8 +236,6 @@
             if (name && value) selectedData[name] = value;
           });
 
-        console.log('Selected options:', selectedData);
-
         // Match variant client-side from stored product data
         const storedProduct = currentCard._productData;
         if (storedProduct && storedProduct.variants) {
@@ -249,7 +245,6 @@
                 });
             });
             if (matchedVariant) {
-                console.log("Matched variant:", matchedVariant);
                 updateUiProductCard(currentCard, matchedVariant, storedProduct);
             }
         }
@@ -439,13 +434,11 @@
      }
 
     document.addEventListener("DOMContentLoaded", function () {
-            console.log("product Card Home");
             const prCard3 = {{ product | tojson }};
              if(prCard3.purchase_restrictions && prCard3.purchase_restrictions.sale_price_period_end){
                 startCountdownHome(prCard3.purchase_restrictions.sale_price_period_end);
             }
             zid.products.get(prCard3.id).then((res) => {
-               console.log('product card home fetch response:', res);
                const product = res?.product || res;
                if (product) {
                    // Store product data on all card elements for client-side variant matching
@@ -454,7 +447,6 @@
                    handleVariationsProductCard(product);
                }
             }).catch((err) => {
-               console.log('product card home get error, falling back to list:', err);
                zid.products.list({id: prCard3.id}).then((res) => {
                    const product = res?.product || (res?.results && res.results[0]) || res;
                    if (product) {
@@ -462,7 +454,7 @@
                        cardEls.forEach(el => el._productData = product);
                        handleVariationsProductCard(product);
                    }
-               }).catch((err2) => console.log('product card home list fallback error:', err2));
+               }).catch(() => {});
             });
 
     });

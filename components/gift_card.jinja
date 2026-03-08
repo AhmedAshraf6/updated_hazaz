@@ -170,7 +170,6 @@ const removeGiftCard = () => {
      const selectedImage = customGiftSection.querySelector('input[name="card_design"]:checked');
      previewCardSection.innerHTML = '';
          if(selectedImage){
-          console.log(selectedImage);
         const element = `<div>
                             <img src="${selectedImage.value}" class="w-full h-auto" />
                          </div>`;

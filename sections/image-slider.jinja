@@ -4,7 +4,7 @@
       <div class="layout grid grid-cols-1 sm:grid-cols-2">
         <div class="flex bg-base-200 pt-10">
           <div class="flex-1 self-end">
-          <img src="{{ settings.section_one_image }}" alt="{{ settings.section_one_title }}" class="w-full h-auto object-cover">
+          <img src="{{ image_url(settings.section_one_image, w=640, f='auto') }}" alt="{{ settings.section_one_title }}" class="w-full h-auto object-cover" loading="lazy">
           </div>      
           <div class="flex-1 flex flex-col gap-3 sm:gap-5">
             <h4 class="text-lg sm:text-xl font-bold">{{ settings.section_one_title }}</h4>
@@ -50,7 +50,7 @@
         </div>
         <div class="flex bg-base-200 pt-10">
           <div class="flex-1 self-end">
-          <img src="{{ settings.section_two_image }}" alt="{{ settings.section_two_title }}" class="w-full h-auto object-cover">
+          <img src="{{ image_url(settings.section_two_image, w=640, f='auto') }}" alt="{{ settings.section_two_title }}" class="w-full h-auto object-cover" loading="lazy">
           </div>      
           <div class="flex-1 flex flex-col gap-3 sm:gap-5">
             <h4 class="text-lg sm:text-xl font-bold">{{ settings.section_two_title }}</h4>
