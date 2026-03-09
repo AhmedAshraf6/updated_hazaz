@@ -9,7 +9,7 @@
       </div>
       <div class="relative">
           <div class="absolute  top-1/2 -translate-y-1/2">
-            <img src="{{ 'swipe.svg' | asset_url }}" alt="image" class="w-[30px] h-[30px] object-contain">
+            <img src="{{ 'swipe.svg' | asset_url }}" alt="image" width="30" height="30" class="w-[30px] h-[30px] object-contain">
           </div>
           <div class="swiper sub_categories">
                  <div class="swiper-wrapper items-stretch"> <!-- Add items-stretch here -->
@@ -25,6 +25,7 @@
                                                     src="{{ 'product-img.svg' | asset_url }}"
                                                 {% endif %}
                                                 alt="{{ cat.category.name }}"
+                                                width="300" height="300"
                                                 class="w-full h-full object-contain transition-opacity duration-300"
                                                 loading="lazy"
                                                 onload="this.style.opacity = 1"

@@ -10,16 +10,21 @@
 
     <link rel="shortcut icon" type="image/jpg" href="{{ image_url(store.settings.branding.icon, w=64, f='auto') }}">
 
+    {# Preconnect to third-party origins #}
+    <link rel="preconnect" href="https://checkout.tabby.ai">
+    <link rel="preconnect" href="https://cdn.tamara.co">
+    <link rel="preconnect" href="https://media.zid.store" crossorigin>
+
     {# Preload critical assets #}
-    <link rel="preload" href="{{ 'output.css?v=100' | asset_url }}" as="style">
+    <link rel="preload" href="{{ 'AvenirArabic-Medium.ttf' | asset_url }}" as="font" type="font/ttf" crossorigin>
     {% if store.settings.branding.logo %}
         <link rel="preload" href="{{ image_url(store.settings.branding.logo, w=180, f='auto') }}" as="image">
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="{{ 'output.css?v=100' | asset_url }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" >
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.css" />
-    <link rel="stylesheet" type="text/css" href="{{ 'glightbox.min.css' | asset_url }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" type="text/css" href="{{ 'glightbox.min.css' | asset_url }}" media="print" onload="this.media='all'" />
 
     <style>
       :root {
@@ -39,16 +44,6 @@
 </head>
 
 <body data-theme="light ss"  style="direction:rtl">
-    
-    <style>
-
-      body,html {
-        font-family: 'AvenirRegular';
-      }
-      /* body,html {
-        font-family: {% if settings.fonts_name %}{{ strReplace('+', ' ', settings.fonts_name) }}{% else %}'Changa'{% endif %}, sans-serif;
-      } */
-    </style>
 
     {% block top_scripts %}{% endblock %}
     <div class="app h-full flex flex-col min-h-screen  {{ 'rtl' if session.lang.code == 'ar' else 'ltr' }}">
@@ -82,31 +77,6 @@
 
     <script>
      window.appDirection = '{% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}';
-  // hide default olyality points
-    function makeFunctionHead() {
-        const targetElement = document.querySelector('.loyalty_button_footer');
-        if (targetElement) {
-            targetElement.style.display = 'none';
-            observer.disconnect();
-        }
-   
-   }
-
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.type === 'childList') {
-                makeFunctionHead();
-            }
-        });
-    });
-
-    observer.observe(document.body, {
-        childList: true,   
-        subtree: true, 
-    });
-
-    makeFunctionHead();
-    
 
      const localsLayout = {
         success_add_cart: "{{ _("Product successfully added to the cart") }}",

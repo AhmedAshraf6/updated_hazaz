@@ -2,7 +2,7 @@
 {% if store.settings.general.tax_settings.tax_number %}
     <a {% if store.settings.general.tax_settings.tax_registration_certificate %}href="{{ store.settings.general.tax_settings.tax_registration_certificate }}"  target="_blank"{% endif %}  class="vat-number flex items-center  gap-2">
         <div class="imageBoxRegister">
-                <img src="{{ 'vat-certificate.svg' | asset_url }}" alt="bussiness center" class="w-[35px] object-contain">
+                <img src="{{ 'vat-certificate.svg' | asset_url }}" alt="bussiness center" width="35" height="35" class="w-[35px] object-contain">
         </div>
         <div class="flex flex-col gap-2 text-[#fff]">
             <span  class="text-[11px]">{{ _("VAT Number:") }}</span>
@@ -14,7 +14,7 @@
 {% if store.settings.contact.business_center %}
         <div class="flex items-center  gap-2"    >
             <div class="imageBoxRegister">
-                <img src="{{ 'business_center.png' | asset_url }}" alt="bussiness center" class="w-[35px] object-contain">
+                <img src="{{ 'business_center.png' | asset_url }}" alt="bussiness center" width="35" height="35" class="w-[35px] object-contain">
             </div>
 
             <div class="flex flex-col gap-2 text-[#fff]">
@@ -28,7 +28,7 @@
 {% if store.settings.general.commercial_registration_number %}
    <div class=" flex items-center  gap-2">
         <div class="imageBoxRegister">
-            <img src="{{ 'comRegister.svg' | asset_url }}" alt="bussiness center" class="w-[35px] object-contain">
+            <img src="{{ 'comRegister.svg' | asset_url }}" alt="bussiness center" width="35" height="35" class="w-[35px] object-contain">
         </div>
         <div class="flex flex-col gap-2 text-[#fff]">
            <span class="text-[11px]">{{ _("Commercial Registration") }}</span>

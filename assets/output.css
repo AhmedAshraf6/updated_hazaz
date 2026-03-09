@@ -6780,6 +6780,7 @@ html:has(.drawer-open.drawer-open) {
 @font-face {
   font-family: 'AvenirRegular';
   src: url('AvenirArabic-Medium.ttf');
+  font-display: swap;
 }
 html {
   overflow-x: hidden !important;
@@ -6787,15 +6788,7 @@ html {
 body {
   font-family: 'AvenirRegular';
   font-weight: normal;
-  overflow: hidden !important;
-}
-html {
   overflow-x: hidden !important;
-}
-body {
-  font-family: 'AvenirRegular';
-  font-weight: normal;
-  overflow: hidden !important;
 }
 .btn-primary:hover,
 .btn-primary:disabled {
@@ -6835,10 +6828,6 @@ body,
 
 ::-webkit-scrollbar-track {
   background: #f0f0f0 !important;
-}
-
-html {
-  overflow-x: hidden;
 }
 
 .main-head.slidedown {

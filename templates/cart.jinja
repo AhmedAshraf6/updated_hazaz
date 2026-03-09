@@ -112,7 +112,7 @@
                             <div class="mt-5 hidden cart-discount-rule-wrapper free-shipping-rule-section">
                                 <div class="flex items-center gap-3">
                                 <div class="message free-shipping-rule-message"></div>
-                                    <img src="{{ 'cart_shopping.gif' | asset_url }}" class="h-[25px] rounded-full"  />
+                                    <img src="{{ 'cart_shopping.gif' | asset_url }}" width="25" height="25" class="h-[25px] rounded-full" />
                                 </div>
 
                                 <div class="flex mt-3 discount-progress-linear bg-[#c2c7cc] h-[10px] rounded-[20px]">
@@ -167,7 +167,7 @@
             {# if cart is empty #}
             <div class="cart-empty justify-center hidden">
                 <div class="flex flex-col items-center gap-3">
-                   <img src="{{ 'empty_cart_page.gif' | asset_url }}" />
+                   <img src="{{ 'empty_cart_page.gif' | asset_url }}" width="300" height="300" />
                     <h1 class="text-lg sm:text-xl font-semibold">{{ _("Cart is empty") }}</h1>
                     <div>
                         <a href="/" class="btn btn-outline">

@@ -10,7 +10,7 @@
 
   </div>
   <div class="no-products  flex-col justify-center  items-center h-full hidden">
-     <img src="{{ 'empty_cart.gif' | asset_url }}" />
+     <img src="{{ 'empty_cart.gif' | asset_url }}" width="200" height="200" />
      <p class="text-lg sm:text-xl">{{ _("No products") }}</p>
      <a href="/products" class="btn btn-outline mt-3 sm:mt-5">{{ _("Add Now") }}</a>
   </div>
@@ -21,7 +21,7 @@
       <div class="mt-5 hidden cart-discount-rule-wrapper free-shipping-rule-section">
         <div class="flex items-center gap-3">
           <div class="message free-shipping-rule-message"></div>
-              <img src="{{ 'cart_shopping.gif' | asset_url }}" class="h-[25px] rounded-full"  />
+              <img src="{{ 'cart_shopping.gif' | asset_url }}" width="25" height="25" class="h-[25px] rounded-full" />
            </div>
 
         <div class="flex mt-3 discount-progress-linear bg-[#c2c7cc] h-[10px] rounded-[20px]">
