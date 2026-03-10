@@ -18,9 +18,9 @@
         {# products #}
         <div class="py-10 ps-5">
           <div class="swiper home_image_silder">
-              <div class="swiper-wrapper">
+              <div class="swiper-wrapper items-stretch">
                     {% for item in settings.section_one_products %}
-                        <div class="swiper-slide flex flex-col h-full">
+                        <div class="swiper-slide h-auto">
                           {% set product = item.product %}{% set index = loop.index0 %}
                           {% include 'components/product-card.jinja' %}
                         </div>
@@ -37,9 +37,9 @@
           {# products #}
         <div class="py-10 ps-5">
           <div class="swiper home_image_silder_two">
-              <div class="swiper-wrapper">
+              <div class="swiper-wrapper items-stretch">
                     {% for item in settings.section_two_products %}
-                        <div class="swiper-slide flex flex-col h-full">
+                        <div class="swiper-slide h-auto">
                           {% set product = item.product %}{% set index = loop.index0 %}
                           {% include 'components/product-card.jinja' %}
                         </div>

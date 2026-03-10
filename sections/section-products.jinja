@@ -24,19 +24,22 @@
     </div>
 </section>
 <style>
-  
+    .home_featured_products .swiper-wrapper {
+      align-items: stretch;
+    }
     .home_featured_products .swiper-slide {
       width: calc(50% - 8px); /* for 2 slides with 16px gap */
+      height: auto;
     }
 
-  
+
     @media (min-width: 768px) {
       .home_featured_products .swiper-slide {
          width: calc(100% / 3);
       }
     }
 
-   
+
     @media (min-width: 1024px) {
       .home_featured_products .swiper-slide {
          width: calc(100% / 5);

@@ -77,8 +77,6 @@
 
                                 {% else %}
                                     <div class="swiper-slide">
-                                        <div class="relative aspect-square">
-                                            <div class="skeleton w-full h-full absolute z-[1]"></div>
                                             <img
                                                 src="{{ image_url(media.image.full_size, w=960, f='auto') }}"
                                                 srcset="{{ image_url(media.image.full_size, w=400, f='auto') }} 400w, {{ image_url(media.image.full_size, w=640, f='auto') }} 640w, {{ image_url(media.image.full_size, w=960, f='auto') }} 960w"
@@ -86,11 +84,9 @@
                                                 width="960" height="960"
                                                 alt="{{ media.image.alt }}"
                                                 data-gallery="gallery1"
-                                                class="block w-full h-full object-[unset] sm:object-contain glightbox opacity-0 transition-opacity duration-300"
+                                                class="block w-full h-full object-[unset] sm:object-contain glightbox"
                                                 {% if loop.first %}fetchpriority="high"{% endif %}
-                                                onload="this.classList.remove('opacity-0'); this.closest('.relative').querySelector('.skeleton')?.remove();"
                                             >
-                                        </div>
                                     </div>
                                 {% endif %}
 
@@ -109,8 +105,7 @@
                 <div thumbsSlider="" class="swiper mySwiperProduct w-full h-[18%]">
                     <div class="swiper-wrapper swiperWrapper">
                         {% for media in product.selected_product.media %}
-                            <div class="swiper-slide rounded-[12px] relative">
-                                <div class="skeleton w-full h-full absolute z-[1] rounded-[0px]"></div>
+                            <div class="swiper-slide rounded-[12px]">
                                 {% if media.provider == 'youtube' %}
                                     {# extract video ID #}
                                     {% if 'watch?v=' in media.link %}
@@ -127,8 +122,8 @@
                                     <img
                                         src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg"
                                         alt="YouTube video thumbnail"
-                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px] opacity-0"
-                                        onload="this.classList.remove('opacity-0'); this.closest('.relative').querySelector('.skeleton')?.remove();"
+                                        width="200" height="200"
+                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
                                     >
 
                                     {# Optional play icon overlay #}
@@ -141,8 +136,8 @@
                                     <img
                                         src="{{ image_url(media.image.full_size, w=200, f='auto') }}"
                                         alt="{{ media.image.alt }}"
-                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px] opacity-0"
-                                        onload="this.classList.remove('opacity-0'); this.closest('.relative').querySelector('.skeleton')?.remove();"
+                                        width="200" height="200"
+                                        class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
                                     >
                                 {% endif %}
                             </div>
@@ -580,7 +575,7 @@
                     {{ _("Add to Cart") }}
                     <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
              </button>
-             <button class="btn btn-secondary relative buy_now_btn w-full text-base sm:text-xl h-full col-span-1 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;" onclick="openCheckoutPopup()">
+             <button class="btn btn-primary relative buy_now_btn w-full text-base sm:text-xl h-full col-span-1 whitespace-nowrap" type="button" style="opacity:1;border-radius:0px;" onclick="openCheckoutPopup()">
                     {{ _("Buy Now") }}
                     <span class="loading loading-infinity loading-sm hidden absolute left-[15px] top-1/2 -translate-y-1/2"></span>
              </button>  
@@ -954,17 +949,14 @@ function updateProductSinglePage(quantity) {
                             ></iframe>`;
                     } else if (media.image) {
                         slide2.innerHTML = `
-                            <div class="relative aspect-square">
-                                <div class="skeleton w-full h-full absolute z-[1]"></div>
                                 <img
                                     src="${media.image.full_size}"
                                     alt="${media.image.alt || ''}"
                                     data-gallery="gallery1"
-                                    class="block w-full h-full object-contain glightbox opacity-0 transition-opacity duration-300"
+                                    width="960" height="960"
+                                    class="block w-full h-full object-[unset] sm:object-contain glightbox"
                                     ${index === 0 ? 'fetchpriority="high"' : ''}
-                                    onload="this.classList.remove('opacity-0'); this.closest('.relative').querySelector('.skeleton')?.remove();"
-                                >
-                            </div>`;
+                                >`;
                     }
                     swiper2.appendChild(slide2);
 
@@ -973,12 +965,11 @@ function updateProductSinglePage(quantity) {
                         const slide1 = document.createElement('div');
                         slide1.classList.add('swiper-slide', 'rounded-[12px]', 'relative');
                         slide1.innerHTML = `
-                            <div class="skeleton w-full h-full absolute z-[1] rounded-[0px]"></div>
                             <img
                                 src="${media.image.full_size}"
                                 alt="${media.image.alt || ''}"
-                                class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px] opacity-0"
-                                onload="this.classList.remove('opacity-0'); this.closest('.relative').querySelector('.skeleton')?.remove();"
+                                width="200" height="200"
+                                class="block w-full h-full object-cover sm:object-contain sm:rounded-[12px]"
                             >
                         `;
                         swiper1.appendChild(slide1);
@@ -1295,9 +1286,11 @@ const initializeSliderProduct = () => {
                 }, 1000);
             }
 
+        // Build variant buttons immediately (before DOMContentLoaded) so active styling is visible instantly
+        handleVariations();
+
         document.addEventListener('DOMContentLoaded', function () {
             initializeSliderProduct();
-            handleVariations();
             handleZidCustomInputFields();
             setTimeout(() => {
             startAutoUpdate();
