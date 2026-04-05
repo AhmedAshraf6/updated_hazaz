@@ -197,7 +197,7 @@
            
                 <!-- Product Link -->
                 <a href="/products/${product.slug}" class="block relative">
-                    ${product.purchase_restrictions.sale_price_period_end?`  <div class="absolute z-[1] bottom-[20px] sm:bottom-[40px] left-1/2 -translate-x-1/2">   
+                    ${product.purchase_restrictions?.sale_price_period_end?`  <div class="absolute z-[1] bottom-[20px] sm:bottom-[40px] left-1/2 -translate-x-1/2">
                         <div id="countdownProductPage" class="flex  justify-center lg:justify-start gap-2">
                                 <div class=" bg-[#f94343] rounded-md text-[#fff] flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px]">
                                     <span class="countdown font-mono text-[12px]">
@@ -586,16 +586,23 @@
         // end handle variatons
 
         function fetchMoreProducts (query){
-                zid.products.list({category_id: {{ category.id | tojson }}, ...query}).then(function (response) {
-                        const productsList = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
+                console.log('category fetchMoreProducts query:', query);
+                zid.products.list({categories: {{ category.id | tojson }}, ...query}).then(function (response) {
+                        console.log('category products list response:', response);
+                        const productsList = response?.results || response?.data || response?.products?.results || response?.products?.data || [];
                         if(productsList.length > 0){
                             currentPage++;
-                            addProducts(response.products || response);
+                            try {
+                                addProducts({results: productsList});
+                            } catch(e) {
+                                console.error('addProducts error:', e);
+                            }
                         }else{
                            document.querySelector(".loading_more_products").classList.add('hidden');
                         }
 
                     }).catch(function (error){
+                           console.error('category fetchMoreProducts error:', error);
                            document.querySelector(".loading_more_products").classList.add('hidden');
 
                     })

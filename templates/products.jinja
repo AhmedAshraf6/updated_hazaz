@@ -162,7 +162,7 @@
                 
                         <!-- Product Link -->
                         <a href="/products/${product.slug}" class="block relative">
-                            ${product.purchase_restrictions.sale_price_period_end?`  <div class="absolute z-[1] bottom-[20px] sm:bottom-[40px] left-1/2 -translate-x-1/2">   
+                            ${product.purchase_restrictions?.sale_price_period_end?`  <div class="absolute z-[1] bottom-[20px] sm:bottom-[40px] left-1/2 -translate-x-1/2">
                                 <div id="countdownProductPage" class="flex  justify-center lg:justify-start gap-2">
                                         <div class="bg-[#f94343] text-[#fff] rounded-md  flex flex-col p-[3px] items-center justify-center text-[10px] w-[31px]">
                                             <span class="countdown font-mono text-[12px]">
@@ -303,10 +303,10 @@
                             if (product.has_variants) {
                                 fetchProductVariantsInsideProducts(product.id);
                             }
+                            if(product.purchase_restrictions && product.purchase_restrictions.sale_price_period_end){
+                                startCountdown(product.purchase_restrictions.sale_price_period_end,product);
+                            }
                         });
-                    if(product.purchase_restrictions.sale_price_period_end){
-                        startCountdown(product.purchase_restrictions.sale_price_period_end,product);
-                    }
                     
         }
          function startCountdown(dateString,productObj) {
@@ -543,24 +543,30 @@
 
 function fetchMoreProducts(query) {
     zid.products.list({...query}).then(function (response) {
-            const products = response?.products?.data || response?.products?.results || response?.products || response?.results || [];
+            console.log('products list response:', response);
+            const products = response?.results || response?.data || response?.products?.results || response?.products?.data || [];
 
             if (products.length > 0) {
                 currentPage++;
 
                 const inStock = [];
                 products.forEach(pr => {
-                    if (pr.out_of_stock === false || pr.quantity > 0) {
+                    if (pr.out_of_stock === false || pr.quantity > 0 || pr.is_infinite) {
                         inStock.push(pr);
-                    } 
+                    }
                 });
 
-                addProducts(inStock);
+                try {
+                    addProducts(inStock);
+                } catch(e) {
+                    console.error('addProducts error:', e);
+                }
             } else {
                 document.querySelector(".loading_more_products").classList.add('hidden');
             }
 
         }).catch(function (error) {
+            console.error('fetchMoreProducts error:', error);
             document.querySelector(".loading_more_products").classList.add('hidden');
         });
 }
@@ -597,7 +603,7 @@ function fetchMoreProducts(query) {
                             const sortBy = getSortAndOrderParams(window.location.href, 'sort_by');
                             const order = getSortAndOrderParams(window.location.href, 'order');
                                const searchParams = new URLSearchParams(window.location.search);
-                            const searchValue = searchParams.get('search');
+                            const searchValue = searchParams.get('q');
 
 
                             if (attributeValues.length > 0) {
@@ -616,7 +622,7 @@ function fetchMoreProducts(query) {
                                 query.order = order;
                             }
                            if (searchValue) {
-                                query.search = searchValue;
+                                query.q = searchValue;
                             }
 
                             query.page = currentPage;

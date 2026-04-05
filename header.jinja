@@ -134,7 +134,7 @@
                      });
                      if(productsCount > 3){
                          moreBtnSearch.classList.remove("hidden");
-                         moreBtnSearch.querySelector("a").href = `/products?search=${value}`;
+                         moreBtnSearch.querySelector("a").href = `/products?q=${value}`;
                      }
 
                      searchResultProducts.innerHTML = productFromSearch;
@@ -182,7 +182,7 @@
                             event.preventDefault(); // Prevent form submission (if inside a form)
                             const searchQuery = inputElement.value.trim();
                             if (searchQuery) {
-                                window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`;
+                                window.location.href = `/products?q=${encodeURIComponent(searchQuery)}`;
                             }
                         }
                    });

@@ -5893,9 +5893,6 @@ html:has(.drawer-open.drawer-open) {
 .rounded-3xl {
   border-radius: 1.5rem;
 }
-.rounded-\[0px\] {
-  border-radius: 0px;
-}
 .rounded-\[10px\] {
   border-radius: 10px;
 }
